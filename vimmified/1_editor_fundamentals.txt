@@ -56,6 +56,8 @@ And put a separator, like XXX, between the source line and the message so I can
 page through quickly. Nothing like a hefty dose of source code they can't begin
 to fathom to make the meeting break up early.''
 
+image:images/slimy_vp.png[]
+
 ``And get right on this. The meeting starts in 35 minutes.''
 
 Our VP walks away inwardly smiling, thinking he's getting out of detailed
