@@ -5,7 +5,7 @@ Walter Alan Zintz
 Why Vim?
 --------
 
-A HEARTWARMING EDIT
+A Heartwarming Edit
 ~~~~~~~~~~~~~~~~~~~
 
 Pity poor Hal, a corporate maintenance programmer. A large module of
@@ -60,6 +60,8 @@ image:images/slimy_vp.png[]
 
 ``And get right on this. The meeting starts in 35 minutes.''
 
+image:images/hal_deletes_managers.png[]
+
 Our VP walks away inwardly smiling, thinking he's getting out of detailed
 explanations and putting all the blame on an underling, just by demanding more
 editing than anyone could do in the time available. ``I'll tell the Information
@@ -97,7 +99,7 @@ the street and reappearing just as the meeting is getting started, to tell the
 VP (and everyone else in earshot), ``Those files you wanted are in
 slash-temp-slash-hal''.
 
-THE PLAN OF THIS ONGOING TUTORIAL
+The Plan Of This Ongoing Tutorial
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 I'm writing here for editor users who have some fluency in Vim at the surface
@@ -164,7 +166,7 @@ Search patterns function in both line editing and visual editing modes, and
 they work the same way in both, with just a few exceptions. But how you tell
 the editor you're typing in a search pattern will vary with the circumstances.
 
-SEARCHING FROM WHERE YOU ARE NOW
+Searching From Where You Are Now
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The more common use for search patterns is to go to some new place in the file,
@@ -228,7 +230,7 @@ editor. If you want to restore the wraparound searching mechanism, typing:
 
 will do it, and you can turn this on and off as often as you like.
 
-THE FIND-THEM-ALL SEARCH
+The Find-Them-All Search
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 Up to now, I've been considering searches that find just one instance of the
@@ -294,7 +296,7 @@ another punctuation mark as the separator:
 
 the typing is easy and the final command is readable.
 
-SIMPLE SEARCH PATTERNS
+Simple Search Patterns
 ~~~~~~~~~~~~~~~~~~~~~~
 
 The simplest search pattern is just a string of characters you want
@@ -337,7 +339,7 @@ Where the search starts depends on which editor mode you're using. A search in
 visual mode starts with the character next to the cursor. In line mode, the
 search starts with the line adjacent to the current line.
 
-METACHARACTERS
+Metacharacters
 ~~~~~~~~~~~~~~
 
 Then there are search metacharacters or ``wild cards'': characters that represent
@@ -409,7 +411,7 @@ is, if it is also to appear as a character in the pattern you are searching
 for, you'll have to backslash it there to prevent the editor thinking it is the
 end of the pattern.
 
-TABLE OF SEARCH PATTERN METACHARACTERS
+Table Of Search Pattern Metacharacters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ++.++
@@ -488,7 +490,7 @@ using the ++\v++ metacharacter. This ++verymagic++ mode was used in
 Hal's story earlier. See ++:help magic++ for a thorough explanation of
 Vim's ++magic++, ++nomagic++ and ++verymagic++ modes.
 
-CHARACTER CLASSES
+Character Classes
 ~~~~~~~~~~~~~~~~~
 
 There is one metastring form (a ``multicharacter metacharacter'') used
