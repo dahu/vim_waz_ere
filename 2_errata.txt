@@ -1,0 +1,22 @@
+229 - :insert and :append
+
+  In Vim, these two commands can indeed be given from within visual mode.
+
+342 - /pattern/ ; /pattern/
+
+  In Vim, this is from the first line containing pattern forward from the
+  cursor until the subsequent line containing pattern after that first line.
+
+  Vim uses the form: address <space> address   to accomplish what WAZ describes
+  using semi-colons here. So, instead of his:
+
+    /^WARNING!/ ; /^WARNING!/ delete
+
+  Vim would use:
+
+    /^WARNING!/   /^WARNING!/ delete
+
+
+406 - 0 as initial address
+
+  In Vim, this is not a problem. Zero can be used to start addresses.

@@ -459,7 +459,7 @@ I can type:
 
 
 
-If a command with thi s address fails and gives an error message about
+If a command with this address fails and gives an error message about
 a bad address, I'll know that the last mention of Hegel in Chapter 7
 is more than 120 lines before the end of the chapter, so the very
 first mention of his name in Chapter 8 is what I'm looking for. In
