@@ -15,9 +15,9 @@ where you need to know how to give the editor an address and what address to
 give.
 
 Many line-mode commands are almost identical to corresponding commands in
-visual mode; many more do similar things in different ways. Most of the
+normal mode; many more do similar things in different ways. Most of the
 benefit of these duplicative command sets comes from the totally-different
-addressing styles of line and visual modes. The differing address concepts
+addressing styles of line and normal modes. The differing address concepts
 mean that an edit that would be difficult or impossible to do with one mode's
 available addresses can be a piece of cake with an address form found in the
 other mode.
@@ -28,19 +28,19 @@ screen with text from the file you're editing, this mode gives you a colon ( :
 ) prompt for your line mode commands, and prints only an occasional line from
 the file on your screen. The feel of this mode is very much like giving UNIX
 commands from your shell prompt. Few people work in line mode these days,
-largely because you can give most line-mode commands from visual mode, but you
-can't give any visual-mode commands while you are in line mode. Or perhaps
+largely because you can give most line-mode commands from normal mode, but you
+can't give any normal-mode commands while you are in line mode. Or perhaps
 they just prefer the comfortable WYSIWYG feeling of seeing the text on screen,
 with changes appearing as they are made.
 
 But there are times when you will need to work temporarily in line mode. To
 get to line mode when you first launch the editor, invoke it by typing ++ex++
-instead of ++vi++. To go to line mode when you are already in the editor's
-visual mode, enter ++Q++. To get back to visual mode, type ++vi++ followed by
+instead of ++vim++ `vim`. To go to line mode when you are already in the editor's
+normal mode, enter ++Q++. To get back to normal mode, type ++vim++ followed by
 a carriage return.
 
 Wondering why I didn't put a colon in front of that command to return to
-visual mode, which is obviously a line-mode command? Because you don't need to
+normal mode, which is obviously a line-mode command? Because you don't need to
 type that colon when you're giving a command from within line mode. It may
 even be harmful; the rule is that if you type a colon at the start of a
 command from within line mode, there must be nothing between the colon and the
@@ -49,9 +49,9 @@ all.
 
 So from this point on, I will display line-mode commands without an initial
 colon, because you now know enough to type that colon only if you're working
-in visual mode. And I'll leave off the tag at the end of a line-mode command
+in normal mode. And I'll leave off the tag at the end of a line-mode command
 that reminds you to finish with a carriage return because you now realize that
-any line-mode command, given from either line or visual mode, has to end with
+any line-mode command, given from either line or normal mode, has to end with
 a carriage return.
 
 Some of you may ask why I show line-mode command lines in long-winded form,
@@ -83,7 +83,7 @@ than one address.
 A search pattern, as discussed in the first installment of this tutorial, is
 always an acceptable line-mode address. You put the address at the start of
 the command line, before the command name (but after the initial colon if you
-are giving the command from visual mode), so:
+are giving the command from normal mode), so:
 
   ?the [cC]at? delete
 
@@ -183,7 +183,7 @@ with either of these command lines:
   0 append
 
 (Note, though, that insert and append are among the few line-mode commands
-that cannot be run from visual mode by starting with a colon, because they
+that cannot be run from normal mode by starting with a colon, because they
 occupy more than one line including the text to be put in.)
 
 WRITING YOUR OWN LINE ADDRESSES is possible, too. You can attach lower-case
@@ -192,7 +192,7 @@ like. You can even use a special address that is automatically attached to the
 last line you jumped off from.
 
 There are ways to mark a particular line with a lower-case letter of the
-alphabet, and those ways differ between line and visual modes.  I'll be
+alphabet, and those ways differ between line and normal modes.  I'll be
 explaining all these ways in later installments of this tutorial. But once a
 line is marked, the line-mode address that refers to that line is just the
 single-quote character followed immediately by the lower-case letter with
@@ -578,3 +578,5 @@ collection of address forms we've just gone through. And to give you more
 scope for using all these address forms, I'll also cover line-mode commands
 themselves, particularly the ones that have more capabilities than you
 suspect.
+
+// vim: set ft=asciidoc:
