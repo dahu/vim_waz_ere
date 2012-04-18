@@ -1,60 +1,60 @@
-Line-Mode Addresses
-===================
+Ex-Mode Addresses
+=================
 Walter Alan Zintz
 
-Line-Mode Addressing
---------------------
+Ex-Mode Addressing
+------------------
 
 Whenever you want to give an editor command that will operate on text that's
 already in the file you're editing--to delete some text, change lower-case
 letters to capitals, write to a file, etcetera--the editor needs to know what
 part of the file to go to work on. A few commands have their addresses built
-in, and most line-mode commands have default addresses that the editor will
+in, and most ex-mode commands have default addresses that the editor will
 use if you don't give an address, but that still leaves a lot of occasions
 where you need to know how to give the editor an address and what address to
 give.
 
-Many line-mode commands are almost identical to corresponding commands in
+Many ex-mode commands are almost identical to corresponding commands in
 normal mode; many more do similar things in different ways. Most of the
 benefit of these duplicative command sets comes from the totally-different
-addressing styles of line and normal modes. The differing address concepts
+addressing styles of ex and normal modes. The differing address concepts
 mean that an edit that would be difficult or impossible to do with one mode's
 available addresses can be a piece of cake with an address form found in the
 other mode.
 
-Since I mention ``line mode'' so often, you may wonder whether there really is
-a separate mode for line editing. There surely is--instead of filling your
+Since I mention ``ex mode'' so often, you may wonder whether there really is
+a separate mode for ex editing. There surely is--instead of filling your
 screen with text from the file you're editing, this mode gives you a colon ( :
-) prompt for your line mode commands, and prints only an occasional line from
+) prompt for your ex mode commands, and prints only an occasional line from
 the file on your screen. The feel of this mode is very much like giving UNIX
-commands from your shell prompt. Few people work in line mode these days,
-largely because you can give most line-mode commands from normal mode, but you
-can't give any normal-mode commands while you are in line mode. Or perhaps
+commands from your shell prompt. Few people work in ex mode these days,
+largely because you can give most ex-mode commands from normal mode, but you
+can't give any normal-mode commands while you are in ex mode. Or perhaps
 they just prefer the comfortable WYSIWYG feeling of seeing the text on screen,
 with changes appearing as they are made.
 
-But there are times when you will need to work temporarily in line mode. To
-get to line mode when you first launch the editor, invoke it by typing ++ex++
-instead of ++vim++ `vim`. To go to line mode when you are already in the editor's
+But there are times when you will need to work temporarily in ex mode. To
+get to ex mode when you first launch the editor, invoke it by typing ++ex++
+instead of ++vim++. To go to ex mode when you are already in the editor's
 normal mode, enter ++Q++. To get back to normal mode, type ++vim++ followed by
 a carriage return.
 
 Wondering why I didn't put a colon in front of that command to return to
-normal mode, which is obviously a line-mode command? Because you don't need to
-type that colon when you're giving a command from within line mode. It may
+normal mode, which is obviously a ex-mode command? Because you don't need to
+type that colon when you're giving a command from within ex mode. It may
 even be harmful; the rule is that if you type a colon at the start of a
-command from within line mode, there must be nothing between the colon and the
+command from within ex mode, there must be nothing between the colon and the
 command name or abbreviation. Not an address, not even a space, nothing at
 all.
 
-So from this point on, I will display line-mode commands without an initial
+So from this point on, I will display ex-mode commands without an initial
 colon, because you now know enough to type that colon only if you're working
-in normal mode. And I'll leave off the tag at the end of a line-mode command
+in normal mode. And I'll leave off the tag at the end of a ex-mode command
 that reminds you to finish with a carriage return because you now realize that
-any line-mode command, given from either line or normal mode, has to end with
+any ex-mode command, given from either ex or normal mode, has to end with
 a carriage return.
 
-Some of you may ask why I show line-mode command lines in long-winded form,
+Some of you may ask why I show ex-mode command lines in long-winded form,
 with spelled-out command names and lots of whitespace instead of using
 abbreviations. For instance, the two command lines:
 
@@ -68,20 +68,20 @@ when I'm demonstrating a new concept, and almost everything here will be new
 to at least some of you. And it's a good idea to get to know the long forms,
 because you'll soon be learning to write editor scripts, and those scripts
 would be as cryptic as APL to future maintenance programmers if you wrote them
-in terse style. When I go over the roster of line-mode commands, I'll tell you
+in terse style. When I go over the roster of ex-mode commands, I'll tell you
 both the long name and one or two short names for each.
 
-Line-Mode Addressing
---------------------
+Ex-Mode Addressing
+------------------
 
-A SINGLE ADDRESS is often all you need with a line-mode command. One address
+A SINGLE ADDRESS is often all you need with a ex-mode command. One address
 refers to just one line, which tells a command like delete or substitute to
 operate on that one line only. A command like insert or read, which puts
 something immediately before or after a particular line, has no use for more
 than one address.
 
 A search pattern, as discussed in the first installment of this tutorial, is
-always an acceptable line-mode address. You put the address at the start of
+always an acceptable ex-mode address. You put the address at the start of
 the command line, before the command name (but after the initial colon if you
 are giving the command from normal mode), so:
 
@@ -133,7 +133,7 @@ last one used to find a line, use the abbreviations ++\?++ and ++\/++ to
 search backward and forward, respectively. In all other respects these work
 just as typing ++??++ and ++//++ do.
 
-A LINE NUMBER is also a valid line-mode address. The editor automatically
+A LINE NUMBER is also a valid ex-mode address. The editor automatically
 numbers each line in the file consecutively, and this numbering is
 dynamic--that is, whenever you add or delete lines somewhere, the editor
 renumbers all the lines following the insertion or deletion point. So if you
@@ -154,7 +154,7 @@ You don't use any delimiters around a line number, or around any other address
 except a search pattern.
 
 There are two symbolic line numbers and one fictional one that can be used in
-line-mode addresses. As long as there are any lines in the buffer (that is,
+ex-mode addresses. As long as there are any lines in the buffer (that is,
 you haven't specified a not-yet-existent file to edit and failed to enter any
 text so far), the editor regards you as being `on' one of them, usually the
 last line affected by your latest command. A period or dot ( . ) is the
@@ -182,7 +182,7 @@ with either of these command lines:
 
   0 append
 
-(Note, though, that insert and append are among the few line-mode commands
+(Note, though, that insert and append are among the few ex-mode commands
 that cannot be run from normal mode by starting with a colon, because they
 occupy more than one line including the text to be put in.)
 
@@ -192,9 +192,9 @@ like. You can even use a special address that is automatically attached to the
 last line you jumped off from.
 
 There are ways to mark a particular line with a lower-case letter of the
-alphabet, and those ways differ between line and normal modes.  I'll be
+alphabet, and those ways differ between ex and normal modes.  I'll be
 explaining all these ways in later installments of this tutorial. But once a
-line is marked, the line-mode address that refers to that line is just the
+line is marked, the ex-mode address that refers to that line is just the
 single-quote character followed immediately by the lower-case letter with
 which the line was marked. So typing:
 
@@ -227,7 +227,7 @@ to that line just by typing two successive single quotes:
 
   ''
 
-as a line-mode address. In theory, you can use this address with any line-mode
+as a ex-mode address. In theory, you can use this address with any ex-mode
 command. But it is so difficult to know for sure when you left a line via a
 non-relative address that this address form is best saved for going back to
 where you were when a mistake moves you far away, at least until you're a
@@ -248,7 +248,7 @@ backward. So these three addresses all refer to the same line:
 
 Not that you're likely to want to modify line-number addresses with counts,
 unless you're weak in arithmetic and want the editor to do the adding and
-subtracting for you. But the count offsets will work with any line-mode
+subtracting for you. But the count offsets will work with any ex-mode
 addresses, and are most often used with search patterns.  In any event, there
 is a shorthand for these counts, too. A plus or minus sign immediately
 followed by a number (single or multiple digits) is equivalent to a string of
@@ -265,7 +265,7 @@ sign, a number is a count forward or backward from where the primary address
 lands (or if there is no primary address before the count, from the line you
 are on when you run the command).
 
-Note also that this is one of the few places in line-mode commands where you
+Note also that this is one of the few places in ex-mode commands where you
 may not insert a blank space. The number must start in the very next character
 position after the plus or minus sign. If you violate this rule, the editor
 will uncomplainingly operate on some line that definitely is not the line you
@@ -386,7 +386,7 @@ TWO ADDRESSES CAN ALSO STAND FOR A RANGE OF LINES. When two addresses are
 separated by a comma rather than a semicolon, the meaning changes radically.
 (What a difference a dot makes!)
 
-Often you will want a line-mode command to act on a series of successive
+Often you will want a ex-mode command to act on a series of successive
 lines. For example, you may want to move a stretch of text from one place to
 another. To do this, you give the address of the first line you want the
 command to act on, followed by the last line it should act on, and separate
@@ -395,12 +395,12 @@ the two addresses with a comma. So, the command:
   14 , 17 delete
 
 will delete line 14 and line 15 and line 16 and line 17. You can see that
-putting more than two addresses in a comma-separated address string would be
-pointless. The line mode of this editor is discreet if you ignore this and
+putting more than two addresses in a comma or semicolon-separated address string would be
+pointless. The ex mode of this editor is discreet if you ignore this and
 string together three or more addresses with comma separation: it uses the
 first two addresses and discards the rest.
 
-Any line-mode addresses may be used with a comma. All of the following
+Any ex-mode addresses may be used with a comma. All of the following
 combinations make sense:
 
   'd , /^struct/
@@ -434,7 +434,7 @@ will only produce an error message. (But if the two addresses happen to
 evaluate to the same line, there is no problem. The command will silently
 operate on the one line you've specified.)
 
-As you work up to more sophisticated line-mode addresses, you may get
+As you work up to more sophisticated ex-mode addresses, you may get
 unexpected error messages about the second address being prior to first
 address, when you don't see how you could have anticipated that the addresses
 would evaluate that way. That's no disgrace, and the solution is simple. After
@@ -457,7 +457,7 @@ did; it does not start from the line that the first search found. There's a
 way around that, though, that involves using one or more semicolons along with
 a comma.
 
-A semicolon-separated address string can be used anywhere in line mode that
+A string of successive addresses can be used anywhere in ex mode that
 you would use a single address. One very useful technique is to use these
 address strings on one or both sides of a comma, to indicate a range of lines
 to be affected. Remember that an address string separated by semicolons is the
@@ -482,7 +482,7 @@ as the start of your after-the-comma search string, as in either of:
 
 // TODO Successive numeric ranges are additive in Vim
 
-In view of the rules about not going backward in line-mode address strings,
+In view of the rules about not going backward in ex-mode address strings,
 I'd better clarify the way these limitations work when you combine semicolon
 and comma separation, as in these two examples. All but the first of the way
 points in each semicolon-separated string must be in the forward direction, of
@@ -508,7 +508,7 @@ semicolon-separated string, line 221, falls later in the file than the final
 landing point of the second semicolon-separated string, line 218.
 
 Now, a note about default addresses. I've already mentioned that most
-line-mode commands that can take an address have a ``default'' address built
+ex-mode commands that can take an address have a ``default'' address built
 in, which tells the editor where to run the command if you don't give an
 address with it. Each command has its own default address, which may be the
 current line, the current line plus the one following, the last line of the
@@ -539,14 +539,15 @@ line the command will operate on. So every one of the following command lines:
 will do exactly the same thing: append a copy of j ust the current line in the
 file you're editing to another file named ``goodlines''.
 
-Finally, there is one special symbol that represents a comma-separated address
-combination. The percent sign ( % ) has the same meaning as 1,$ as a line-mode
-address combination. Both refer to the entire file.
+Finally, there is one special symbol that represents a comma or
+semicolon-separated address combination. The percent sign ( % ) has the same
+meaning as 1,$ as a ex-mode address combination. Both refer to the entire
+file.
 
 Now You Try It
 --------------
 
-Before you try the complex aspects of line-mode addresses in actual editing
+Before you try the complex aspects of ex-mode addresses in actual editing
 situations, here are some problems you can build yourself up on. For each
 problem I've included a solution that will work fairly efficiently.
 
@@ -575,7 +576,7 @@ Coming Up Next
 The next installment of this tutorial will deal with the Global
 commands--they're just too much to absorb right after the mind-numbing
 collection of address forms we've just gone through. And to give you more
-scope for using all these address forms, I'll also cover line-mode commands
+scope for using all these address forms, I'll also cover ex-mode commands
 themselves, particularly the ones that have more capabilities than you
 suspect.
 
