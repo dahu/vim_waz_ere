@@ -2,11 +2,6 @@ The Global Command
 ==================
 By Walter Alan Zintz
 
-The Details of Global Operations
-A Few More Uses for Global Commands
-Now You Give It A Try
-Coming Up Next
-
 The Wondrous Global Command
 ---------------------------
 
@@ -378,7 +373,7 @@ The problem of energizing the
 it is dissolved was first approached by applying a strong
 ....
 
-How can this tech writer use the vi editor to number the paragraphs in each
+How can this tech writer use the vim editor to number the paragraphs in each
 section? (If this seems far-fetched to you, consider that I once got a phone
 call from a Unix guru asking how to do just this.) To keep the problem simple,
 let's say that there are never more than 35 paragraphs in a section, and that
@@ -395,7 +390,7 @@ In the next part of this tutorial, I'll cover the less-known aspects of the
 other line-mode commands for dealing with text and files. If you're a little
 overwhelmed with all that I've said about ++:global++ you'll be pleased to
 know that substitute is notably simpler, and all the remaining commands are
-very much simpler, than ++:global++ .
+very much simpler, than ++:global++.
 
 After that, future parts of this tutorial will deal with visual mode; easier
 and more fun than line mode any day.
