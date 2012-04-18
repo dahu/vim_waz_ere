@@ -68,8 +68,8 @@ would be as cryptic as APL to future maintenance programmers if you wrote them
 in terse style. When I go over the roster of ex-mode commands, I'll tell you
 both the long name and one or two short names for each.
 
-Ex-Mode Addressing
-------------------
+Ex-Mode Address
+~~~~~~~~~~~~~~~
 
 A SINGLE ADDRESS is often all you need with an ex-mode command. One address
 refers to just one line, which tells a command like delete or substitute to
@@ -375,7 +375,7 @@ line earlier in the file than the way point from which it began.
 ==============================================================================
 
 Addressing a Section of Text
-----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 TWO ADDRESSES CAN ALSO STAND FOR A RANGE OF LINES. When two addresses are
 separated by a comma or a semicolon, the meaning changes radically.
@@ -585,4 +585,4 @@ scope for using all these address forms, I'll also cover ex-mode commands
 themselves, particularly the ones that have more capabilities than you
 suspect.
 
-// vim: set ft=asciidoc:
+// vim: set ft=asciidoc tw=78:
