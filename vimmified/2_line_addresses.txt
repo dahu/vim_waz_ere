@@ -9,53 +9,50 @@ Whenever you want to give an editor command that will operate on text that's
 already in the file you're editing--to delete some text, change lower-case
 letters to capitals, write to a file, etcetera--the editor needs to know what
 part of the file to go to work on. A few commands have their addresses built
-in, and most ex-mode commands have default addresses that the editor will
-use if you don't give an address, but that still leaves a lot of occasions
-where you need to know how to give the editor an address and what address to
-give.
+in, and most ex-mode commands have default addresses that the editor will use
+if you don't give an address, but that still leaves a lot of occasions where
+you need to know how to give the editor an address and what address to give.
 
-Many ex-mode commands are almost identical to corresponding commands in
-normal mode; many more do similar things in different ways. Most of the
-benefit of these duplicative command sets comes from the totally-different
-addressing styles of ex and normal modes. The differing address concepts
-mean that an edit that would be difficult or impossible to do with one mode's
-available addresses can be a piece of cake with an address form found in the
-other mode.
+Many ex-mode commands are almost identical to corresponding commands in normal
+mode; many more do similar things in different ways. Most of the benefit of
+these duplicative command sets comes from the totally-different addressing
+styles of ex and normal modes. The differing address concepts mean that an
+edit that would be difficult or impossible to do with one mode's available
+addresses can be a piece of cake with an address form found in the other mode.
 
-Since I mention ``ex mode'' so often, you may wonder whether there really is
-a separate mode for ex editing. There surely is--instead of filling your
-screen with text from the file you're editing, this mode gives you a colon ( :
-) prompt for your ex mode commands, and prints only an occasional line from
-the file on your screen. The feel of this mode is very much like giving UNIX
+Since I mention ``ex mode'' so often, you may wonder whether there really is a
+separate mode for ex editing. There surely is--instead of filling your screen
+with text from the file you're editing, this mode gives you a colon ( : )
+prompt for your ex mode commands, and prints only an occasional line from the
+file on your screen. The feel of this mode is very much like giving UNIX
 commands from your shell prompt. Few people work in ex mode these days,
 largely because you can give most ex-mode commands from normal mode, but you
-can't give any normal-mode commands while you are in ex mode. Or perhaps
-they just prefer the comfortable WYSIWYG feeling of seeing the text on screen,
-with changes appearing as they are made.
+can't give any normal-mode commands while you are in ex mode. Or perhaps they
+just prefer the comfortable WYSIWYG feeling of seeing the text on screen, with
+changes appearing as they are made.
 
-But there are times when you will need to work temporarily in ex mode. To
-get to ex mode when you first launch the editor, invoke it by typing ++ex++
+But there are times when you will need to work temporarily in ex mode. To get
+to ex mode when you first launch the editor, invoke it by typing ++ex++
 instead of ++vim++. To go to ex mode when you are already in the editor's
-normal mode, enter ++Q++. To get back to normal mode, type ++vim++ followed by
-a carriage return.
+normal mode, enter ++Q++. To get back to normal mode, type ++visual++ followed
+by a carriage return.
 
 Wondering why I didn't put a colon in front of that command to return to
-normal mode, which is obviously a ex-mode command? Because you don't need to
-type that colon when you're giving a command from within ex mode. It may
-even be harmful; the rule is that if you type a colon at the start of a
-command from within ex mode, there must be nothing between the colon and the
-command name or abbreviation. Not an address, not even a space, nothing at
-all.
+normal mode, which is obviously an ex-mode command? Because you don't need to
+type that colon when you're giving a command from within ex mode. It may even
+be harmful; the rule is that if you type a colon at the start of a command
+from within ex mode, there must be nothing between the colon and the command
+name or abbreviation. Not an address, not even a space, nothing at all.
 
 So from this point on, I will display ex-mode commands without an initial
 colon, because you now know enough to type that colon only if you're working
-in normal mode. And I'll leave off the tag at the end of a ex-mode command
+in normal mode. And I'll leave off the tag at the end of an ex-mode command
 that reminds you to finish with a carriage return because you now realize that
-any ex-mode command, given from either ex or normal mode, has to end with
-a carriage return.
+any ex-mode command, given from either ex or normal mode, has to end with a
+carriage return.
 
-Some of you may ask why I show ex-mode command lines in long-winded form,
-with spelled-out command names and lots of whitespace instead of using
+Some of you may ask why I show ex-mode command lines in long-winded form, with
+spelled-out command names and lots of whitespace instead of using
 abbreviations. For instance, the two command lines:
 
   global /^/ move 0
@@ -74,16 +71,16 @@ both the long name and one or two short names for each.
 Ex-Mode Addressing
 ------------------
 
-A SINGLE ADDRESS is often all you need with a ex-mode command. One address
+A SINGLE ADDRESS is often all you need with an ex-mode command. One address
 refers to just one line, which tells a command like delete or substitute to
 operate on that one line only. A command like insert or read, which puts
 something immediately before or after a particular line, has no use for more
 than one address.
 
 A search pattern, as discussed in the first installment of this tutorial, is
-always an acceptable ex-mode address. You put the address at the start of
-the command line, before the command name (but after the initial colon if you
-are giving the command from normal mode), so:
+always an acceptable ex-mode address. You put the address at the start of the
+command line, before the command name (but after the initial colon if you are
+giving the command from normal mode), so:
 
   ?the [cC]at? delete
 
@@ -182,9 +179,9 @@ with either of these command lines:
 
   0 append
 
-(Note, though, that insert and append are among the few ex-mode commands
-that cannot be run from normal mode by starting with a colon, because they
-occupy more than one line including the text to be put in.)
+(Note, though, that insert and append are among the few ex-mode commands that
+cannot be run from normal mode by starting with a colon, because they occupy
+more than one line including the text to be put in.)
 
 WRITING YOUR OWN LINE ADDRESSES is possible, too. You can attach lower-case
 letters to lines as line addresses, and change the attachments whenever you
@@ -227,7 +224,7 @@ to that line just by typing two successive single quotes:
 
   ''
 
-as a ex-mode address. In theory, you can use this address with any ex-mode
+as an ex-mode address. In theory, you can use this address with any ex-mode
 command. But it is so difficult to know for sure when you left a line via a
 non-relative address that this address form is best saved for going back to
 where you were when a mistake moves you far away, at least until you're a
@@ -291,12 +288,10 @@ led the editor on to the second instance.
 
 A very significant point here is that this combination of two search patterns,
 either of which could be a line address in itself, does not tell the editor to
-delete two lines. The semicolon means that the first pattern is merely a way
+delete two lines. The sequence means that the first pattern is merely a way
 station, and that the single line found by the second search pattern is the
 only line to be deleted. In brief, what looks like addresses for two lines is
-actually only an address for one. (This is not what the official documentation
-for this editor says, but the documentation is just plain wrong on this
-point.)
+actually only an address for one.
 
 But that's just the start of what you can do. You are not restricted to just
 two addresses. I've used up to ten of them to reach one specific line. As an
@@ -383,27 +378,29 @@ Addressing a Section of Text
 ----------------------------
 
 TWO ADDRESSES CAN ALSO STAND FOR A RANGE OF LINES. When two addresses are
-separated by a comma rather than a semicolon, the meaning changes radically.
-(What a difference a dot makes!)
+separated by a comma or a semicolon, the meaning changes radically.
+// TODO Should we elaborate on the difference between comma and semicolon on
+// Vim?
+// (What a difference a dot makes!)
 
-Often you will want a ex-mode command to act on a series of successive
-lines. For example, you may want to move a stretch of text from one place to
-another. To do this, you give the address of the first line you want the
-command to act on, followed by the last line it should act on, and separate
-the two addresses with a comma. So, the command:
+Often you will want an ex-mode command to act on a series of successive lines.
+For example, you may want to move a stretch of text from one place to another.
+To do this, you give the address of the first line you want the command to act
+on, followed by the last line it should act on, and separate the two addresses
+with a comma or semicolon. So, the command:
 
   14 , 17 delete
 
 will delete line 14 and line 15 and line 16 and line 17. You can see that
-putting more than two addresses in a comma or semicolon-separated address string would be
-pointless. The ex mode of this editor is discreet if you ignore this and
-string together three or more addresses with comma separation: it uses the
-first two addresses and discards the rest.
+putting more than two addresses in a comma or semicolon-separated address
+string would be pointless. The ex mode of this editor is discreet if you
+ignore this and string together three or more addresses with comma separation:
+it uses the last two addresses and discards the rest.
 
-Any ex-mode addresses may be used with a comma. All of the following
-combinations make sense:
+Any ex-mode addresses may be used with a comma or semicolon. All of the
+following combinations make sense:
 
-  'd , /^struct/
+  'd ; /^struct/
 
   257 , .
 
@@ -428,19 +425,22 @@ is just fine, while the similar-looking command:
 
   188 , 57 delete
 
-// TODO Vim is more graceful.
+is invalid and Vim will ask for confirmation to swap both sides and
+continue. (But if the two addresses happen to evaluate to the same line, there
+is no problem. The command will silently operate on the one line you've
+specified.)
 
-will only produce an error message. (But if the two addresses happen to
-evaluate to the same line, there is no problem. The command will silently
-operate on the one line you've specified.)
+==============================================================================
 
-As you work up to more sophisticated ex-mode addresses, you may get
-unexpected error messages about the second address being prior to first
-address, when you don't see how you could have anticipated that the addresses
-would evaluate that way. That's no disgrace, and the solution is simple. After
-you've looked over the addresses you used, and you're certain that they are
-the ones you want, just type the command in again with the two addresses in
-reverse order. That is, if:
+WARNING: this is not true for Vim
+
+As you work up to more sophisticated ex-mode addresses, you may get unexpected
+error messages about the second address being prior to first address, when you
+don't see how you could have anticipated that the addresses would evaluate
+that way. That's no disgrace, and the solution is simple. After you've looked
+over the addresses you used, and you're certain that they are the ones you
+want, just type the command in again with the two addresses in reverse order.
+That is, if:
 
   642 , /in Table 23/ delete
 
@@ -451,16 +451,18 @@ then:
 
 will solve that problem.
 
+// TODO Vim's better semicolon?
+
 The last limitation is that when you use search patterns on both sides of a
 comma, the second search starts from the current line just as the first search
 did; it does not start from the line that the first search found. There's a
 way around that, though, that involves using one or more semicolons along with
 a comma.
 
-A string of successive addresses can be used anywhere in ex mode that
-you would use a single address. One very useful technique is to use these
-address strings on one or both sides of a comma, to indicate a range of lines
-to be affected. Remember that an address string separated by semicolons is the
+A string of successive addresses can be used anywhere in ex mode that you
+would use a single address. One very useful technique is to use these address
+strings on one or both sides of a comma or semicolon, to indicate a range of
+lines to be affected. Remember that a string of successive addresses is the
 address of just one line, so this one line can be the start or the end of a
 range of lines. For example, in:
 
@@ -482,9 +484,9 @@ as the start of your after-the-comma search string, as in either of:
 
 // TODO Successive numeric ranges are additive in Vim
 
-In view of the rules about not going backward in ex-mode address strings,
-I'd better clarify the way these limitations work when you combine semicolon
-and comma separation, as in these two examples. All but the first of the way
+In view of the rules about not going backward in ex-mode address strings, I'd
+better clarify the way these limitations work when you combine semicolon and
+comma separation, as in these two examples. All but the first of the way
 points in each semicolon-separated string must be in the forward direction, of
 course, but the start of the second semicolon-separated string may be prior to
 any of the addresses in the first such string, that is, the one-way meter
@@ -507,22 +509,25 @@ will produce an error message, because the final landing point of the first
 semicolon-separated string, line 221, falls later in the file than the final
 landing point of the second semicolon-separated string, line 218.
 
-Now, a note about default addresses. I've already mentioned that most
-ex-mode commands that can take an address have a ``default'' address built
-in, which tells the editor where to run the command if you don't give an
-address with it. Each command has its own default address, which may be the
-current line, the current line plus the one following, the last line of the
-file, or the entire file.
+==============================================================================
 
-The comma separator has default addresses of its own. They are the same
+Now, a note about default addresses. I've already mentioned that most ex-mode
+commands that can take an address have a ``default'' address built in, which
+tells the editor where to run the command if you don't give an address with
+it. Each command has its own default address, which may be the current line,
+the current line plus the one following, the last line of the file, or the
+entire file.
+
+The range separators have default addresses of their own. They are the same
 regardless of what command is being used, and they override any command's own
-default address. If you put a comma before a command and don't put an address
-before the comma, by default the address there is the current line. In the
-same way, if you leave out the address after the comma, the default there is
-also the current line. You can even leave out the address in both places and
-use the current-line default in both: that means the implied address is ``from
-the current line to the current line'', which makes the current line the only
-line the command will operate on. So every one of the following command lines:
+default address. If you put a comma or semicolon before a command and don't
+put an address before the it, by default the address there is the current
+line. In the same way, if you leave out the address after it, the default
+there is also the current line. You can even leave out the address in both
+places and use the current-line default in both: that means the implied
+address is ``from the current line to the current line'', which makes the
+current line the only line the command will operate on. So every one of the
+following command lines:
 
 ....
 .     write >> goodlines
@@ -531,9 +536,9 @@ line the command will operate on. So every one of the following command lines:
 
   , . write >> goodlines
 
-. ,   write >> goodlines
+. ;   write >> goodlines
 
-  ,   write >> goodlines
+  ;   write >> goodlines
 ....
 
 will do exactly the same thing: append a copy of j ust the current line in the
@@ -541,7 +546,7 @@ file you're editing to another file named ``goodlines''.
 
 Finally, there is one special symbol that represents a comma or
 semicolon-separated address combination. The percent sign ( % ) has the same
-meaning as 1,$ as a ex-mode address combination. Both refer to the entire
+meaning as 1,$ as an ex-mode address combination. Both refer to the entire
 file.
 
 Now You Try It
