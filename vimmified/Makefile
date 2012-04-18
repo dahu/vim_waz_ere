@@ -1,4 +1,4 @@
-INPUT_FILES = 1_editor_fundamentals.txt
+INPUT_FILES = 1_editor_fundamentals.txt 2_line_addresses.txt 3_global_command.txt
 HTML_DIR = html
 HTML_FILES = $(addprefix html/,$(INPUT_FILES:txt=html))
 ICONS_DIR = /etc/asciidoc/images/icons/
