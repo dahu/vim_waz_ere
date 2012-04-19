@@ -1,6 +1,6 @@
 The Global Command
 ==================
-By Walter Alan Zintz
+Walter Alan Zintz
 
 The Wondrous Global Command
 ---------------------------
