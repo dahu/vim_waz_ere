@@ -7,11 +7,11 @@ The Wondrous Global Command
 
 If you're surprised that I made no mention of ++:global++ in the preceding
 installment of this tutorial -- well, ++:global++ is not an address. It's
-actually a line-mode command, and it's much more powerful than most users
+actually a ex-mode command, and it's much more powerful than most users
 suspect.
 
-Even experienced users of line mode usually think of ++:global++ along these
-lines: ``If you type :global and then a search pattern and then a line-mode
+Even experienced users of ex mode usually think of ++:global++ along these
+lines: ``If you type :global and then a search pattern and then a ex-mode
 command, all on one line, then the editor finds every line in the file that
 contains that pattern and runs the command on every one of those lines''. That
 is, typing:
@@ -39,10 +39,10 @@ in plain terms:
 
 .Searching where you tell it to look:
 
-As a line-mode command, ++:global++ can be preceded by an address or pair of
+As a ex-mode command, ++:global++ can be preceded by an address or pair of
 addresses. Its default is to search the entire file, but if you start your
 command as ++257, 382 global++ then it will only search through lines 257
-through 382 inclusive. Any line-mode addresses can begin a ++:global++
+through 382 inclusive. Any ex-mode addresses can begin a ++:global++
 command, so starting with `?^Exercises? +++, $ global` will restrict the
 pattern search and line marking to a stretch beginning three lines past the
 last previous line that starts with the string ``Exercises'', and ending at
@@ -87,7 +87,7 @@ to be searched, then use ? and / delimiters as usual.
 .Global searches that seem senseless can be very useful:
 
 At times it's wise to have ++:global++ or ++:global !++ run a search over just
-one line in a file. This is the basis for conditional execution of line-mode
+one line in a file. This is the basis for conditional execution of ex-mode
 commands.  As a simple example, you may find yourself editing files from
 outside your organization that are sometimes (but not always) sent to you with
 an extra, empty last line, as a spacer. You need to remove that last line, if
@@ -245,7 +245,7 @@ worth knowing.
 
 At times it's a good idea to follow ++:global++ with a string of commands that
 have absolutely nothing to do with the lines that ++:global++ has marked. The
-most common occasion for this comes when you need to repeat a line-mode
+most common occasion for this comes when you need to repeat a ex-mode
 command a certain number of times.
 
 At tradeshows I'm often invited to test a system right there on the show
@@ -291,27 +291,28 @@ nefarious Vice President for Information Systems comes back to Hal to demand
 that each warning be investigated, to see whether the code can be rewritten to
 eliminate the warning.
 
-Should Hal just leaf through the code, searching for XXX patterns to guide him
-to the trouble spots? Hal knows that with the spaghetti code he's facing, the
-actual problem may be a long way from the line lint has designated. In
-traveling to the actual trouble spot he may have passed several XXX patterns
-along the way, so searching for the next XXX in the file may bring him to a
-site he's already dealt with, or may miss a number of XXX sites that he passed
-when he moved forward to get to the actual problem spot on the previous fix.
-Besides, because he frequently does pattern searching while fixing a problem,
-he can't depend on a visual-mode n command to use the XXX pattern he needs to
-find; he must type the pattern in afresh each time.
+Should Hal just leaf through the code, searching for ``XXX'' patterns to guide
+him to the trouble spots? Hal knows that with the spaghetti code he's facing,
+the actual problem may be a long way from the line lint has designated. In
+traveling to the actual trouble spot he may have passed several
+``XXX'' patterns along the way, so searching for the next ``XXX'' in the file
+may bring him to a site he's already dealt with, or may miss a number of
+``XXX'' sites that he passed when he moved forward to get to the actual problem
+spot on the previous fix.  Besides, because he frequently does pattern
+searching while fixing a problem, he can't depend on a normal-mode n command
+to use the ``XXX'' pattern he needs to find; he must type the pattern in afresh
+each time.
 
-But Hal knows a way around all this--dropping back to line mode (by typing a
-capital letter ++Q++ from visual mode) and giving a simple ++:global++
+But Hal knows a way around all this--dropping back to ex mode (by typing a
+capital letter ++Q++ from normal mode) and giving a simple ++:global++
 command:
 
   global /XXX/ visual | write
 
 This command brings Hal to the first ``XXX'' line, where it puts him into
-visual mode to do his editing. When the edit is finished, Hal simply types a
+normal mode to do his editing. When the edit is finished, Hal simply types a
 capital letter Q and the editor takes him to the second ``XXX'' line and puts
-him into visual mode there, no matter how much moving around Hal did during
+him into normal mode there, no matter how much moving around Hal did during
 the first edit, and so on through the list of ``XXX'' lines. As frosting on
 the cake, the write command automatically writes the changed file to disk
 after each individual edit.
@@ -387,12 +388,12 @@ Coming Up Next
 --------------
 
 In the next part of this tutorial, I'll cover the less-known aspects of the
-other line-mode commands for dealing with text and files. If you're a little
+other ex-mode commands for dealing with text and files. If you're a little
 overwhelmed with all that I've said about ++:global++ you'll be pleased to
 know that substitute is notably simpler, and all the remaining commands are
 very much simpler, than ++:global++.
 
-After that, future parts of this tutorial will deal with visual mode; easier
-and more fun than line mode any day.
+After that, future parts of this tutorial will deal with normal mode; easier
+and more fun than ex mode any day.
 
 // vim: set ft=asciidoc tw=78:
