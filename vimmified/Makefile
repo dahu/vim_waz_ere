@@ -1,4 +1,4 @@
-INPUT_FILES = 1_editor_fundamentals.txt 2_line_addresses.txt 3_global_command.txt 4_substitute_command.txt
+INPUT_FILES = 1_editor_fundamentals.txt 2_line_addresses.txt 2_line_addresses_solutions.txt 3_global_command.txt 4_substitute_command.txt
 HTML_DIR = html
 HTML_FILES = $(addprefix html/,$(INPUT_FILES:txt=html))
 ICONS_DIR = /etc/asciidoc/images/icons/
@@ -22,6 +22,7 @@ html/%.html: %.txt
 		-a iconsdir=$(ICONS_DIR) \
 		-a theme=flask \
 		-a data-uri \
+		-a pygments \
 		-o $@ \
 		$<
 

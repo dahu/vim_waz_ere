@@ -55,9 +55,12 @@ Some of you may ask why I show ex-mode command lines in long-winded form, with
 spelled-out command names and lots of whitespace instead of using
 abbreviations. For instance, the two command lines:
 
+[source,vim]
+----
   global /^/ move 0
 
   g/^/m0
+----
 
 are identical in their effect, and the second is surely faster to type, so why
 do I show the first form? Because the long version is much easier to follow
@@ -82,12 +85,18 @@ always an acceptable ex-mode address. You put the address at the start of the
 command line, before the command name (but after the initial colon if you are
 giving the command from normal mode), so:
 
+[source,vim]
+----
   ?the [cC]at? delete
+----
 
 will erase the last previous line that contains the string ``the cat'' or
 ``the Cat'', while:
 
+[source,vim]
+----
   /^GLOSSARY$/ read gloss.book
+----
 
 puts the contents of the file ``gloss.book'' right after the next line in the
 file you're editing that contains only the word ``GLOSSARY''.
@@ -98,11 +107,14 @@ used previously, and your choice of ++??++ or ++//++ will set the direction of
 the search, overriding the direction you chose the previous time you used that
 search pattern. That is, if you type:
 
+[source,vim]
+----
   ?the cat? yank
 
   // delete
 
   ?? print
+----
 
 the second command will search forward, to remove the last previous line
 containing the string ``the cat'', even though your original use of that
@@ -120,9 +132,12 @@ search to find the pattern to be replaced within the line was run after the
 first search pattern had found the line to operate on, so the search within
 the line was the last pattern search run. So if you were to type:
 
+[source,vim]
+----
   /the cat/ substitute /in the hat/on the mat
 
   ?? delete
+----
 
 the second command would, in this case, delete the last previous line
 containing ``in the hat''. To be sure that the pattern that gets reused is the
@@ -145,7 +160,10 @@ line number 7, and so on. (There are several ways to display these line
 numbers, which I will expound in a later tutorial installment.) To delete the
 153rd line in your file, just type:
 
+[source,vim]
+----
   153 delete
+----
 
 You don't use any delimiters around a line number, or around any other address
 except a search pattern.
@@ -158,11 +176,12 @@ last line affected by your latest command. A period or dot ( . ) is the
 symbolic address for this line.  The last line in the file also has a symbolic
 address: the dollar sign ( $ $). So if you should type:
 
-....
-. write >> goodlines
+[source,vim]
+----
+  . write >> goodlines
 
-$ delete
-....
+  $ delete
+----
 
 the first command would append a copy of just the line you are on now to a
 file named ``goodlines'', while the second would delete the last line in the
@@ -175,9 +194,12 @@ fictitious line number zero (0) as their address. So, if you want to type some
 text that will appear ahead of anything already in the file, you can do it
 with either of these command lines:
 
+[source,vim]
+----
   1 insert
 
   0 append
+----
 
 (Note, though, that insert and append are among the few ex-mode commands that
 cannot be run from normal mode by starting with a colon, because they occupy
@@ -195,7 +217,10 @@ line is marked, the ex-mode address that refers to that line is just the
 single-quote character followed immediately by the lower-case letter with
 which the line was marked. So typing:
 
+[source,vim]
+----
   'b print
+----
 
 will display on the screen whatever line you have previously marked with the
 letter b, no matter where the line is in relation to where you are when you
@@ -208,6 +233,8 @@ line to another by a non-relative address, the editor marks the line you just
 left. (A non-relative address is one that isn't a known number of lines from
 where you were.) So:
 
+[source,vim]
+----
   $
 
   /the cat/
@@ -217,12 +244,16 @@ where you were.) So:
   ?glossary? +7
 
   'b
+----
 
 are all non-relative addresses, and if you give any one of them, the editor
 will mark the line you are leaving for future reference. Then you can return
 to that line just by typing two successive single quotes:
 
+[source,vim]
+----
   ''
+----
 
 as an ex-mode address. In theory, you can use this address with any ex-mode
 command. But it is so difficult to know for sure when you left a line via a
@@ -237,11 +268,14 @@ each plus sign following an address tells the editor to go one line farther
 forward in the file than the basic address, while each minus sign means a line
 backward. So these three addresses all refer to the same line:
 
+[source,vim]
+----
   35
 
   37 --
 
   30 +++++
+----
 
 Not that you're likely to want to modify line-number addresses with counts,
 unless you're weak in arithmetic and want the editor to do the adding and
@@ -252,9 +286,12 @@ followed by a number (single or multiple digits) is equivalent to a string of
 plus or minus signs equal to that number, so that these two addresses are the
 same:
 
+[source,vim]
+----
   /^register long/ ++++
 
   /^register long/ +4
+----
 
 Take note that the ``4'' in the second example does not mean ``line number
 4'', as it would if it appeared by itself as an address. After a plus or minus
@@ -274,9 +311,12 @@ that starts with ``WARNING!'', but not the first such line the editor would
 encounter; you want the second instance. Either of these command lines will do
 it:
 
+[source,vim]
+----
   /^WARNING!/ /^WARNING!/ delete
 
   /^WARNING!/ // delete
+----
 
 Th consecutive search patterns tells the editor to find the location of the
 first pattern in the usual way, then start searching from that location for
@@ -297,7 +337,10 @@ But that's just the start of what you can do. You are not restricted to just
 two addresses. I've used up to ten of them to reach one specific line. As an
 example:
 
+[source,vim]
+----
   ?^Chapter 3$? /^Bibliography$/ /^Spinoza/ /Monads/
+----
 
 will bring me to the title line of Spinoza's first work with ``Monads'' in the
 title, in the bibliography for Chapter 3.
@@ -306,11 +349,17 @@ Nor are you limited to search pattern addresses when putting together address
 string. If you want to reach the first line following line 462 that contains
 the word ``union'', typing:
 
+[source,vim]
+----
   462 /\<union\>/
+----
 
 will bring you there. And any of the addresses can take numerical offsets, so:
 
+[source,vim]
+----
   462 +137 /register int/ ---
+----
 
 is also a legitimate address string.
 
@@ -329,7 +378,10 @@ To do this, you give the address of the first line you want the command to act
 on, followed by the last line it should act on, and separate the two addresses
 with a comma or semicolon. So, the command:
 
+[source,vim]
+----
   14 , 17 delete
+----
 
 will delete line 14 and line 15 and line 16 and line 17. You can see that
 putting more than two addresses in a comma or semicolon-separated address
@@ -340,11 +392,14 @@ it uses the last two addresses and discards the rest.
 Any ex-mode addresses may be used with a comma or semicolon. All of the
 following combinations make sense:
 
+[source,vim]
+----
   'd ; /^struct/
 
   257 , .
 
   ?^Chapter 9$? , $
+----
 
 The first address combination would cause the command that follows it to
 operate on the section starting with the line you have previously marked ``d''
@@ -359,11 +414,17 @@ address after the comma (after any offsets, of course) cannot be earlier in
 the file than the address before the comma. That is, the range of lines must
 run forward from the first address to the second address. So the command:
 
+[source,vim]
+----
   57 , 188 delete
+----
 
 is just fine, while the similar-looking command:
 
+[source,vim]
+----
   188 , 57 delete
+----
 
 is invalid and Vim will ask for confirmation to swap both sides and
 continue. (But if the two addresses happen to evaluate to the same line, there
@@ -381,12 +442,18 @@ over the addresses you used, and you're certain that they are the ones you
 want, just type the command in again with the two addresses in reverse order.
 That is, if:
 
+[source,vim]
+----
   642 , /in Table 23/ delete
+----
 
 has failed, giving an error message that the lines are in the wrong order,
 then:
 
+[source,vim]
+----
   /in Table 23/ , 642 delete
+----
 
 will solve that problem.
 
@@ -405,9 +472,12 @@ lines to be affected. Remember that a string of successive addresses is the
 address of just one line, so this one line can be the start or the end of a
 range of lines. For example, in:
 
+[source,vim]
+----
   /^INDEX$/ /^Xerxes/ , $ write tailfile
 
   ?^PREFACE$? /^My 7th point/ , ?^PREFACE$? /^In summary/ -- delete
+----
 
 the first command would write the latter part of the index to a new file,
 while the second could be used to remove a section of a book's preface.
@@ -417,9 +487,12 @@ starting point. If you want the search after the comma to begin from the point
 the first search found, use the first search pattern followed by a semicolon
 as the start of your after-the-comma search string, as in either of:
 
+[source,vim]
+----
   ?Stradivarius? , ?Stradivarius? /Guarnerius/
 
   ?Stradivarius? , ?? /Guarnerius/
+----
 
 // TODO Successive numeric ranges are additive in Vim
 
@@ -436,13 +509,19 @@ point of the first; the relative locations of the way points don't matter to
 the comma. To clarify this, consider a couple of odd-looking, and useless, but
 very lucid examples. The combination:
 
+[source,vim]
+----
   125 ; 176 ; 221 , 32 ; 67 ; 240
+----
 
 looks invalid due to the backward jump from line 221 to line 32, but is
 actually a perfectly good address. The back jump comes right after the comma,
 where it is all right. But:
 
+[source,vim]
+----
   125 ; 176 ; 221 , 32 ; 67 ; 218
+----
 
 will produce an error message, because the final landing point of the first
 semicolon-separated string, line 221, falls later in the file than the final
@@ -468,17 +547,18 @@ address is ``from the current line to the current line'', which makes the
 current line the only line the command will operate on. So every one of the
 following command lines:
 
-....
-.     write >> goodlines
+[source,vim]
+----
+  .     write >> goodlines
 
-. , . write >> goodlines
+  . , . write >> goodlines
 
-  , . write >> goodlines
+    , . write >> goodlines
 
-. ;   write >> goodlines
+  . ;   write >> goodlines
 
-  ;   write >> goodlines
-....
+    ;   write >> goodlines
+----
 
 will do exactly the same thing: append a copy of j ust the current line in the
 file you're editing to another file named ``goodlines''.
