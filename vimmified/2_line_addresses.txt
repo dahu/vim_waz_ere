@@ -318,13 +318,11 @@ it:
   /^WARNING!/ // delete
 ----
 
-Th consecutive search patterns tells the editor to find the location of the
+The consecutive search patterns tells the editor to find the location of the
 first pattern in the usual way, then start searching from that location for
 the second pattern. In this case, the first search pattern turned up the first
 instance of a line starting with ``WARNING!'', and the second search pattern
 led the editor on to the second instance.
-
-// TODO Fix the semicolon
 
 A very significant point here is that this combination of two search patterns,
 either of which could be a line address in itself, does not tell the editor to
@@ -368,15 +366,84 @@ Addressing a Section of Text
 
 TWO ADDRESSES CAN ALSO STAND FOR A RANGE OF LINES. When two addresses are
 separated by a comma or a semicolon, the meaning changes radically.
-// TODO Should we elaborate on the difference between comma and semicolon on
-// Vim?
-// (What a difference a dot makes!)
 
-Often you will want an ex-mode command to act on a series of successive lines.
-For example, you may want to move a stretch of text from one place to another.
-To do this, you give the address of the first line you want the command to act
-on, followed by the last line it should act on, and separate the two addresses
-with a comma or semicolon. So, the command:
+Using ++addr ;++ sets the cursor to the line where ++addr++ matches
+before considering the subsequent address. With ++,++ the subsequent
+search starts from the __current__ cursor position. So, the command:
+
+[source,vim]
+----
+  /pat1/ /pat2/
+----
+
+Will find the next line forward containing "pat2" after the next line
+forward (from the cursor) containing "pat1", whereas:
+
+[source,vim]
+----
+  7 ; /pat2/
+----
+
+Will find the next line forward from line 7 containing "pat2", leaving
+the cursor in line 7.
+
+Assuming the cursor is currently on line 3 of the following famous
+rhyme:
+
+[numbered]
+....
+Little Boy Wolly drove a big lorry,
+Each and every day,
+Along came a copper,
+Who pulled out a whopper
+And locked poor Wolly away
+....
+
+what do you think:
+
+[source,vim]
+----
+  2 ; /\<a\>/ print
+----
+
+will print?
+
+ANSWER
+
+...
+  Each and every day,
+  Along came a copper,
+...
+
+The subsequent ``a'' after line 2 (where the next search starts from
+because ++;++ resets the cursor position) resides on line 3.
+
+Had the command been:
+
+[source,vim]
+----
+  2 , /\<a\>/ print
+----
+
+it would have printed:
+
+...
+  Each and every day,
+  Along came a copper,
+  Who pulled out a whopper
+...
+
+because the subsequent ``a'' from line 3 (where the cursor is (it
+wasn't moved, after all)) resides on line 4.
+
+// TODO: Consider how the following stuff should be modified.
+
+Often you will want an ex-mode command to act on a series of
+successive lines.  For example, you may want to move a stretch of text
+from one place to another. To do this, you give the address of the
+first line you want the command to act on, followed by the last line
+it should act on, and separate the two addresses with a comma or
+semicolon. So, the command:
 
 [source,vim]
 ----
@@ -403,16 +470,17 @@ following combinations make sense:
 
 The first address combination would cause the command that follows it to
 operate on the section starting with the line you have previously marked ``d''
-and ending with the next forward line that begins with ``struct'', inclusive.
-The second combination covers line 257 through the line you are on now. The
-third goes backward to include the previous line containing only ``Chapter
-9'', and forward to include the very last line in your file; plus all the
-lines in between, of course.
+and ending with the next forward (from mark ``d'') line that begins
+with ``struct'', inclusive.  The second combination covers line 257
+through the line you are on now. The third goes backward to include
+the previous line containing only ``Chapter 9'', and forward to
+include the very last line in your file; plus all the lines in
+between, of course.
 
-There are limitations on this technique, too. The primary one is that the
-address after the comma (after any offsets, of course) cannot be earlier in
-the file than the address before the comma. That is, the range of lines must
-run forward from the first address to the second address. So the command:
+Vim prefers the second address in a separated range addresses to be
+farther ahead in the file than the first address. Vim will ask for
+confirmation to swap both sides and continue if this is not the case.
+So, the range:
 
 [source,vim]
 ----
@@ -426,36 +494,17 @@ is just fine, while the similar-looking command:
   188 , 57 delete
 ----
 
-is invalid and Vim will ask for confirmation to swap both sides and
-continue. (But if the two addresses happen to evaluate to the same line, there
-is no problem. The command will silently operate on the one line you've
-specified.)
-
-==============================================================================
-WARNING: this is not true for Vim
-
-As you work up to more sophisticated ex-mode addresses, you may get unexpected
-error messages about the second address being prior to first address, when you
-don't see how you could have anticipated that the addresses would evaluate
-that way. That's no disgrace, and the solution is simple. After you've looked
-over the addresses you used, and you're certain that they are the ones you
-want, just type the command in again with the two addresses in reverse order.
-That is, if:
+will result in the request to swap the addresses. You can prevent Vim
+from asking and let it swap the addresses automatically by prepending
+++silent++ to the start of the ex range, as in:
 
 [source,vim]
 ----
-  642 , /in Table 23/ delete
+  silent 188 , 57 delete
 ----
 
-has failed, giving an error message that the lines are in the wrong order,
-then:
-
-[source,vim]
-----
-  /in Table 23/ , 642 delete
-----
-
-will solve that problem.
+If the two addresses happen to evaluate to the same line, the command
+will silently operate on the one line you've specified.
 
 // TODO Vim's better semicolon?
 
@@ -486,6 +535,8 @@ And that brings up the solution to our previous obstacle; the second search's
 starting point. If you want the search after the comma to begin from the point
 the first search found, use the first search pattern followed by a semicolon
 as the start of your after-the-comma search string, as in either of:
+
+TODO: semicolon
 
 [source,vim]
 ----
