@@ -299,8 +299,8 @@ sign, a number is a count forward or backward from where the primary address
 lands (or if there is no primary address before the count, from the line you
 are on when you run the command).
 
-Note also that this is one of the few places in ex-mode commands where you
-may not insert a blank space. The number must start in the very next character
+Note also that this is one of the few places in ex-mode commands where you may
+not insert a blank space. The number must start in the very next character
 position after the plus or minus sign. If you violate this rule, the editor
 will uncomplainingly operate on some line that definitely is not the line you
 expected.
@@ -361,100 +361,122 @@ will bring you there. And any of the addresses can take numerical offsets, so:
 
 is also a legitimate address string.
 
-Addressing a Section of Text
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Even though an explicit ++ +137 ++ was used there to show that it will be
+added to ++462++, successive numeric addresses are additive in Vim.  So this
+is the same as the last command:
 
-TWO ADDRESSES CAN ALSO STAND FOR A RANGE OF LINES. When two addresses are
-separated by a comma or a semicolon, the meaning changes radically.
+[source,vim]
+----
+  462 137 /register int/ ---
+----
 
-Using ++addr ;++ sets the cursor to the line where ++addr++ matches
-before considering the subsequent address. With ++,++ the subsequent
-search starts from the __current__ cursor position. So, the command:
+Indeed, the awkward looking ++ --- ++ demonstrates this well. Each ++
+- ++ is effectively ++ -1 ++ so ++ --- ++ is the same as ++ -1 -1 -1 ++.
+
+SEMICOLON SEPARATORS
+^^^^^^^^^^^^^^^^^^^^
+
+There is another way to chain several addresses together to identify a single
+line in Vim -- by separating the addresses with a semicolon.
+
+Using ++addr ;++ sets the cursor to the line where ++addr++ matches before
+considering the subsequent address. Using:
 
 [source,vim]
 ----
   /pat1/ /pat2/
 ----
 
-Will find the next line forward containing "pat2" after the next line
-forward (from the cursor) containing "pat1", whereas:
+will find the next line forward containing "pat2" after the next line forward
+(from the cursor) containing "pat1", whereas:
 
 [source,vim]
 ----
   7 ; /pat2/
 ----
 
-Will find the next line forward from line 7 containing "pat2", leaving
-the cursor in line 7.
+will find the next line forward from line 7 containing "pat2", leaving the
+cursor in line 7.
 
-Assuming the cursor is currently on line 3 of the following famous
-rhyme:
+Addressing a Section of Text
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-[numbered]
-....
-Little Boy Wolly drove a big lorry,
-Each and every day,
-Along came a copper,
-Who pulled out a whopper
-And locked poor Wolly away
-....
-
-what do you think:
-
-[source,vim]
-----
-  2 ; /\<a\>/ print
-----
-
-will print?
-
-ANSWER
-
-...
-  Each and every day,
-  Along came a copper,
-...
-
-The subsequent ``a'' after line 2 (where the next search starts from
-because ++;++ resets the cursor position) resides on line 3.
-
-Had the command been:
-
-[source,vim]
-----
-  2 , /\<a\>/ print
-----
-
-it would have printed:
-
-...
-  Each and every day,
-  Along came a copper,
-  Who pulled out a whopper
-...
-
-because the subsequent ``a'' from line 3 (where the cursor is (it
-wasn't moved, after all)) resides on line 4.
-
-// TODO: Consider how the following stuff should be modified.
-
-Often you will want an ex-mode command to act on a series of
-successive lines.  For example, you may want to move a stretch of text
-from one place to another. To do this, you give the address of the
-first line you want the command to act on, followed by the last line
-it should act on, and separate the two addresses with a comma or
-semicolon. So, the command:
+Often you will want an ex-mode command to act on a series of successive lines.
+For example, you may want to delete a stretch of text or move it from one
+place to another. To do this, you give the address of the first line you want
+the command to act on, followed by the last line it should act on, and
+separate the two addresses with a comma or semicolon. So, the command:
 
 [source,vim]
 ----
   14 , 17 delete
 ----
 
-will delete line 14 and line 15 and line 16 and line 17. You can see that
-putting more than two addresses in a comma or semicolon-separated address
-string would be pointless. The ex mode of this editor is discreet if you
-ignore this and string together three or more addresses with comma separation:
-it uses the last two addresses and discards the rest.
+will delete line 14 and line 15 and line 16 and line 17.
+
+Whether two addresses are separated by a comma or a semicolon changes the
+meaning radically.
+
+With ++,++ the subsequent search starts from the __current__ cursor position
+(and does not move the cursor, as ++;++ does).
+
+As with the single line usage of ++addr ;++ the cursor is set to the line
+where ++addr++ matches before considering the subsequent address.
+
+Assuming the cursor is currently on line 3 of the following famous rhyme:
+
+[source,text,numbered]
+----
+  Write a line of source code an edit full of Vim,
+  Four and twenty buffers opened on a whim.
+  When the make was issued the buffers tested clean,
+  Oh switch between your code and shell easily with screen.
+  The nerd was on his pimped out box cranking out the gems,
+  The boss was in his office thinking of his Benz.
+  The team were heading out the door and gave a little wave
+  When up came a buffer that had to be saved!
+----
+
+what do you think:
+
+[source,vim]
+----
+  2 ; /was/ print
+----
+
+will print?
+
+ANSWER
+^^^^^^
+
+[source,text]
+----
+  Four and twenty buffers opened on a whim.
+  When the make was issued the buffers tested clean,
+----
+
+The subsequent ``was'' after line 2 (where the next search starts from because
+++;++ resets the cursor position) resides on line 3.
+
+Had the command been (again, with the cursor on line 3):
+
+[source,vim]
+----
+  2 , /was/ print
+----
+
+it would have printed:
+
+[source,text]
+----
+  Four and twenty buffers opened on a whim.
+  When the make was issued the buffers tested clean,
+  Oh switch between your code and shell easily with screen.
+  The nerd was on his pimped out box cranking out the gems,
+----
+
+because the subsequent ``was'' from (after) line 3 (where the cursor is (it
+wasn't moved, after all)) resides on line 5.
 
 Any ex-mode addresses may be used with a comma or semicolon. All of the
 following combinations make sense:
@@ -470,17 +492,15 @@ following combinations make sense:
 
 The first address combination would cause the command that follows it to
 operate on the section starting with the line you have previously marked ``d''
-and ending with the next forward (from mark ``d'') line that begins
-with ``struct'', inclusive.  The second combination covers line 257
-through the line you are on now. The third goes backward to include
-the previous line containing only ``Chapter 9'', and forward to
-include the very last line in your file; plus all the lines in
-between, of course.
+and ending with the next forward (from mark ``d'') line that begins with
+``struct'', inclusive.  The second combination covers line 257 through the
+line you are on now. The third goes backward to include the previous line
+containing only ``Chapter 9'', and forward to include the very last line in
+your file; plus all the lines in between, of course.
 
-Vim prefers the second address in a separated range addresses to be
-farther ahead in the file than the first address. Vim will ask for
-confirmation to swap both sides and continue if this is not the case.
-So, the range:
+Vim prefers the second address in a separated range addresses to be farther
+ahead in the file than the first address. Vim will ask for confirmation to
+swap both sides and continue if this is not the case.  So, the range:
 
 [source,vim]
 ----
@@ -494,32 +514,20 @@ is just fine, while the similar-looking command:
   188 , 57 delete
 ----
 
-will result in the request to swap the addresses. You can prevent Vim
-from asking and let it swap the addresses automatically by prepending
-++silent++ to the start of the ex range, as in:
+will result in the request to swap the addresses. You can prevent Vim from
+asking and let it swap the addresses automatically by prepending ++silent++ to
+the start of the ex range, as in:
 
 [source,vim]
 ----
   silent 188 , 57 delete
 ----
 
-If the two addresses happen to evaluate to the same line, the command
-will silently operate on the one line you've specified.
+If the two addresses happen to evaluate to the same line, the command will
+silently operate on the one line you've specified.
 
-// TODO Vim's better semicolon?
-
-The last limitation is that when you use search patterns on both sides of a
-comma, the second search starts from the current line just as the first search
-did; it does not start from the line that the first search found. There's a
-way around that, though, that involves using one or more semicolons along with
-a comma.
-
-A string of successive addresses can be used anywhere in ex mode that you
-would use a single address. One very useful technique is to use these address
-strings on one or both sides of a comma or semicolon, to indicate a range of
-lines to be affected. Remember that a string of successive addresses is the
-address of just one line, so this one line can be the start or the end of a
-range of lines. For example, in:
+Multiple space separated addresses can be chained together to achieve your
+desired range. For example, in:
 
 [source,vim]
 ----
@@ -531,54 +539,14 @@ range of lines. For example, in:
 the first command would write the latter part of the index to a new file,
 while the second could be used to remove a section of a book's preface.
 
-And that brings up the solution to our previous obstacle; the second search's
-starting point. If you want the search after the comma to begin from the point
-the first search found, use the first search pattern followed by a semicolon
-as the start of your after-the-comma search string, as in either of:
-
-TODO: semicolon
+However, if you want the search after the comma to begin from the point the
+first search found, use a semicolon instead of a comma, as in:
 
 [source,vim]
 ----
-  ?Stradivarius? , ?Stradivarius? /Guarnerius/
-
-  ?Stradivarius? , ?? /Guarnerius/
+  ?Stradivarius? ; /Guarnerius/
 ----
 
-// TODO Successive numeric ranges are additive in Vim
-
-In view of the rules about not going backward in ex-mode address strings, I'd
-better clarify the way these limitations work when you combine semicolon and
-comma separation, as in these two examples. All but the first of the way
-points in each semicolon-separated string must be in the forward direction, of
-course, but the start of the second semicolon-separated string may be prior to
-any of the addresses in the first such string, that is, the one-way meter
-resets itself at the comma point. And using semicolon-separated strings on
-both sides of a comma only requires that the final landing point of the second
-semicolon-separated string not be earlier in the file than the final landing
-point of the first; the relative locations of the way points don't matter to
-the comma. To clarify this, consider a couple of odd-looking, and useless, but
-very lucid examples. The combination:
-
-[source,vim]
-----
-  125 ; 176 ; 221 , 32 ; 67 ; 240
-----
-
-looks invalid due to the backward jump from line 221 to line 32, but is
-actually a perfectly good address. The back jump comes right after the comma,
-where it is all right. But:
-
-[source,vim]
-----
-  125 ; 176 ; 221 , 32 ; 67 ; 218
-----
-
-will produce an error message, because the final landing point of the first
-semicolon-separated string, line 221, falls later in the file than the final
-landing point of the second semicolon-separated string, line 218.
-
-==============================================================================
 
 Now, a note about default addresses. I've already mentioned that most ex-mode
 commands that can take an address have a ``default'' address built in, which
@@ -606,18 +574,21 @@ following command lines:
 
     , . write >> goodlines
 
-  . ;   write >> goodlines
+  . ,   write >> goodlines
 
-    ;   write >> goodlines
+    ,   write >> goodlines
 ----
 
-will do exactly the same thing: append a copy of j ust the current line in the
-file you're editing to another file named ``goodlines''.
+will do exactly the same thing: append a copy of just the current line in the
+file you're editing to another file named ``goodlines''. Note that the exact
+same behaviour would have been observed with the semicolon separator instead
+of the comma in these examples because the explicit virtual line ++.++ and the
+implicit current line used by the ++write++ command are all referring to the
+``current line'' (which is where semicolon and comma differ).
 
-Finally, there is one special symbol that represents a comma or
-semicolon-separated address combination. The percent sign ( % ) has the same
-meaning as 1,$ as an ex-mode address combination. Both refer to the entire
-file.
+Finally, there is one special symbol that represents the ++1,$++ (comma or
+semicolon-separated) address combination -- the percent sign ( ++%++). Both
+refer to the entire file.
 
 Now You Try It
 --------------
@@ -662,11 +633,10 @@ link:2_line_addresses_solutions.html#S2.3[Solution 2.3]
 Coming Up Next
 --------------
 
-The next installment of this tutorial will deal with the Global
-commands--they're just too much to absorb right after the mind-numbing
-collection of address forms we've just gone through. And to give you more
-scope for using all these address forms, I'll also cover ex-mode commands
-themselves, particularly the ones that have more capabilities than you
-suspect.
+The next installment of this tutorial will deal with the Global commands --
+they're just too much to absorb right after the mind-numbing collection of
+address forms we've just gone through. And to give you more scope for using
+all these address forms, I'll also cover ex-mode commands themselves,
+particularly the ones that have more capabilities than you suspect.
 
 // vim: set ft=asciidoc tw=78:
