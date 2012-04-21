@@ -314,66 +314,6 @@ will bring you there. And any of the addresses can take numerical offsets, so:
 
 is also a legitimate address string.
 
-==============================================================================
-WARNING: this is not true for Vim
-
-But there are two unfortunate limitations on using semicolon-separated address
-strings. The lesser problem is that such a string can use ``line zero'' as an
-address only if the command following the address string could take line zero
-by itself as its address. That is, you can't even start at line zero and then
-proceed elsewhere with additional addresses, unless the command can operate
-from line zero.  So:
-
-  0 /Spinoza/ +++ /Kant/ delete
-
-which looks like a reasonable way to be sure your search will find the very
-first ``Spinoza'' in your file, will actually fail with an error message about
-an illegal address.
-
-The larger misfortune is that each address in a semicolon-separated string
-must be farther down in the file than the one that precedes it.  (This means
-the actual location found, after applying any plus-sign or minus-sign offset.)
-You cannot move backward within the series of way points.
-
-But that does not mean that you cannot use a backward search pattern within
-the string. The first address can be a backward search, of course. And a
-subsequent address can search backward if you are certain that the line it
-finds will actually be more forward in the file. For example, you may know
-that a certain backward search will wrap around to the bottom end of the file
-before it finds a match. A common example would be:
-
-  1 ; ?Spinoza? ; /Hegel/ yank
-
-Beginning a backward search from the first line in the file means that the
-search must start with the last line in the file due to wraparound, which
-guarantees that the search will yank the ``Hegel'' line that follows the vary
-last ``Spinoza'' line in your file.
-
-Also, you can use a plus-sign offset after a backward search when you are
-certain that the line finally found after the offset is applied will be
-farther down in the file than the preceding way point had been. Thus, if I
-want to find the first mention of Hegel in Chapter 8 that is at least 120
-lines after the last mention of him in Chapter 7, I can type:
-
-  /^Chapter 8$/ ; ?Hegel? +119 ; //
-
-If a command with thi s address fails and gives an error message about a bad
-address, I'll know that the last mention of Hegel in Chapter 7 is more than
-120 lines before the end of the chapter, so the very first mention of his name
-in Chapter 8 is what I'm looking for. In that case, the address:
-
-  /^Chapter 8$/ ; /Hegel/
-
-is all that my command needs.
-
-The situation with forward searches inside a semicolon-separated address
-string is a mirror image of what I've just said. A forward search can take a
-minus-sign offset if you know that the offset is small enough that the line
-found will be further down than the last way point. But a forward search will
-fail, even with no offset or a plus-sign offset, if wraparound makes it find a
-line earlier in the file than the way point from which it began.
-==============================================================================
-
 Addressing a Section of Text
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -431,7 +371,6 @@ is no problem. The command will silently operate on the one line you've
 specified.)
 
 ==============================================================================
-
 WARNING: this is not true for Vim
 
 As you work up to more sophisticated ex-mode addresses, you may get unexpected
@@ -556,24 +495,38 @@ Before you try the complex aspects of ex-mode addresses in actual editing
 situations, here are some problems you can build yourself up on. For each
 problem I've included a solution that will work fairly efficiently.
 
+anchor:E2.1[Exercise 2.1]
+
+.Exercise 2.1
+
 How can you tell the editor to delete the line that holds the very last
-instance of ``EXPORT'' in your file? The solution is straightforward once you
-know where to start searching.
+instance of ``EXPORT'' in your file? Be sure to check for cases where
+``EXPORT'' appears on the last line of the file too. The solution is
+straightforward once you know where to start searching.
+
+link:2_line_addresses_solutions.html#S2.1[Solution 2.1]
+
+anchor:E2.2[Exercise 2.2]
+
+.Exercise 2.2
 
 Suppose you want to delete the very first line in the file with ``EXPORT'' on
-it, and that just might be line 1. You can't start the search from line zero
-because the delete command cannot take line 0 as an address. When you type the
-address string ++$ ; /EXPORT/++ to use wraparound, you get an error message
-asserting that the search pattern found a line prior to the line found by the
-``$'' address that appeared first, which is what you'd expect. How can you
-tell the editor to find and delete this line? The solution requires just a bit
-of creativity.
+it, and that just might be line 1. Show two different ways to do this with
+ranges in Vim.
+
+link:2_line_addresses_solutions.html#S2.2[Solution 2.2]
+
+anchor:E2.3[Exercise 2.3]
+
+.Exercise 2.3
 
 If you use the address ++?abc? , /xyz/++ , it includes the two lines the
 searches (for ``abc'' and ``xyx'') find, as well as all the lines between
 them. How would you specify that you want the affected lines to go up to, but
 not include, the lines the two searches find? In this case the solution is
 simpler than you might think.
+
+link:2_line_addresses_solutions.html#S2.3[Solution 2.3]
 
 Coming Up Next
 --------------

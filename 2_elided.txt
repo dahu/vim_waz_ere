@@ -1,0 +1,62 @@
+
+// cut from line 316, vimmified/2_line_addresses.txt
+
+==============================================================================
+WARNING: this is not true for Vim
+
+But there are two unfortunate limitations on using semicolon-separated address
+strings. The lesser problem is that such a string can use ``line zero'' as an
+address only if the command following the address string could take line zero
+by itself as its address. That is, you can't even start at line zero and then
+proceed elsewhere with additional addresses, unless the command can operate
+from line zero.  So:
+
+  0 /Spinoza/ +++ /Kant/ delete
+
+which looks like a reasonable way to be sure your search will find the very
+first ``Spinoza'' in your file, will actually fail with an error message about
+an illegal address.
+
+The larger misfortune is that each address in a semicolon-separated string
+must be farther down in the file than the one that precedes it.  (This means
+the actual location found, after applying any plus-sign or minus-sign offset.)
+You cannot move backward within the series of way points.
+
+But that does not mean that you cannot use a backward search pattern within
+the string. The first address can be a backward search, of course. And a
+subsequent address can search backward if you are certain that the line it
+finds will actually be more forward in the file. For example, you may know
+that a certain backward search will wrap around to the bottom end of the file
+before it finds a match. A common example would be:
+
+  1 ; ?Spinoza? ; /Hegel/ yank
+
+Beginning a backward search from the first line in the file means that the
+search must start with the last line in the file due to wraparound, which
+guarantees that the search will yank the ``Hegel'' line that follows the vary
+last ``Spinoza'' line in your file.
+
+Also, you can use a plus-sign offset after a backward search when you are
+certain that the line finally found after the offset is applied will be
+farther down in the file than the preceding way point had been. Thus, if I
+want to find the first mention of Hegel in Chapter 8 that is at least 120
+lines after the last mention of him in Chapter 7, I can type:
+
+  /^Chapter 8$/ ; ?Hegel? +119 ; //
+
+If a command with thi s address fails and gives an error message about a bad
+address, I'll know that the last mention of Hegel in Chapter 7 is more than
+120 lines before the end of the chapter, so the very first mention of his name
+in Chapter 8 is what I'm looking for. In that case, the address:
+
+  /^Chapter 8$/ ; /Hegel/
+
+is all that my command needs.
+
+The situation with forward searches inside a semicolon-separated address
+string is a mirror image of what I've just said. A forward search can take a
+minus-sign offset if you know that the offset is small enough that the line
+found will be further down than the last way point. But a forward search will
+fail, even with no offset or a plus-sign offset, if wraparound makes it find a
+line earlier in the file than the way point from which it began.
+==============================================================================

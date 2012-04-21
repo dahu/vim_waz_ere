@@ -1,0 +1,49 @@
+Ex-Mode Addresses
+=================
+Walter Alan Zintz
+
+Solutions to Exercises
+----------------------
+
+// TODO: folding the actual solutions in a clickable reveal would be nice.
+
+anchor:S2.1[Solution 2.1]
+
+.Solution 2.1
+
+link:2_line_addresses.html#E2.1[Question]
+
+Start at virtual address line ++0++ and search backwards to find the last line
+containing ``EXPORT'':
+
+  :0 ?EXPORT? d
+
+
+anchor:S2.2[Solution 2.2]
+
+.Solution 2.2
+
+link:2_line_addresses.html#E2.2[Question]
+
+. Starting at virtual address line ++0++ which includes a match on line 1:
+
+  :0 /EXPORT/ d
++
+. Starting at virtual address line ++$++ (last line) and searching forward,
+  wrapping around the buffer to find the first line containing ``EXPORT'':
+
+  :$ /EXPORT/ d
+
+
+anchor:S2.3[Solution 2.3]
+
+.Solution 2.3
+
+link:2_line_addresses.html#E2.3[Question]
+
+Use a positive numeric offset of ++ +1++ to move one line past the ++?abc?++
+search and a negative numeric offset of ++-1++ to move one line prior to the
+++/xyz/++ search:
+
+  ?abc?+1 , /xyz/-1 d
+
