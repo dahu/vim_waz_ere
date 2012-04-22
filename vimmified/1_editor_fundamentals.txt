@@ -74,6 +74,8 @@ as important as writing code!''
 But Hal has a secret weapon against this squeeze play: an expert knowledge of
 the Vim editor.
 
+anchor:T1_move[]
+
 Reversing the order of the lines in a file is a piece of cake with this editor.
 The eight keystrokes in:
 

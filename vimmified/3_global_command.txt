@@ -7,121 +7,169 @@ The Wondrous Global Command
 
 If you're surprised that I made no mention of ++:global++ in the preceding
 installment of this tutorial -- well, ++:global++ is not an address. It's
-actually a ex-mode command, and it's much more powerful than most users
+actually an ex-mode command, and it's much more powerful than most users
 suspect.
 
 Even experienced users of ex mode usually think of ++:global++ along these
-lines: ``If you type :global and then a search pattern and then a ex-mode
+lines: ``If you type :global and then a search pattern and then an ex-mode
 command, all on one line, then the editor finds every line in the file that
 contains that pattern and runs the command on every one of those lines''. That
 is, typing:
 
+
+[source,vim]
+----
   global /^Chapter [1-9]/ delete
+----
 
 is expected to find and delete every line in the file that starts with a
 chapter heading. This example will do just that, and so will many other such
-uses of the command. But spectacular failures will happen from time to
-time--typing:
+uses of the command. But spectacular failures will happen from time to time --
+typing:
 
+anchor:T3_bad_write[]
+
+[source,vim]
+----
   global /^Chapter [1-9]/ write >> t.of.contents
+----
 
 definitely will not append each of the marked lines to a file named
 ``t.of.contents'', as moderately experienced users might expect. (It's likely
 to overflow your file system quota instead.)
+
+.Spot Quiz
+[caption=""]
+====
+Can you guess what is wrong with this global command?
+
+[source,vim]
+----
+  global /^Chapter [1-9]/ write >> t.of.contents
+----
+
+What is the author's mistake? You can link:#T3_good_write[jump ahead to the
+answer] now if it's really bugging you.
+====
 
 The Details of Global Operations
 --------------------------------
 
 More important, misunderstanding the ++:global++ command keeps users from
 exploiting more than a small fraction of that command's power. But you don't
-have to live with the limitations of ignorance on this--here's the full story
-in plain terms:
+have to live with the limitations of ignorance on this -- here's the full
+story in plain terms:
 
 .Searching where you tell it to look:
 
-As a ex-mode command, ++:global++ can be preceded by an address or pair of
+As an ex-mode command, ++:global++ can be preceded by an address or pair of
 addresses. Its default is to search the entire file, but if you start your
-command as ++257, 382 global++ then it will only search through lines 257
-through 382 inclusive. Any ex-mode addresses can begin a ++:global++
-command, so starting with `?^Exercises? +++, $ global` will restrict the
-pattern search and line marking to a stretch beginning three lines past the
-last previous line that starts with the string ``Exercises'', and ending at
-the end of the file.
+command as ++:257, 382 global++ then it will only search through lines 257
+through 382 inclusive. Any ex-mode addresses can begin a ++:global++ command,
+so starting with `:?^Exercises? +++, $ global` will restrict the pattern search
+and line marking to a stretch beginning three lines past the last previous
+line that starts with the string ``Exercises'', and ending at the end of the
+file.
 
 .Marking either hits or misses:
 
-Typing the command name as global or g will definitely cause it to mark every
-line in the search area that contains the pattern. But typing it as
-++global!++ or ++g!++ or ++v++ reverses the procedure--now it will only mark
-lines that do not contain the search string. So if you are editing a copy of a
-log file of error messages, and only the lines that begin with ``Error 3b:''
-are of interest, you can eliminate all the unwanted lines by typing:
+Typing the command name as global or ++:g++ will definitely cause it to mark
+every line in the search area that contains the pattern. But typing it as
+++:global!++ or ++:g!++ or ++:vglobal++ or just ++:v++ reverses the procedure
+-- now it will only mark lines that do *not* contain the search string. So if
+you are editing a copy of a log file of error messages, and only the lines
+that begin with ``Error 3b:'' are of interest, you can eliminate all the
+unwanted lines by typing:
 
+[source,vim]
+----
   global! /^Error 3b:/ delete
+----
+
+or
+
+[source,vim]
+----
+  vglobal /^Error 3b:/ delete
+----
 
 .Choose your own search pattern delimiter:
 
 Since this command always searches the file (or the section of it that you
 select) from top to bottom, you can use almost any punctuation character to
-mark the start and end of your search pattern. There's no need to use ? or /
-characters to indicate a direction for the search. If you want to eliminate
-lines that contain three consecutive slash marks, any of:
+mark the start and end of your search pattern. There's no need to use ++?++ or
+++/++ characters to indicate a direction for the search. If you want to
+eliminate lines that contain three consecutive slash marks, any of:
 
+[source,vim]
+----
   global +///+ delete
 
   global ;///; delete
 
   global ]///] delete
+----
 
 will be a simpler choice than using slashes as delimiters and backslashing all
-three of the slashes you are searching for. (However, using ! as you delimiter
-is dangerous, because ++:global++ is likely to mistake your delimiter for the
-switch that tells it to find only lines that do not contain the search
-pattern.)
+three of the slashes you are searching for. (However, using ++!++ as your
+delimiter is dangerous, because ++:global++ will mistake your delimiter for
+the switch that tells it to find only lines that do not contain the search
+pattern. If you do use ++!++ as your delimiter, put a space between it and the
+++:global++ command, as in ++:global !///!++)
 
 Of course this applies only to the search pattern that goes right after the
 ++:global++ command name, the one that says which lines to mark. If you use
 any search patterns before the command name, to say which area of the file is
-to be searched, then use ? and / delimiters as usual.
+to be searched, then use ++?++ and ++/++ delimiters as usual.
 
 .Global searches that seem senseless can be very useful:
 
-At times it's wise to have ++:global++ or ++:global !++ run a search over just
+At times it's wise to have ++:global++ or ++:vglobal++ run a search over just
 one line in a file. This is the basis for conditional execution of ex-mode
-commands.  As a simple example, you may find yourself editing files from
+commands. As a simple example, you may find yourself editing files from
 outside your organization that are sometimes (but not always) sent to you with
 an extra, empty last line, as a spacer. You need to remove that last line, if
-and only if it is empty. You could go the end of each file and look, but it's
-easier to have the editor do the checking and (where necessary) the deletion,
-so you type:
+and only if it is empty. You could go to the end of each file and look, but
+it's easier to have the editor do the checking and (where necessary) the
+deletion, so you type:
 
+[source,vim]
+----
   $ global /^$/ delete
+----
 
 It can also be useful to have ++:global++ mark every line in the area of the
-file you tell it to search! Our put-upon programmer, Hal (in the first
-installment of this tutorial) used this when he had to reverse the order of
-the lines in one file. His command line, which would look like this if typed
-out in unabbreviated form:
+file you tell it to search! Our put-upon programmer, Hal (in the
+link:1_editor_fundamentals.html[first installment] of this tutorial) used this
+when he had to reverse the order of the lines in one file. His
+link:1_editor_fundamentals.html#T1_move[command line], which would look like
+this if typed out in unabbreviated form:
 
+[source,vim]
+----
   global /^/ move 0
+----
 
 begins by marking each line that has a start-of-line point, which makes every
 line qualify. Next it goes to the first line and moves it up right after the
-fictitious line zero--a no-op, of course. But then it moves the second line to
-the same place, pushing the former first line down one position in the file.
-As it does the same with the third line, the fourth line, etcetera, it's
-changing the order of the lines to the exact opposite of the order they were
-in at the start.
+fictitious line zero -- effectively placing it as the new first line of the
+file. But then it moves the second line to the same place, pushing the former
+first line down one position in the file. As it does the same with the third
+line, the fourth line, etcetera, it's changing the order of the lines to the
+exact opposite of the order they were in at the start.
 
 .One :global can run many commands:
 
 You can put several commands on the line after a ++:global++ command and its
 search pattern. After marking the appropriate lines, ++:global++ will then go
 to each marked line and run all of the commands you've given it, in the order
-you gave them. Just separate these commands with a vertical bar (``|'')
+you gave them. Just separate these commands with a vertical bar (++|++)
 character. If you type:
 
+[source,vim]
+----
   global /^CHAPTER/ substitute /HAPTER/hapter/ | copy $
+----
 
 the editor will go to each line that starts with a chapter heading, change
 ``CHAPTER'' to ``Chapter'', and then copy the line (now beginning ``Chapter''
@@ -151,7 +199,6 @@ character) in your shell-escape command string, without having the editor
 mistake the pipe symbol for the separator between two editor commands in your
 ++:global++ command line.
 
-
 .Commands don't have to run on the lines :global marks.
 
 Using ++:global++ is essentially the same as moving to each marked line
@@ -165,33 +212,41 @@ Any command in a ++:global++ command line can take its own address or
 addresses, just as it could if it were typed in as a separate command. So this
 command string:
 
+[source,vim]
+----
   global /^XX/ - copy $ | /ZZ$/ , +5 delete
+----
 
 is entirely legitimate. It goes to each line that begins with two capital X's,
 then copies the line just before that one to the end of the file, and finally
 goes forward to the next line that ends with two capital Z's and deletes that
 line and the five lines that follow it.
 
+anchor:T3_good_write[]
+
 Even if you give no addresses for the commands in a ++:global++ string,
 default addresses for those commands may make them operate on other than the
-marked line. That's the fault in that ++:global++ command string in the
-introduction to this installment of my tutorial that tries to write individual
-lines to another file. Because the default address for the write command is
-the entire file, this command will write the entire file the user is editing
-to the end of the other file, once for every line that ++:global++ has marked.
-The correct way to write individual lines is to type:
+marked line. That's the fault in link:#T3_bad_write[that ++:global++ command]
+string in the introduction to this installment of my tutorial that tries to
+write individual lines to another file. Because the default address for the
+++:write++ command is the entire file, this command will write the entire file
+the user is editing to the end of the other file, once for every line that
+++:global++ has marked. The correct way to write individual lines is to type:
 
+[source,vim]
+----
   global /^Chapter [1-9]/ . write >> t.of.contents
+----
 
-where the dot address in front of the write command tells it to write only the
-line it is on.
+where the dot address in front of the ++:write++ command tells it to write
+only the line it is on.
 
 But even if you take a command that has the current line as its default
 address, and put it in the string following ++:global++ without giving it an
 address of its own, it can still operate on different lines from the ones
 ++:global++ has marked if it is not the first command in the string. The
-reason: each subsequent command in a ++:global++ takes as the current line
-whatever line the command before it left as the current line.
+reason: __each subsequent command in a ++:global++ takes as the current line
+whatever line the command before it left as the current line__.
 
 In my earlier example about wanting to both change the capitalization of lines
 beginning with ``CHAPTER'' and copy those lines to the end of the file, the
@@ -202,7 +257,12 @@ seem obvious to simply reverse the order of the two commands, so the copy
 command was executed first, before the substitute command was called to change
 the capitalization, like this:
 
+[source,vim]
+----
   global /^CHAPTER/ copy $ | substitute /HAPTER/hapter/
+----
+
+// TODO: Does the explanation of "the original text block" need a rewrite?
 
 Surprisingly, that would produce the opposite of the effect that was intended.
 That is, it would decapitalize the copied lines at the end of the file, but
@@ -212,6 +272,9 @@ block, as the current line. So after the copy command has run, the substitute
 command, using the command's default address (the current line) because it has
 not been given an explicit address, would operate on the copy line rather than
 the original.
+
+// TODO: show solution? No - it's one of the exercises at the end.
+// global /^CHAPTER/ ma a | copy $ | 'a substitute /HAPTER/hapter/
 
 But there is one thing that no amount of current-line shifting can change.
 Wherever in the file the command string may leave the current line, when the
@@ -224,20 +287,30 @@ has uses that might not be obvious.
 Let's say you want to thin out the lines in a file, by deleting every second
 line. You can do it by typing:
 
+[source,vim]
+----
   global /^/ + delete
+----
 
 This ++:global++ starts off by marking every line. When it goes to line 1, the
 command it executes will delete line 2. The next undeleted marked line is line
 3, where its command deletes line 4, and so on. Or if you want to delete
 two-thirds of the lines in your file, type:
 
+[source,vim]
+----
   global /^/ + , ++ delete
+----
 
 A Few More Uses for Global Commands
 -----------------------------------
 
+// TODO: really? we want to keep the above heading and subsequent paragraph?
+//       As we're re-flowing the tutorial, we don't need to be constrained by his
+//       original chunked release...
+
 The examples above are designed to show not only the working principles of the
-:global command, but also some of the less-obvious tricks it can do. But I
+++:global++ command, but also some of the less-obvious tricks it can do. But I
 couldn't fit every important trick in above. Here are some more that are well
 worth knowing.
 
@@ -245,11 +318,13 @@ worth knowing.
 
 At times it's a good idea to follow ++:global++ with a string of commands that
 have absolutely nothing to do with the lines that ++:global++ has marked. The
-most common occasion for this comes when you need to repeat a ex-mode
-command a certain number of times.
+most common occasion for this comes when you need to repeat an ex-mode command
+a certain number of times.
+
+// TODO: upgrade this dinosaur story to the modern day?
 
 At tradeshows I'm often invited to test a system right there on the show
-floor.  I can't carry a 10,000-line test file along with me in every media and
+floor. I can't carry a 10,000-line test file along with me in every media and
 format any system might require, so I type in a ten-line file on the spot and
 expand it by telling the editor ten times to make a copy of the entire file
 and put that copy at the end of the present file. (Each such copy doubles the
@@ -261,7 +336,10 @@ my test results. Instead of trying to count without an error, I let the editor
 do the counting for me. After I've typed in the initial ten lines, I give one
 ++:global++ command:
 
+[source,vim]
+----
   global /^/ % copy $
+----
 
 This tells the editor to search the ten lines of the file, mark every line
 that has a start-of-line (which means every line, of course), and then go to
@@ -269,10 +347,13 @@ each of those ten lines and run the subsequent command to make a whole-file
 copy. This guarantees that the command will run exactly ten times.
 
 Not that this trick is limited to files that have exactly as many lines as the
-number of times I want to command to be repeated. If I had typed in a
+number of times I want the command to be repeated. If I had typed in a
 twenty-line file, I could copy it ten times by giving my ++:global++ as:
 
+[source,vim]
+----
   1 , 10 global /^/ % copy $
+----
 
 .Moving Around Automatically.
 
@@ -281,8 +362,8 @@ the edits must be dealt with one by one, not with a ++:global++ editing
 script. But moving to each spot where work needs to be done can be a very
 tedious business. If there is a text pattern that identifies each place that
 needs editing, or if you can write a script to insert such a pattern, as Hal
-did at the start of this tutorial's first installment, then ++:global++ can
-move you around automatically.
+did at the start of this tutorial's link:1_editor_fundamentals.html[first
+installment], then ++:global++ can move you around automatically.
 
 You may recall that Hal used a script to mark up the legacy source code,
 putting each lint warning at the end of the source line to which it referred,
@@ -294,28 +375,35 @@ eliminate the warning.
 Should Hal just leaf through the code, searching for ``XXX'' patterns to guide
 him to the trouble spots? Hal knows that with the spaghetti code he's facing,
 the actual problem may be a long way from the line lint has designated. In
-traveling to the actual trouble spot he may have passed several
-``XXX'' patterns along the way, so searching for the next ``XXX'' in the file
-may bring him to a site he's already dealt with, or may miss a number of
-``XXX'' sites that he passed when he moved forward to get to the actual problem
-spot on the previous fix.  Besides, because he frequently does pattern
-searching while fixing a problem, he can't depend on a normal-mode n command
-to use the ``XXX'' pattern he needs to find; he must type the pattern in afresh
-each time.
+travelling to the actual trouble spot he may have passed several ``XXX''
+patterns along the way, so searching for the next ``XXX'' in the file may
+bring him to a site he's already dealt with, or may miss a number of ``XXX''
+sites that he passed when he moved forward to get to the actual problem spot
+on the previous fix. Besides, because he frequently does pattern searching
+while fixing a problem, he can't depend on a normal-mode ++n++ command to use
+the ``XXX'' pattern he needs to find; he must type the pattern in afresh each
+time.
 
-But Hal knows a way around all this--dropping back to ex mode (by typing a
+But Hal knows a way around all this -- dropping back to ex mode (by typing a
 capital letter ++Q++ from normal mode) and giving a simple ++:global++
 command:
 
+[source,vim]
+----
   global /XXX/ visual | write
+----
 
 This command brings Hal to the first ``XXX'' line, where it puts him into
 normal mode to do his editing. When the edit is finished, Hal simply types a
-capital letter Q and the editor takes him to the second ``XXX'' line and puts
-him into normal mode there, no matter how much moving around Hal did during
-the first edit, and so on through the list of ``XXX'' lines. As frosting on
-the cake, the write command automatically writes the changed file to disk
-after each individual edit.
+capital letter ++Q++ and the editor takes him to the second ``XXX'' line and
+puts him into normal mode there, no matter how much moving around Hal did
+during the first edit, and so on through the list of ``XXX'' lines. As
+frosting on the cake, the write command automatically writes the changed file
+to disk after each individual edit.
+
+NOTE: Some people have replaced the seemingly useless ++Q++ key with the map
+++:nnoremap Q gqap++ which reformats a paragraph of text. If your ++Q++ key
+doesn't do as Hal's does above, you might need to ++:nunmap Q++ first.
 
 Now You Give it a Try
 ---------------------
@@ -328,16 +416,19 @@ toughest) problem.
 .Copy and Decapitalize.
 
 Let's think back to the user who wanted to find each line in the file that
-begins with "CHAPTER", then copy each such line to the end of the file just as
+begins with ``CHAPTER'', then copy each such line to the end of the file just as
 it is, and finally change the start of each original line (in mid-file) from
 "CHAPTER" to "Chapter" while leaving the copied lines (at the end of the file)
 beginning "CHAPTER".
 
 We've already learned that this cannot be done with either of:
 
+[source,vim]
+----
   global /^CHAPTER/ substitute /APTER/apter/ | copy $
 
   global /^CHAPTER/ copy $ | substitute /APTER/apter/
+----
 
 What ++:global++ command (or commands) would it take to do what's desired
 here?  Finding a solution to this is not difficult when there are so many
@@ -346,9 +437,9 @@ workable ones.
 .A Precise String Length.
 
 An old friend who does some pretty tricky work with troff often needs to
-insert a string of backslashes in a line--up to 64 of them in a row. The count
-of backslashes must be exactly right or troff will choke.  How can he get
-these strings exactly right without tedious counting and checking?
+insert a string of backslashes in a line -- up to 64 of them in a row. The
+count of backslashes must be exactly right or troff will choke.  How can he
+get these strings exactly right without tedious counting and checking?
 
 Let's say he needs to put 16 backslashes in line 217, right before the string
 "n(PDu". What command(s) should he use to get them in there without hand
@@ -382,7 +473,7 @@ they should be numbered with Roman numerals.
 
 This problem is still difficult enough that I'm offering you two hints. The
 first is that ++:global++ is essential here. Look at the second hint only if
-you're about to give up and check my solution .
+you're about to give up and check my solution.
 
 Coming Up Next
 --------------
