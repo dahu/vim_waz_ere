@@ -33,9 +33,11 @@ last line is now line number two, and so on.''
 
 ``And let's take a look at that logfile.''
 
+....
   374a12  44872  130295/074457  nonabort
   5982d34  971  130295/221938  nonabort
   853f7  2184  140295/102309  abort ...
+....
 
 ``Hmmm. Explaining the second column to them would be advertising the fact that
 we knew this failure was just waiting for a chance to happen. So while you're
@@ -49,7 +51,10 @@ still generates on this module aren't real hazards. Just run Lint over the
 revamped module; then combine the Lint output with a copy of the source file by
 taking each message line like:''
 
+....
   Line 257: obsolete operator +=
+....
+
 
 ``and putting the significant part at the end of the source line it refers to.
 And put a separator, like XXX, between the source line and the message so I can
@@ -79,17 +84,26 @@ anchor:T1_move[]
 Reversing the order of the lines in a file is a piece of cake with this editor.
 The eight keystrokes in:
 
+[source,vim]
+----
   :g/^/m0
+----
 
 will do it. Taking the digits out of the middle of the second column throughout
 the file also requires just one command line:
 
+[source,vim]
+----
   :%s/\v +\zs(\d)\d+(\d)/\1\2
+----
 
 And integrating the Lint messages into a copy of the source code? Even that can
 be automated with the Vim editor. The editor command:
 
+[source,vim]
+----
   :%s/\vLine (\d+): (.*)/\1s;$; XXX \2
+----
 
 will turn that file of Lint messages into an editor script, and running that
 script on a copy of the source file will mark it up as requested.
@@ -183,11 +197,17 @@ the end of the file), precede the search pattern with a slash ( ++/++
 move forward to the next instance of the string ``j++'' in your file,
 typing:
 
+[source,vim]
+----
   /j++/
+----
 
 will do it. And so will:
 
+[source,vim]
+----
   /j++
+----
 
 When there is nothing between the pattern and the ++RETURN++ key, the
 ++RETURN++ itself will indicate the end of the search pattern, so the
@@ -197,11 +217,17 @@ To search backward (toward the start of the file), begin and end with a
 question mark instead of a slash. The same rules of abbreviation apply to
 backward searches, so:
 
+[source,vim]
+----
   ?j++?
+----
 
 and:
 
+[source,vim]
+----
   ?j++
+----
 
 both head backward in the file to the same pattern.
 
@@ -223,12 +249,18 @@ etcetera.
 If you don't want searches to go past either end of the file, you'll need to
 type in a line mode command:
 
+[source,vim]
+----
   :set nowrapscan
+----
 
 This will disable the wraparound searching during the present session in the
 editor. If you want to restore the wraparound searching mechanism, typing:
 
+[source,vim]
+----
   :set wrapscan
+----
 
 will do it, and you can turn this on and off as often as you like.
 
@@ -248,7 +280,10 @@ find-one-instance pattern or patterns will go before the command name or
 abbreviation, while the find-them-all pattern will come just behind it. For
 example, in the command:
 
+[source,vim]
+----
   :?Chapter 10?,/The End/substitute/cat/dog/g
+----
 
 the first two patterns refer to the preceding line closest to the current line
 that contains the string ``Chapter 10'' and the following line closest to the
@@ -267,11 +302,14 @@ as your pattern delimiters. Almost any punctuation mark will do, because the
 editor takes note of the first punctuation mark to appear after the command
 name, and regards it as the delimiter in that instance. So:
 
+[source,vim]
+----
   :?Chapter 10?,/The End/substitute;cat;dog;g
 
   :?Chapter 10?,/The End/substitute+cat+dog+g
 
   :?Chapter 10?,/The End/substitute{cat{dog{g
+----
 
 are all equivalent to the substitution command above. (It is a good idea to
 avoid using punctuation characters that might have a meaning in the command,
@@ -283,18 +321,27 @@ the search pattern. For example, suppose our substitution command above was to
 find each pair of consecutive slash marks in the text, and separate them with a
 hyphen -- that is, change ++//++ to ++/-/++ . Obviously:
 
+[source,vim]
+----
   :?Chapter 10?,/The End/substitute/////-//g
+----
 
 won't work; the command will only regard the first three slashes as delimiters,
 and everything after that as extraneous characters at the end of the command.
 This can be solved by backslashing:
 
+[source,vim]
+----
   :?Chapter 10?,/The End/substitute/\/\//\/-\//g
+----
 
 but this is even harder to type correctly than the first attempt was. But with
 another punctuation mark as the separator:
 
+[source,vim]
+----
   :?Chapter 10?,/The End/substitute;//;/-/;g
+----
 
 the typing is easy and the final command is readable.
 
@@ -317,25 +364,36 @@ option in its default setting, the capitalized version will not match.
 If you want a capital letter to match its lower-case equivalent, and
 vice versa, type in the line mode command:
 
+[source,vim]
+----
   :set ignorecase
+----
 
 To resume letting caps match only caps and vice versa, type:
 
+[source,vim]
+----
   :set noignorecase
+----
 
-==============================================================================
-WARNING: this is not true for Vim
+Unlike vi, Vim can find a match where ``the'' occurs at the end of one
+line and ``cat'' is at the start of the next line:
 
-The search absolutely will not find a match where ``the'' occurs at the end of
-one line and ``cat'' is at the start of the next line:
-
+...
   and with Michael's careful help, we prodded the
   cat back into its cage.  Next afternoon several
+...
 
-It makes no difference whether there is or isn't a space character between one
-of the words and the linebreak. Finding a pattern that may break across a line
-ending is a practically impossible task with this line-oriented editor.
-==============================================================================
+This is done using the ++\n++ metacharacter (Metacharacters are
+discussed next):
+
+[source,vim]
+----
+  /the\ncat/ delete
+----
+
+NOTE: The ex mode is line oriented, so the resulting (line) address of
+this search is the first line (containing ``the'').
 
 Where the search starts depends on which editor mode you're using. A search in
 visual mode starts with the character next to the cursor. In line mode, the
@@ -348,15 +406,20 @@ Then there are search metacharacters or ``wild cards'': characters that represen
 something other than themselves in the search. As an example, the
 metacharacters ++.++ and ++*++ in:
 
+[source,vim]
+----
   /Then .ed paid me $50*!/
+----
 
 could cause the pattern to match any of:
 
+....
   Then Ted paid me $5!
 
   Then Red paid me $5000!
 
   Then Ned paid me $50!
+....
 
 or a myriad of other strings. Metacharacters are what give search patterns
 their real power, but they need to be well understood.
@@ -374,11 +437,17 @@ put an actual backslash in your search pattern is to precede it with another
 backslash to remove its meta value. That is, to search for the pattern ``a\y'',
 type:
 
+[source,vim]
+----
   /a\\y/
+----
 
 as your search pattern. If you type:
 
+[source,vim]
+----
   /a\y/
+----
 
 the backslash will be interpreted as a metacharacter without any effect (since
 the letter y is never a metacharacter) and your search pattern will find the
@@ -388,11 +457,17 @@ Less-often-used metacharacters are used in exactly the opposite way. This sort
 of character represents only itself when it appears by itself. You must use a
 preceding backslash to turn the meta value on. For example, in:
 
+[source,vim]
+----
   /\<cat/
+----
 
 the left angle bracket ( ++<++ ) is a metacharacter; in:
 
+[source,vim]
+----
   /<cat/
+----
 
 it only represents itself. These special metacharacters are pointed out in the
 list below.
@@ -530,7 +605,9 @@ character inside the brackets has no meta value. When a
 character-hyphen-character string has a first character with a higher ASCII
 value than the last character, Vim complains with the error message:
 
+....
   E16: Invalid range.
+....
 
 Backslashing character classes is complex. Within the brackets you must
 backslash a right bracket that's part of the class; otherwise the editor will
@@ -546,7 +623,8 @@ backslash a left bracket when you do want it to begin a character class.
 Coming Up Next
 --------------
 
-In the second part of this tutorial, I'll be following up on all this
-information about search patterns, by showing the right ways to combine them
-with other elements to generate command addresses.
+In the link:2_line_addresses.html[second part] of this tutorial, I'll
+be following up on all this information about search patterns, by
+showing the right ways to combine them with other elements to generate
+command addresses.
 
