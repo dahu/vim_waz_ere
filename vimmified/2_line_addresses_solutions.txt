@@ -7,9 +7,10 @@ Solutions to Exercises
 
 // TODO: folding the actual solutions in a clickable reveal would be nice.
 
-anchor:S2.1[Solution 2.1]
+anchor:S2.1[]
 
-.Solution 2.1
+Solution 2.1
+~~~~~~~~~~~~
 
 link:2_line_addresses.html#E2.1[Question]
 
@@ -22,14 +23,15 @@ containing ``EXPORT'':
 ----
 
 
-anchor:S2.2[Solution 2.2]
+anchor:S2.2[]
 
-.Solution 2.2
+Solution 2.2
+~~~~~~~~~~~~
 
 link:2_line_addresses.html#E2.2[Question]
 
 . Starting at virtual address line ++0++ which includes a match on line 1:
-
++
 [source,vim]
 ----
   :0 /EXPORT/ d
@@ -37,16 +39,17 @@ link:2_line_addresses.html#E2.2[Question]
 +
 . Starting at virtual address line ++$++ (last line) and searching forward,
   wrapping around the buffer to find the first line containing ``EXPORT'':
-
++
 [source,vim]
 ----
   :$ /EXPORT/ d
 ----
 
 
-anchor:S2.3[Solution 2.3]
+anchor:S2.3[]
 
-.Solution 2.3
+Solution 2.3
+~~~~~~~~~~~~
 
 link:2_line_addresses.html#E2.3[Question]
 

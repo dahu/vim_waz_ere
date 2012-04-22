@@ -5,10 +5,10 @@ Walter Alan Zintz
 The Wondrous Global Command
 ---------------------------
 
-If you're surprised that I made no mention of ++:global++ in the preceding
-installment of this tutorial -- well, ++:global++ is not an address. It's
-actually an ex-mode command, and it's much more powerful than most users
-suspect.
+If you're surprised that I made no mention of ++:global++ in the
+link:2_line_addresses.html#T3_good_write[preceding installment] of this
+tutorial -- well, ++:global++ is not an address. It's actually an ex-mode
+command, and it's much more powerful than most users suspect.
 
 Even experienced users of ex mode usually think of ++:global++ along these
 lines: ``If you type :global and then a search pattern and then an ex-mode
@@ -60,7 +60,8 @@ exploiting more than a small fraction of that command's power. But you don't
 have to live with the limitations of ignorance on this -- here's the full
 story in plain terms:
 
-.Searching where you tell it to look:
+Searching where you tell it to look
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As an ex-mode command, ++:global++ can be preceded by an address or pair of
 addresses. Its default is to search the entire file, but if you start your
@@ -71,7 +72,8 @@ and line marking to a stretch beginning three lines past the last previous
 line that starts with the string ``Exercises'', and ending at the end of the
 file.
 
-.Marking either hits or misses:
+Marking either hits or misses
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Typing the command name as global or ++:g++ will definitely cause it to mark
 every line in the search area that contains the pattern. But typing it as
@@ -93,7 +95,8 @@ or
   vglobal /^Error 3b:/ delete
 ----
 
-.Choose your own search pattern delimiter:
+Choose your own search pattern delimiter
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Since this command always searches the file (or the section of it that you
 select) from top to bottom, you can use almost any punctuation character to
@@ -122,7 +125,8 @@ Of course this applies only to the search pattern that goes right after the
 any search patterns before the command name, to say which area of the file is
 to be searched, then use ++?++ and ++/++ delimiters as usual.
 
-.Global searches that seem senseless can be very useful:
+Global searches that seem senseless can be very useful
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 At times it's wise to have ++:global++ or ++:vglobal++ run a search over just
 one line in a file. This is the basis for conditional execution of ex-mode
@@ -158,7 +162,8 @@ first line down one position in the file. As it does the same with the third
 line, the fourth line, etcetera, it's changing the order of the lines to the
 exact opposite of the order they were in at the start.
 
-.One :global can run many commands:
+One :global can run many commands
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can put several commands on the line after a ++:global++ command and its
 search pattern. After marking the appropriate lines, ++:global++ will then go
@@ -190,7 +195,8 @@ line is too long for your terminal's screen width, the terminal may wrap it
 around to occupy two or more lines on your screen, but this will not cause a
 problem.)
 
-.The command list cannot include an undo or another :global command.
+The command list cannot include an undo or another :global command
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you include a command that escapes to the shell, it must be the last
 command on the line. (Putting two or more shell-escape commands in one command
@@ -199,7 +205,8 @@ character) in your shell-escape command string, without having the editor
 mistake the pipe symbol for the separator between two editor commands in your
 ++:global++ command line.
 
-.Commands don't have to run on the lines :global marks.
+Commands don't have to run on the lines :global marks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Using ++:global++ is essentially the same as moving to each marked line
 manually, then typing in the command string while you are there. Just as you
@@ -273,9 +280,6 @@ command, using the command's default address (the current line) because it has
 not been given an explicit address, would operate on the copy line rather than
 the original.
 
-// TODO: show solution? No - it's one of the exercises at the end.
-// global /^CHAPTER/ ma a | copy $ | 'a substitute /HAPTER/hapter/
-
 But there is one thing that no amount of current-line shifting can change.
 Wherever in the file the command string may leave the current line, when the
 commands have finished running, ++:global++ will go to the next marked line
@@ -302,19 +306,8 @@ two-thirds of the lines in your file, type:
   global /^/ + , ++ delete
 ----
 
-A Few More Uses for Global Commands
------------------------------------
-
-// TODO: really? we want to keep the above heading and subsequent paragraph?
-//       As we're re-flowing the tutorial, we don't need to be constrained by his
-//       original chunked release...
-
-The examples above are designed to show not only the working principles of the
-++:global++ command, but also some of the less-obvious tricks it can do. But I
-couldn't fit every important trick in above. Here are some more that are well
-worth knowing.
-
-.Keeping Count.
+Keeping Count
+~~~~~~~~~~~~~
 
 At times it's a good idea to follow ++:global++ with a string of commands that
 have absolutely nothing to do with the lines that ++:global++ has marked. The
@@ -355,7 +348,8 @@ twenty-line file, I could copy it ten times by giving my ++:global++ as:
   1 , 10 global /^/ % copy $
 ----
 
-.Moving Around Automatically.
+Moving Around Automatically
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 At times you may need to handle a series of editing problems in a file, where
 the edits must be dealt with one by one, not with a ++:global++ editing
@@ -413,7 +407,9 @@ Here are a few exercises you can try to solve, before you start using advanced
 at least one solution to each exercise, and also a hint on the last (and
 toughest) problem.
 
-.Copy and Decapitalize.
+anchor:E3.1[]
+
+.Exercise 3.1 : Copy and Decapitalize
 
 Let's think back to the user who wanted to find each line in the file that
 begins with ``CHAPTER'', then copy each such line to the end of the file just as
@@ -434,7 +430,11 @@ What ++:global++ command (or commands) would it take to do what's desired
 here?  Finding a solution to this is not difficult when there are so many
 workable ones.
 
-.A Precise String Length.
+link:3_global_command_solutions.html#S3.1[Solution 3.1]
+
+anchor:E3.2[]
+
+.Exercise 3.2 : A Precise String Length
 
 An old friend who does some pretty tricky work with troff often needs to
 insert a string of backslashes in a line -- up to 64 of them in a row. The
@@ -445,7 +445,11 @@ Let's say he needs to put 16 backslashes in line 217, right before the string
 "n(PDu". What command(s) should he use to get them in there without hand
 counting. My solution is pretty plain once you know which commands to use.
 
-.Numbering Paragraphs.
+link:3_global_command_solutions.html#S3.2[Solution 3.2]
+
+anchor:E3.3[]
+
+.Exercise 3.3 : Numbering Paragraphs
 
 A documentation writer has divided each section of a document into paragraphs,
 and as a troff user, marks the start of each paragraph by a line that contains
@@ -475,14 +479,28 @@ This problem is still difficult enough that I'm offering you two hints. The
 first is that ++:global++ is essential here. Look at the second hint only if
 you're about to give up and check my solution.
 
+.Hint 2
+
+My solution to this problem has an intermediate stage in which each macro is
+followed by a string of capital I letters on the same line. The count of the
+capital I letters on any macro line is equal to the paragraph number. That is,
+the macro line for the fifth paragraph looks like this in the intermediate
+stage:
+
+....
+  .ppIIIII
+....
+
+link:3_global_command_solutions.html#S3.3[Solution 3.3]
+
 Coming Up Next
 --------------
 
-In the next part of this tutorial, I'll cover the less-known aspects of the
-other ex-mode commands for dealing with text and files. If you're a little
-overwhelmed with all that I've said about ++:global++ you'll be pleased to
-know that substitute is notably simpler, and all the remaining commands are
-very much simpler, than ++:global++.
+In the link:4_substitute_command.html[next part] of this tutorial, I'll cover
+the less-known aspects of the other ex-mode commands for dealing with text and
+files. If you're a little overwhelmed with all that I've said about
+++:global++ you'll be pleased to know that ++:substitute++ is notably simpler,
+and all the remaining commands are very much simpler, than ++:global++.
 
 After that, future parts of this tutorial will deal with normal mode; easier
 and more fun than ex mode any day.

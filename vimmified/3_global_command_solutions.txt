@@ -1,0 +1,118 @@
+The Global Command
+==================
+Walter Alan Zintz
+
+Solutions to Exercises
+----------------------
+
+// TODO: folding the actual solutions in a clickable reveal would be nice.
+
+anchor:S3.1[]
+
+Solution 3.1
+~~~~~~~~~~~~
+
+link:3_global_command.html#E3.1[Question]
+
+
+One solution to this problem is to ++:mark++ (here with named mark
+``a'') each mid-file occurrence of ++^CHAPTER++ before we copy it to
+the end of the file. We can then use the marked line address ++ 'a ++
+with the ++:substitute++ command to change the mid-file occurrence to
+lower case:
+
+[source,vim]
+----
+   global /^CHAPTER/ mark a | copy $ | 'a substitute /HAPTER/hapter/
+----
+
+
+anchor:S3.2[]
+
+Solution 3.2
+~~~~~~~~~~~~
+
+link:3_global_command.html#E3.2[Question]
+
+Using a line range that yields 16 lines in a ++:global++ command runs
+its ++:substitution++ command 16 times, even when the range of the
+++:substitution++ command is fixed to one line (217). Each time it
+inserts a single backslash. (The double backslash in the replacement
+pattern is necessary because the backslash is a special character even
+there.)
+
+[source,vim]
+----
+  1 , 16 global /^/ 217 substitute /n(PDu/\\&/
+----
+
+[NOTE]
+====
+The ++&++ character used in the replacement pattern expands to the
+entire match found by the search pattern.
+
+Also, this solution suffers from the necessity that there *be* at
+least 16 lines in the file.
+====
+
+
+anchor:S3.3[]
+
+Solution 3.3
+~~~~~~~~~~~~
+
+link:3_global_command.html#E3.3[Question]
+
+The paragraphs can be numbered with just two global commands. The
+first one:
+
+[source,vim]
+----
+  global /^\.pp/ . , $ substitute //&I/
+----
+
+goes to each line beginning with a start-of-paragraph macro, then runs
+a substitute command from that line through the end of the file that
+puts a capital letter I after each such macro. So the substitute
+command that runs from the first marked line puts an I after every one
+of the macros; from the second marked line it puts an I after every
+such macro except the first; from the third marked line it puts an I
+after every such macro except the first and the second; and so on.
+Thus, after this global finishes, you have a string of the letter I
+after every macro that is equal in number to the paragraph's number.
+That is, after the macro for the third paragraph you have the string
+"III"; after paragraph 5 you have the string "IIIII"; etcetera.
+Already you have Roman numerals (of a very primitive sort) numbering
+the paragraphs. A second global command puts those Roman numerals into
+canonical form:
+
+[source,vim]
+----
+  global /^\.pp/ substitute /IIIII/V/g | substitute /VV/X/g | substitute /IIII/IV/
+----
+
+NOTE: As you'll learn in the next installment of this tutorial, a
+lower-case letter g at the end of a substitute command tells the
+editor to perform the substitution as many times as it can on each
+line.
+
+To see how our second global command sets things right, consider the
+case of the 19th paragraph. The next four lines show what the macro
+line looks like at the start of the command and how it has changed
+after each of the three substitute commands has done its work:
+
+....
+.ppIIIIIIIIIIIIIIIIIII
+.ppVVVIIII
+.ppXVIIII
+.ppXVIV
+....
+
+NOTE: Astute readers will realize that the paragraphs could have been
+numbered with just one global command. Each macro line has all the
+capital I letters it will get before global leaves it for the next
+line. So we could have had the command string start by marking the
+line, next run the substitution that adds a capital I to all remaining
+macro lines, then return to the line and run the substitutions that
+produce a true Roman numeral. Bonus points for actually trying this.
+

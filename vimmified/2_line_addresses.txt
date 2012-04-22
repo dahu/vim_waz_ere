@@ -6,12 +6,13 @@ Ex-Mode Addressing
 ------------------
 
 Whenever you want to give an editor command that will operate on text that's
-already in the file you're editing--to delete some text, change lower-case
-letters to capitals, write to a file, etcetera--the editor needs to know what
-part of the file to go to work on. A few commands have their addresses built
-in, and most ex-mode commands have default addresses that the editor will use
-if you don't give an address, but that still leaves a lot of occasions where
-you need to know how to give the editor an address and what address to give.
+already in the file you're editing -- to delete some text, change lower-case
+letters to capitals, write to a file, etcetera -- the editor needs to know
+what part of the file to go to work on. A few commands have their addresses
+built in, and most ex-mode commands have default addresses that the editor
+will use if you don't give an address, but that still leaves a lot of
+occasions where you need to know how to give the editor an address and what
+address to give.
 
 Many ex-mode commands are almost identical to corresponding commands in normal
 mode; many more do similar things in different ways. Most of the benefit of
@@ -21,11 +22,11 @@ edit that would be difficult or impossible to do with one mode's available
 addresses can be a piece of cake with an address form found in the other mode.
 
 Since I mention ``ex mode'' so often, you may wonder whether there really is a
-separate mode for ex editing. There surely is--instead of filling your screen
-with text from the file you're editing, this mode gives you a colon ( : )
-prompt for your ex mode commands, and prints only an occasional line from the
-file on your screen. The feel of this mode is very much like giving UNIX
-commands from your shell prompt. Few people work in ex mode these days,
+separate mode for ex editing. There surely is -- instead of filling your
+screen with text from the file you're editing, this mode gives you a colon
+(++:++) prompt for your ex mode commands, and prints only an occasional line
+from the file on your screen. The feel of this mode is very much like giving
+UNIX commands from your shell prompt. Few people work in ex mode these days,
 largely because you can give most ex-mode commands from normal mode, but you
 can't give any normal-mode commands while you are in ex mode. Or perhaps they
 just prefer the comfortable WYSIWYG feeling of seeing the text on screen, with
@@ -74,16 +75,19 @@ both the long name and one or two short names for each.
 Ex-Mode Address
 ~~~~~~~~~~~~~~~
 
-A SINGLE ADDRESS is often all you need with an ex-mode command. One address
+Single Addresses
+^^^^^^^^^^^^^^^^
+
+A single address is often all you need with an ex-mode command. One address
 refers to just one line, which tells a command like delete or substitute to
 operate on that one line only. A command like insert or read, which puts
 something immediately before or after a particular line, has no use for more
 than one address.
 
-A search pattern, as discussed in the first installment of this tutorial, is
-always an acceptable ex-mode address. You put the address at the start of the
-command line, before the command name (but after the initial colon if you are
-giving the command from normal mode), so:
+A search pattern, as discussed in the link:1_editor_fundamentals.html[first
+installment] of this tutorial, is always an acceptable ex-mode address. You
+put the address at the start of the command line, before the command name (but
+after the initial colon if you are giving the command from normal mode), so:
 
 [source,vim]
 ----
@@ -127,10 +131,10 @@ pattern you used to search for a line. If you ran a substitute command after
 any pattern searches for lines, then the pattern you gave the substitute
 command to tell it what text to take out of the line is the pattern that will
 be reused. This is so even if your substitute command began with a search
-pattern to specify the line on which the substitution was to be performed--the
-search to find the pattern to be replaced within the line was run after the
-first search pattern had found the line to operate on, so the search within
-the line was the last pattern search run. So if you were to type:
+pattern to specify the line on which the substitution was to be performed --
+the search to find the pattern to be replaced within the line was run after
+the first search pattern had found the line to operate on, so the search
+within the line was the last pattern search run. So if you were to type:
 
 [source,vim]
 ----
@@ -145,14 +149,19 @@ last one used to find a line, use the abbreviations ++\?++ and ++\/++ to
 search backward and forward, respectively. In all other respects these work
 just as typing ++??++ and ++//++ do.
 
-A LINE NUMBER is also a valid ex-mode address. The editor automatically
-numbers each line in the file consecutively, and this numbering is
-dynamic--that is, whenever you add or delete lines somewhere, the editor
-renumbers all the lines following the insertion or deletion point. So if you
-change some text on line 46 in your file, and then delete lines 11 and 12, the
-line with the text you changed is now line 44. And if you then add ten new
-lines after line 17, the line with your changed text on it now automatically
-becomes line 54.
+Numeric Addresses
+^^^^^^^^^^^^^^^^^
+
+A line number is also a valid ex-mode address. The editor automatically
+numbers each line in the file consecutively, and this numbering is dynamic --
+that is, whenever you add or delete lines somewhere, the editor renumbers all
+the lines following the insertion or deletion point. So if you change some
+text on line 46 in your file, and then delete lines 11 and 12, the line with
+the text you changed is now line 44. And if you then add ten new lines after
+line 17, the line with your changed text on it now automatically becomes line
+54.
+
+// TODO: link to later tutorial
 
 There is never a gap or an overlap in the line number sequence, so the nth
 line in the file is always line number n ; that is, the 7th line is always
@@ -169,12 +178,12 @@ You don't use any delimiters around a line number, or around any other address
 except a search pattern.
 
 There are two symbolic line numbers and one fictional one that can be used in
-ex-mode addresses. As long as there are any lines in the buffer (that is,
-you haven't specified a not-yet-existent file to edit and failed to enter any
-text so far), the editor regards you as being `on' one of them, usually the
-last line affected by your latest command. A period or dot ( . ) is the
-symbolic address for this line.  The last line in the file also has a symbolic
-address: the dollar sign ( $ $). So if you should type:
+ex-mode addresses. As long as there are any lines in the buffer (that is, you
+haven't specified a not-yet-existent file to edit and failed to enter any text
+so far), the editor regards you as being `on' one of them, usually the last
+line affected by your latest command. A period or dot (++.++) is the symbolic
+address for this line.  The last line in the file also has a symbolic address:
+the dollar sign (++$++). So if you should type:
 
 [source,vim]
 ----
@@ -201,11 +210,14 @@ with either of these command lines:
   0 append
 ----
 
-(Note, though, that insert and append are among the few ex-mode commands that
-cannot be run from normal mode by starting with a colon, because they occupy
-more than one line including the text to be put in.)
+NOTE: ++insert++ and ++append++ are among the few ex-mode commands that cannot
+be run from normal mode by starting with a colon, because they occupy more
+than one line including the text to be put in.
 
-WRITING YOUR OWN LINE ADDRESSES is possible, too. You can attach lower-case
+Marked Line Addresses
+^^^^^^^^^^^^^^^^^^^^^
+
+Writing your own line addresses is possible, too. You can attach lower-case
 letters to lines as line addresses, and change the attachments whenever you
 like. You can even use a special address that is automatically attached to the
 last line you jumped off from.
@@ -261,12 +273,15 @@ non-relative address that this address form is best saved for going back to
 where you were when a mistake moves you far away, at least until you're a
 wizard with this editor.
 
-MODIFYING ANY OF THESE ADDRESSES is possible, and there are two ways to do
+Address Offsets
+^^^^^^^^^^^^^^^
+
+Modifying any of these addresses is possible, and there are two ways to do
 this. The simpler way is to offset the address a certain number of lines
-forward or backward with plus ( + ) or minus ( - ) signs. The rule is that
-each plus sign following an address tells the editor to go one line farther
-forward in the file than the basic address, while each minus sign means a line
-backward. So these three addresses all refer to the same line:
+forward or backward with plus (++ + ++) or minus (++-++) signs. The rule is
+that each plus sign following an address tells the editor to go one line
+farther forward in the file than the basic address, while each minus sign
+means a line backward. So these three addresses all refer to the same line:
 
 [source,vim]
 ----
@@ -293,17 +308,20 @@ same:
   /^register long/ +4
 ----
 
-Take note that the ``4'' in the second example does not mean ``line number
-4'', as it would if it appeared by itself as an address. After a plus or minus
-sign, a number is a count forward or backward from where the primary address
-lands (or if there is no primary address before the count, from the line you
-are on when you run the command).
+[NOTE]
+====
+The ``4'' in the second example does not mean ``line number 4'', as it would
+if it appeared by itself as an address. After a plus or minus sign, a number
+is a count forward or backward from where the primary address lands (or if
+there is no primary address before the count, from the line you are on when
+you run the command).
 
-Note also that this is one of the few places in ex-mode commands where you may
-not insert a blank space. The number must start in the very next character
+This is also one of the few places in ex-mode commands where you may not
+insert a blank space. The number must start in the very next character
 position after the plus or minus sign. If you violate this rule, the editor
 will uncomplainingly operate on some line that definitely is not the line you
 expected.
+====
 
 The second style of address modifier is used where you want to do a search
 that's complex. Let's say you want to go forward in the file to delete a line
@@ -373,7 +391,7 @@ is the same as the last command:
 Indeed, the awkward looking ++ --- ++ demonstrates this well. Each ++
 - ++ is effectively ++ -1 ++ so ++ --- ++ is the same as ++ -1 -1 -1 ++.
 
-SEMICOLON SEPARATORS
+Semicolon Separators
 ^^^^^^^^^^^^^^^^^^^^
 
 There is another way to chain several addresses together to identify a single
@@ -423,6 +441,9 @@ With ++,++ the subsequent search starts from the __current__ cursor position
 As with the single line usage of ++addr ;++ the cursor is set to the line
 where ++addr++ matches before considering the subsequent address.
 
+.Spot Quiz
+[caption=""]
+====
 Assuming the cursor is currently on line 3 of the following famous rhyme:
 
 [source,text,numbered]
@@ -446,8 +467,7 @@ what do you think:
 
 will print?
 
-ANSWER
-^^^^^^
+.Answer
 
 [source,text]
 ----
@@ -477,6 +497,7 @@ it would have printed:
 
 because the subsequent ``was'' from (after) line 3 (where the cursor is (it
 wasn't moved, after all)) resides on line 5.
+====
 
 Any ex-mode addresses may be used with a comma or semicolon. All of the
 following combinations make sense:
@@ -497,6 +518,9 @@ and ending with the next forward (from mark ``d'') line that begins with
 line you are on now. The third goes backward to include the previous line
 containing only ``Chapter 9'', and forward to include the very last line in
 your file; plus all the lines in between, of course.
+
+Line Order of Range Addresses
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Vim prefers the second address in a separated range addresses to be farther
 ahead in the file than the first address. Vim will ask for confirmation to
@@ -526,6 +550,9 @@ the start of the ex range, as in:
 If the two addresses happen to evaluate to the same line, the command will
 silently operate on the one line you've specified.
 
+Chained Range Address Ends
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Multiple space separated addresses can be chained together to achieve your
 desired range. For example, in:
 
@@ -547,13 +574,14 @@ first search found, use a semicolon instead of a comma, as in:
   ?Stradivarius? ; /Guarnerius/
 ----
 
+A note about default addresses
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Now, a note about default addresses. I've already mentioned that most ex-mode
-commands that can take an address have a ``default'' address built in, which
-tells the editor where to run the command if you don't give an address with
-it. Each command has its own default address, which may be the current line,
-the current line plus the one following, the last line of the file, or the
-entire file.
+I've already mentioned that most ex-mode commands that can take an address
+have a ``default'' address built in, which tells the editor where to run the
+command if you don't give an address with it. Each command has its own default
+address, which may be the current line, the current line plus the one
+following, the last line of the file, or the entire file.
 
 The range separators have default addresses of their own. They are the same
 regardless of what command is being used, and they override any command's own
@@ -580,14 +608,15 @@ following command lines:
 ----
 
 will do exactly the same thing: append a copy of just the current line in the
-file you're editing to another file named ``goodlines''. Note that the exact
-same behaviour would have been observed with the semicolon separator instead
-of the comma in these examples because the explicit virtual line ++.++ and the
-implicit current line used by the ++write++ command are all referring to the
-``current line'' (which is where semicolon and comma differ).
+file you're editing to another file named ``goodlines''.
+
+NOTE: The exact same behaviour would have been observed with the semicolon
+separator instead of the comma in these examples because the explicit virtual
+line ++.++ and the implicit current line used by the ++write++ command are all
+referring to the ``current line'' (which is where semicolon and comma differ).
 
 Finally, there is one special symbol that represents the ++1,$++ (comma or
-semicolon-separated) address combination -- the percent sign ( ++%++). Both
+semicolon-separated) address combination -- the percent sign (++%++). Both
 refer to the entire file.
 
 Now You Try It
@@ -597,9 +626,10 @@ Before you try the complex aspects of ex-mode addresses in actual editing
 situations, here are some problems you can build yourself up on. For each
 problem I've included a solution that will work fairly efficiently.
 
-anchor:E2.1[Exercise 2.1]
+anchor:E2.1[]
 
-.Exercise 2.1
+Exercise 2.1
+~~~~~~~~~~~~
 
 How can you tell the editor to delete the line that holds the very last
 instance of ``EXPORT'' in your file? Be sure to check for cases where
@@ -608,9 +638,10 @@ straightforward once you know where to start searching.
 
 link:2_line_addresses_solutions.html#S2.1[Solution 2.1]
 
-anchor:E2.2[Exercise 2.2]
+anchor:E2.2[]
 
-.Exercise 2.2
+Exercise 2.2
+~~~~~~~~~~~~
 
 Suppose you want to delete the very first line in the file with ``EXPORT'' on
 it, and that just might be line 1. Show two different ways to do this with
@@ -618,9 +649,10 @@ ranges in Vim.
 
 link:2_line_addresses_solutions.html#S2.2[Solution 2.2]
 
-anchor:E2.3[Exercise 2.3]
+anchor:E2.3[]
 
-.Exercise 2.3
+Exercise 2.3
+~~~~~~~~~~~~
 
 If you use the address ++?abc? , /xyz/++ , it includes the two lines the
 searches (for ``abc'' and ``xyx'') find, as well as all the lines between
@@ -633,10 +665,11 @@ link:2_line_addresses_solutions.html#S2.3[Solution 2.3]
 Coming Up Next
 --------------
 
-The next installment of this tutorial will deal with the Global commands --
-they're just too much to absorb right after the mind-numbing collection of
-address forms we've just gone through. And to give you more scope for using
-all these address forms, I'll also cover ex-mode commands themselves,
-particularly the ones that have more capabilities than you suspect.
+The link:3_global_command.html[next installment] of this tutorial will deal
+with the Global commands -- they're just too much to absorb right after the
+mind-numbing collection of address forms we've just gone through. And to give
+you more scope for using all these address forms, I'll also cover ex-mode
+commands themselves, particularly the ones that have more capabilities than
+you suspect.
 
 // vim: set ft=asciidoc tw=78:

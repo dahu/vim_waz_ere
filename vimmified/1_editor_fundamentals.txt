@@ -285,14 +285,17 @@ example, in the command:
   :?Chapter 10?,/The End/substitute/cat/dog/g
 ----
 
-the first two patterns refer to the preceding line closest to the current line
-that contains the string ``Chapter 10'' and the following line closest to the
-current line containing the string ``The End''. Note that each address finds only
-one line. Combined with the intervening comma, they indicate that the
-substitute command is to operate on those two lines and all the lines in
-between them. But the patterns immediately after the substitute command itself
-tell the command to find every instance of the string ``cat'' within that range
-of lines and replace it with the string ``dog''.
+the first two patterns refer to the preceding line closest to the
+current line that contains the string ``Chapter 10'' and the following
+line closest to the current line containing the string ``The End''.
+
+NOTE: Each address finds only one line.
+
+Combined with the intervening comma, they indicate that the substitute
+command is to operate on those two lines and all the lines in between
+them. But the patterns immediately after the substitute command itself
+tell the command to find every instance of the string ``cat'' within
+that range of lines and replace it with the string ``dog''.
 
 Aside from the difference in meaning, the two styles also have different
 standards for the delimiters that mark pattern beginnings and (sometimes)
