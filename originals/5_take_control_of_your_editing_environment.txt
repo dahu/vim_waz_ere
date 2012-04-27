@@ -1,5 +1,5 @@
 Take Control of Your Editing Environment
-
+========================================
 By Walter Alan Zintz
 
 The set Command
@@ -8,18 +8,18 @@ Playing ``tag''
 Making Your Environment Setup Automatic
 The Next Installment
 
-Besides all the power in the Vi/Ex editor, there's a lot of flexibility in it,
+Besides all the power in the Vim/Ex editor, there's a lot of flexibility in it,
 too. You've already met some of this adaptability when I pointed out various
 ways to perform many editing functions. Now it's time to meet phase two of
 editor flexibility -- the myriad ways to modify the editor's internal
 operations.
 
 There's no ``setup mode'' for changing these parameters. Instead, all the
-changes are made with line-mode commands, which can be interspersed with
+changes are made with ex-mode commands, which can be interspersed with
 ordinary editing commands. That is, you give the commands from the prompt, as
-usual, if you are editing in line mode. When you are editing in visual (or
+usual, if you are editing in ex mode. When you are editing in normal (or
 screen) mode, precede these environment-modifying commands with a colon, as you
-would with any other line-mode commands you specify in visual mode.
+would with any other ex-mode commands you specify in normal mode.
 
 These modifications take effect as soon as you give the commands. They stay in
 effect as long as you run the editor program. You can switch from editing one
@@ -41,7 +41,8 @@ environments -- which one is used will depend on the circumstances in which you
 invoke the editor. I'll explain how to automate the settings at the end of this
 tutorial.
 
-The set Command
+The :set Command
+----------------
 
 Most of your setup will be accomplished by a single command that controls
 around fifty editor variables that affect the editing environment. The set
@@ -49,6 +50,8 @@ command, for which se is the shortest abbreviation, sets variables having three
 different types of values: string, numeric, and boolean. Consider the examples
 here:
 
+[source,vim]
+----
 set report=7
 
 set term=vt100
@@ -56,6 +59,7 @@ set term=vt100
 set terse
 
 set nomagic
+----
 
 Because the first two examples are assignments, they must specify either string
 or numeric values. The first is numeric; here, report=7 tells the editor to
@@ -93,7 +97,10 @@ number of these variables. A single command can have almost any number of
 arguments. So all four of the example commands above could be replaced by this
 single command:
 
+[source,vim]
+----
 set report=7 term=vt100 terse nomagic
+----
 
 Variant forms of this command will tell you the present status of individual
 variables, all that have been changed, or all the variables. For instance, type
@@ -113,11 +120,14 @@ the name of the variable, immediately followed by a question mark, as an
 argument to the command. For a string- or numeric-valued variable, you only
 need to specify the name itself, without the equal sign. Thus, typing:
 
+[source,vim]
+----
 set report magic?
+----
 
 will produce a response like this:
 
-report=7 nomagic
+  report=7 nomagic
 
 If the details of checking individual variables seem too arcane to remember,
 the editor will cut you some slack: You may specify the name of a boolean
@@ -125,7 +135,10 @@ variable in its ``no'' form, and you may give a non-boolean variable with an
 unneeded question mark at the end of it, and your query will still work. So
 typing:
 
+[source,vim]
+----
 set report? nomagic?
+----
 
 will produce the same result as the previous query did.
 
@@ -135,27 +148,31 @@ whenever even three lines are changed, and also want to know what terminal type
 the editor thinks you are using and whether terse is on or off, any one of the
 following command lines will take care of it all:
 
+[source,vim]
+----
 set number report=3 term terse?
 
 set term terse? number report=3
 
 set term number terse? report=3
+----
 
-Below, I've listed some important editor variables that modify the visual
+Below, I've listed some important editor variables that modify the normal
 display, with an explanation of each. If two names are specified, the first is
 the full name and the other is the shortest recognized abbreviation. The full
 name will appear in the lists displayed when you type ``set'' by itself or type
 ``set all''.
 
 set Command Variables that Control How to Paint the Screen
+----------------------------------------------------------
 
-number nu
+.number nu
 
 You already know that the editor assigns a number to every line in your file,
 and changes line numbers every time you add or delete lines, in order to keep
 the numbers consecutive. The number boolean variable tells the editor to
 display those line numbers next to every file line that appears on the screen,
-in both screen and line-editing modes. You just have to turn it on; it's off by
+in both screen and ex-editing modes. You just have to turn it on; it's off by
 default. If you have a window that looks like this:
 
 COLOR CODING FOR POWER WIRES
@@ -184,10 +201,10 @@ The displayed numbers do not become part of the file, and nothing you can do,
 deliberate or accidental, will cause your editing to interact with the line
 numbers.
 
-list
+.list
 
 Turning on this off-by-default variable makes two changes in the way file lines
-are displayed on the screen, whether in line- or screen-editing mode:
+are displayed on the screen, whether in ex- or screen-editing mode:
 
 The end of each line is marked by a dollar sign. (This applies to actual line
 ends, not to places where the editor wraps a long line so it can all be
@@ -201,15 +218,15 @@ tabs will not be displayed aligned with this variable enabled.)
 Taking the same sample screen as in the previous example, when the list
 variable is on, the screen would look like this:
 
-COLOR CODING FOR POWER WIRES$
+  COLOR CODING FOR POWER WIRES$
 
-green^Iground$
+  green^Iground$
 
-white^Ineutral$
+  white^Ineutral$
 
-black^Ihot$
+  black^Ihot$
 
-red^Ihot$
+  red^Ihot$
 
 This variable affects display only, the contents of the file are not changed in
 any way. The list and number variables are compatible. Enabling them both would
@@ -225,14 +242,14 @@ produce a display like this:
 
   162  red^Ihot$
 
-window=
+.window
 
 The numeric value of this variable tells the editor how many screen lines
 should be in the editing window (in screen-editing mode). The default is one
 less than the size of your screen or window. This variable's value cannot be
 changed while you are in screen-editing mode.
 
-scroll
+.scroll
 
 A numeric variable that sets the number of lines to be scrolled down by a
 control-D or up by a control-U command. The z command uses twice this count as
@@ -252,7 +269,8 @@ set for scroll is to look up that value -- type ``set scroll'' -- then use this
 value as a count preceding another of the commands that normally use the scroll
 variable.
 
-Playing `` tag ''
+Playing ``tag''
+---------------
 
 If your editing work requires jumping from place to place in numerous files,
 it would be convenient to index the places you visit most. The editor has a
@@ -277,22 +295,22 @@ such a file yourself.
 Each line in a ``tags'' file is a complete reference to a place you might want
 to go. The line has five parts, which (reading from left to right) are:
 
-The short name you will use to refer to the particular file and the place in
+. The short name you will use to refer to the particular file and the place in
 it. Don't start choosing names, though, until you've read the third way to
 invoke a tag, below.
 
 
-One tab character, as a separator. A space character will not do here.
+. One tab character, as a separator. A space character will not do here.
 
 
-The name of the destination file. This can be a simple name, if the file is in
+. The name of the destination file. This can be a simple name, if the file is in
 your current directory, or a path name, if not.
 
 
-Another tab character. Again, a space character won't do.
+. Another tab character. Again, a space character won't do.
 
 
-A line-mode search command that will find the place you want within the file.
+. A ex-mode search command that will find the place you want within the file.
 As you may have cleverly deduced, you can string multiple commands together
 here with the vertical-bar (``|'') character, and can use editing commands if
 you want the file pre-edited. Spaces and even tabs may appear in this string if
@@ -301,6 +319,8 @@ needed; only the first two tabs in a line are interpreted as field separators.
 If this file structure sounds a little complex, look at this short example of a
 ``tags'' file to see how things actually work out:
 
+[source,vim]
+----
 difid   ../math/calc    /^APPENDIX/;/^C. Differen
 
 integ   ../math/calc    /^APPENDIX/;/^D. Integrals
@@ -312,10 +332,11 @@ rvlog   /adm/err-log    g/^/m0|0;/Err-7$
 vocab   %      /^GLOSSARY
 
 words   %      /^GLOSSARY
+----
 
 The first line in the example above provides that using ``difid'' as a tag will
-take the user to edit a file named `` calc '', in a directory with relative
-path name `` ../math ''. ( Note: that using this tag will not change the
+take the user to edit a file named ``calc'', in a directory with relative
+path name ``../math''. ( Note: that using this tag will not change the
 current directory of the user's shell; only the file being edited is changed.)
 Once that file has been loaded, the editor will seek out the first line that
 starts with ``APPENDIX'', and go from there to the next line that begins with
@@ -356,12 +377,15 @@ lines, the Unix sort utility can do it for you.
 
 When you've built your ``tags'' file, you need a place to put it. Ordinarily,
 when you invoke a tag name, the editor first tries to look it up in a file
-named `` tags '' in your current directory. If it fails to find such a file, it
+named ``tags'' in your current directory. If it fails to find such a file, it
 then looks for /usr/lib/tags . But you can override these defaults by setting a
 different value for the ``tags'' file in your editing environment. For
 instance, if you include this command in your setup file:
 
+[source,vim]
+----
 set tags=moretags
+----
 
 then tag searches will take place in a file named ``moretags'' in your current
 directory.
@@ -373,7 +397,10 @@ When you invoke the editor from your shell's command line you can use the
 ``-t'' command-line option flag to specify a tagged item instead of naming a
 file to edit. For example, typing the line (from your shell prompt):
 
-vi -t chap3
+[source,vim]
+----
+vim -t chap3
+----
 
 tells the editor to look up the ``chap3'' tag to find the destination file and
 location in that file. Oddly enough, you can list some file names to edit as
@@ -392,15 +419,15 @@ list -- viewed with the args command -- so when you enter a :rewind command you
 return to the first named file, not the tagged file, even though it was
 specified first on the command line.
 
-While you are editing a file, you can invoke a tag with the line-mode command
+While you are editing a file, you can invoke a tag with the ex-mode command
 tag (shortest abbreviation, ta ) followed by a space and the tag name. This
-command can be given from screen mode as :tag, of course.
+command can be given from normal mode as :tag, of course.
 
 
-While you are in screen mode, you can put the cursor on either the first letter
+While you are in normal mode, you can put the cursor on either the first letter
 of a word or the space immediately preceding it and then type a ``control-]''
 character. This has the same effect as if you'd typed the word the cursor is at
-as the argument to a :tag command.
+as the argument to a `:tag` command.
 
 Caution: A ``control-]'' is the default Telnet ``escape'' character. So if you
 are editing on a remote system during a Telnet session and enter a
@@ -410,23 +437,24 @@ when you start your remote terminal session in order to use ``control-]'' with
 the editor.
 
 Some newer versions of the editor maintain a stack of tags. If so, you can
-repeat the last :tag command you gave in screen mode by typing ``control-T''.
+repeat the last :tag command you gave in normal mode by typing ``control-T''.
 This can take a count, so that typing a ``2'' and then a ``control-T'' repeats
 the :tag command preceding the last one you gave, etcetera.
 
 Making Your Environment Setup Automatic
+---------------------------------------
 
 When you've worked out an editing environment setup that you will want to use
 frequently, or even occasionally, there is no need to type in all the changes
 from default every time you start up the editor. Because these are all
-line-mode editor commands, there are several ways to define them automatically,
+ex-mode editor commands, there are several ways to define them automatically,
 all or some of the time.
 
 If there is an editor start-up file (which must be named .exrc ) in your home
 directory (the dot at the start of the name is essential and the ``rc''
 abbreviation means ``run command''), the editor will interpret it every time
 you invoke the editor and execute (or at least attempt to execute) the lines in
-the file as line-mode commands before it turns editing control over to you.
+the file as ex-mode commands before it turns editing control over to you.
 This applies to environment-setting commands as well as others, so placing your
 set-up commands somewhere in this file will cause the setup to happen every
 time you invoke the editor.
@@ -473,7 +501,7 @@ Let's say you need to edit several files that are in a directory like /tmp,
 trouble of providing a full path name every time you want want to switch from
 one file to another, you could easily change directories (that is, ``cd'' to
 the directory where these files are located). But when you want to start
-editing a file, the Vi/Ex editor may find a Trojan horse file named .exrc
+editing a file, the Vim/Ex editor may find a Trojan horse file named .exrc
 placed in your current directory by a cracker to await victims. Of course, the
 commands in this false editor start-up file will be run with your account
 ownership. These commands aren't limited to editor set-up commands, but may be
@@ -487,24 +515,24 @@ different sections, and you want to be able to make a complete change of
 editing environment whenever you move from one section to another. In this
 case, use the source command, with so as its shortest abbreviation.
 
-The source line-mode command can be given at any time, although you may have to
-give it from line-editing mode, not from screen mode with a preceding colon. It
+The source ex-mode command can be given at any time, although you may have to
+give it from line-editing mode, not from normal mode with a preceding colon. It
 takes one argument, a file name or path name, and its function is to read the
 named set-up file and attempt to execute the lines in it as a series of
-line-mode commands.
+ex-mode commands.
 
-Whether or not you can specify this command successfully in screen mode depends
+Whether or not you can specify this command successfully in normal mode depends
 on the editor version you are using. Some early versions were quite serious
-about prohibiting multiple-line line-mode commands while in screen mode. So
+about prohibiting multiple-line ex-mode commands while in normal mode. So
 serious that these versions will execute only the first line of a script that
-has been sourced in while the user is in screen mode. If you don't encounter
+has been sourced in while the user is in normal mode. If you don't encounter
 this behavior, you can ignore this warning. If you do, you at least know where
 the problem lies.
 
 Now that you understand editor start-up files, I can acknowledge that the one
 you put in you home directory is not strictly necessary. The editor will accept
 the value of a shell environment variable named EXINIT as the string of
-line-mode commands to be run whenever the editor starts up. But I don't
+ex-mode commands to be run whenever the editor starts up. But I don't
 recommend going this route, for several reasons:
 
 Usually the shell has a strict limit on the number of characters for the value
@@ -522,24 +550,26 @@ editor, whereas if your EXINIT variable is defined in a shell start-up file,
 it's new definition won't take effect until you log-in again or explicitly
 ``source'' the shell start-up file from the shell's command line.
 
-
 When you want to restore the editor's environment variables to their beginning
 state, you can simply source in the editor start-up file. There's no way to do
 this with the EXINIT shell variable.
 
 You can use source to execute an editor set-up file from anywhere in your file
-space. It will also execute any file of line-mode commands, no matter what the
+space. It will also execute any file of ex-mode commands, no matter what the
 file name. For example, let's say you have a special environment setup that you
 never use at the beginning of an editing job, but you do need it to edit
 tables. You invoke the editor as always, but when you're ready to edit your
 tables, you run a command like:
 
+[source,vim]
+----
 :so table-defs
+----
 
-where the table-defs file contains line-mode commands that set up the editor
+where the table-defs file contains ex-mode commands that set up the editor
 for table editing.
 
-When you specify a file of line-mode editing commands with source to perform,
+When you specify a file of ex-mode editing commands with source to perform,
 say, a frequently used edit automatically, it's probably a good idea to have
 commands in that file to return the editing environment to what it was before
 the editing commands were run, assuming the environment was changed for the
@@ -559,72 +589,80 @@ that autoindentation is definitely disabled.
 
 And, what if the source command is broken in your version of the editor? There
 is still a way to make semiautomatic environment changes. You have to use the
-line-mode read command plus a little-known feature of letter-named storage
+ex-mode read command plus a little-known feature of letter-named storage
 buffers.
 
 You're probably accustomed to using the ``a'' through ``z'' named buffers for
 storing pieces of text, and returning these pieces to the main document with
 commands like "jp, which returns the contents of the ``j'' buffer right after
-the cursor position in visual mode. Well, you can also use a visual-mode
+the cursor position in normal mode. Well, you can also use a normal-mode
 command of the form @j, which takes the text from the ``j'' buffer and
-executes it as a visual-mode command string. For instance, if buffer ``j''
+executes it as a normal-mode command string. For instance, if buffer ``j''
 contains ``257G3dd'' as its text, then typing @j will move the cursor to line
 257 and delete that line and the two that follow it.
 
-The text in the buffer must be commands you could give from visual mode for
-this feature to work, but that includes line-mode commands that are preceded by
+The text in the buffer must be commands you could give from normal mode for
+this feature to work, but that includes ex-mode commands that are preceded by
 a colon and terminated with a carriage-return character. So if buffer ``h''
 contains the lines:
 
+[source,vim]
+----
 :se nomesg terse list
 
 :map v :!wc -w %^M
 
 1G
+----
 
 then typing ``@h'' will reset three variables, map a command string, and move
 the cursor to the first line in the file.
 
 There are a few points you should keep well in mind when you are placing
-line-mode commands into a letter-named buffer for future execution. All of them
-revolve around the fact that the editor is expecting screen-mode commands from
+ex-mode commands into a letter-named buffer for future execution. All of them
+revolve around the fact that the editor is expecting normal-mode commands from
 this source.
 
-Any line-mode command must fit entirely on a single line.
+* Any ex-mode command must fit entirely on a single line.
 
 
-A line-mode command must begin with a colon character.
+* A ex-mode command must begin with a colon character.
 
 
-A line-mode command may begin at the start of a line of text or in the middle
+* A ex-mode command may begin at the start of a line of text or in the middle
 of it, but it must end at the end of the line. At execution time, the newline
 character at the end of the text line is what tells the editor that this
-particular command is ended and a new command (either line- or screen-mode)
+particular command is ended and a new command (either ex- or normal-mode)
 will follow.
 
 
-Never put a line break in buffer text you will execute as a command string
+* Never put a line break in buffer text you will execute as a command string
 unless a carriage return is part of the command string at that point.
 
 To import this set-up command list from an outside file to the ``h'' buffer,
 use the read command. For example, if your three-line set-up file is named
 set.5, then type:
 
+[source,vim]
+----
 :r set.5
 
 "h3dd@h
+----
 
 to read the file into your editing buffer, then the "h3dd@h command will delete
 those three lines -- which came from the external file -- into the ``h'' named
 buffer, then execute the same lines as set-up commands.
 
 The Next Installment
+--------------------
 
 You asked for it, and it's here!
 
 Most of the e-mail I receive about this tutorial asks me how to do some
-specific kind of editing with Vi. The most popular re quest so far has been for
+specific kind of editing with Vim. The most popular re quest so far has been for
 techniques to edit material in columns, and that's what I explain in the next
 installment . Then it's on to the treacherous, albeit important, topic of
-addresses for screen-mode commands.
+addresses for normal-mode commands.
 
+// vim:set ft=asciidoc tw=78:

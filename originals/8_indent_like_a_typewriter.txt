@@ -1,20 +1,13 @@
 Indent, Like a Typewriter
-
+=========================
 By Walter Alan Zintz
 
 Automatic Indentation
-Backing off Indentation
-Juggling some :set options
-An Exercise for You
-Hard Tabs
-Enable and Disable autoindent
-Next Time
-
-Automatic Indentation
+---------------------
 
 Computer editing is a great advance over typing on paper, the consensus has it.
 But wouldn't you be happier yet if you had the tabstop-setting capability of
-your old typewriter, too? With the Vi and Ex editor, you have a feature that's
+your old typewriter, too? With the Vim and Ex editor, you have a feature that's
 just as powerful and a lot easier to use, but not many users know it's there.
 Yet there it is, on even early versions of the editor -- its name is autoindent.
 
@@ -56,6 +49,7 @@ insert mode to correct a mistake without losing the indented margin setting,
 providing you return to insert mode with a n o or O command.
 
 Backing off Indentation
+-----------------------
 
 To set the indentation back (or off), you need to use the Control-D character.
 When you want to stop the indentation temporarily, for just one or a few lines,
@@ -73,15 +67,19 @@ control-D characters to get the amount you want. This setback also takes effect
 starting with the line you are on when you type the control-D.
 
 Juggling a few :set options
+---------------------------
 
 And that brings up the whole vexed question of lengths of tabs and lineshifts,
 which are controlled by three options of the :set command. When you are in the
 editor, type in the :set command query as in the first line below, and see
 whether the response is the default -- as given in the line following it:
 
+[source,vim]
+----
 :se sw ts ht
 
 shiftwidth=8 tabstop=8 hardtabs=8
+----
 
 The first of these reflects the primary problem in using autoindentation. The
 shiftwidth option was created to control some commands I haven't discussed yet,
@@ -111,13 +109,13 @@ levels of tab indentation.
 Here's a visual representation of the difference: first of the default tab
 stops every eight columns, then as they are when reset to every four columns:
 
-+-------+-------+-------+-------+-...
+  +-------+-------+-------+-------+-...
 
-1       9      17      25      33
+  1       9      17      25      33
 
-+---+---+---+---+---+---+---+---+-...
+  +---+---+---+---+---+---+---+---+-...
 
-1   5   9  13  17  21  25  29  33
+  1   5   9  13  17  21  25  29  33
 
 But you just might be creating a problem by doing this. With identical
 shiftwidth and tabstop values, backing up via a control-D requires only erasing
@@ -164,11 +162,12 @@ file to edit, and a macro to do the reverse in the course of writing your work
 out to permanent storage.
 
 An Exercise for You
+-------------------
 
 It was several tutorial parts ago that I last put exercises for the reader in
 the tutorial itself. This seems like a good place to revive that practice. Just
 how would you write a command sequence to handle that latter operation as
-regards start-of-line indentations? Let's say you edit in screen mode, with
+regards start-of-line indentations? Let's say you edit in normal mode, with
 your tabstop option set to a value of four, so that a ten-column indentation
 consists of two tabs followed by two spaces and a thirteen-column indent is
 three tabs followed by one space. But when you write the file to permanent
@@ -182,7 +181,7 @@ will accomplish this?
 To simplify the problem, assume that the curly brace characters (``{'' and
 ``}'') never appear in files you edit (if they are present, which is common for
 program source code, choose another character pair) and that you will only be
-writing to the original file name, let ^I stand for a real tab character when
+writing to the original file name, let `^I` stand for a real tab character when
 you write your answer, and don't worry about how you would turn your command
 sequence into a macro. But, definitely do remember that you will be doing a
 write in the middle of your editing session from time to time, to guard against
@@ -197,7 +196,7 @@ solution seems long-winded, take a look at my hint before you jump to my
 solution .
 
 These translator macros will work nicely for leading whitespace (indentations),
-but it would take incredibly complex scripts (whether Vi editor scripts or
+but it would take incredibly complex scripts (whether Vim editor scripts or
 scripts for most other Unix utilities) to deal with tabs in the interiors of
 lines. The pestilential problem there is that you don't know just where an
 interior tab character is placed -- how many positions in from the start of the
@@ -216,6 +215,7 @@ in the middle of lines. The downside is that your text may be reformatted to
 some degree.
 
 Hard Tabs
+---------
 
 And then there is the hardtabs option to the :set command. That option is used
 to tell the editor how far apart the tab stopping points are on your physical
@@ -226,7 +226,7 @@ to make the spacings on your screen the same depth as those in your file. Here
 too, any difference between this value and either of the previous two is likely
 to cause problems. It's fortunate that any value you give to this option will
 be overridden by the spacing value that is in your Termcap or Terminfo file,
-because a difference between the terminal tab setting Vi expects and that which
+because a difference between the terminal tab setting Vim expects and that which
 your terminal is actually using will scramble your screen for sure.
 
 So my reluctant admonition to you is to leave all three of these options set at
@@ -234,6 +234,7 @@ their default values of eight. Messing around with any of them is just too
 likely to cause trouble.
 
 Enable and Disable autoindent
+-----------------------------
 
 Of course, all this means that when you have autoindentation on, the control-D,
 circumflex followed by control-D, and zero followed by control-D sequences are
@@ -248,16 +249,16 @@ command. Just type :se ai to turn this feature on. When you want to tell the
 editor to stop automatically indenting every time you start a line with
 whitespace, type :se noai (from command mode) to turn autoindent off again.
 
-Autoindent also works with the line-mode append insert commands, which can be
+Autoindent also works with the ex-mode append insert commands, which can be
 abbreviated a i respectively. These commands let you type in new lines of text,
 below or above the current line, respectively. That is, they are generally the
-line-mode equivalents of the screen-mode o O commands. They can only be run
-when you are in line mode; even preceding one of them with a colon (``:'') will
-not let you run it from screen mode.
+ex-mode equivalents of the normal-mode o O commands. They can only be run
+when you are in ex mode; even preceding one of them with a colon (``:'') will
+not let you run it from normal mode.
 
 The setting of the autoindent option controls autoindentation within these text
 insertions, too, but there is also another way to control it that works only
-with these line-mode commands. Whenever you follow one of these commands or its
+with these ex-mode commands. Whenever you follow one of these commands or its
 abbreviation with an exclamation point (``!''), without any characters or space
 in between, you toggle the autoindention setting for that insertion only. That
 is, if autoindentation was off, the ! turns it on during this insertion.
@@ -265,12 +266,13 @@ Similarly, if autoindentation was on at the time, the ! turns it off just for
 this insertion.
 
 [ Editor's Note : Here's an example where it really helps to disable
-autoindent. When programming, I use a simple .exrc file containing an se ai bf
-nu sw=4 ts=4 wm=0 line. If I cut a section of indented lines from one window
+autoindent. When programming, I use a simple .exrc file containing an `se ai bf
+nu sw=4 ts=4 wm=0` line. If I cut a section of indented lines from one window
 and paste it into my program I get a staircase effect as each line is inserted
 with one more tab than the last. Most annoying.]
 
 Next Time
+---------
 
 The next part of this tutorial will cover the :abbreviate and :map! commands,
 both of which help you save typing while you are in text-insertion submode.
@@ -286,3 +288,4 @@ time writing about half of the next part. So, when she returns from a week of
 well-deserved vacation in mid-November, I plan to have the completed tutorial
 installment waiting for her. Wish me luck.
 
+// vim:set ft=asciidoc tw=78:

@@ -1,14 +1,6 @@
 Addresses and Columns
-
+=====================
 By Walter Alan Zintz
-
-Screen-Mode Addresses
-A Few Address Principles
-Useful Addresses
-Editing in Columns
-Single-Character Columns
-Multi-Character Columns
-Next Installment
 
 By popular demand I'm trying something new in the tutorial, starting with this
 installment. The e-mail I receive from tutorial readers most often asks me how
@@ -21,19 +13,22 @@ often, by far: editing files where columns are a major factor. Future areas are
 up to you readers. If you have an application area you'd like to see explained
 in some depth, e-mail me your suggestion.
 
-Screen-Mode Addresses
+Normal-Mode Addresses
+---------------------
 
-You use them all the time. They're the address targets that tell screen-mode
-commands like c d y which stretch of your file to act on. And even more often
+You use them all the time. They're the address targets that tell normal-mode
+commands like `c d y` which stretch of your file to act on. And even more often
 you use such addresses without commands, to move around in the file.
 
-For starters, I'll tell you some basics of screen-mode addressing that aren't
+For starters, I'll tell you some basics of normal-mode addressing that aren't
 particularly clear to most editor users. Then it's on to a few powerful but
 obscure addresses that most of us rarely or never use.
 
 A FEW ADDRESS PRINCIPLES
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-The first fact of screen-mode range addresses is simple enough: one end of the
+
+The first fact of normal-mode range addresses is simple enough: one end of the
 range to be affected by the command is always marked by the cursor itself. The
 address you give the command (always a single address) indicates where the
 other end of the affected range is to be. The address target can be either
@@ -61,7 +56,7 @@ will still behave as any other text yanked or deleted with a character address.
 So which addresses are line addresses? That depends on what your command is.
 
 Besides the three commands I cited as examples above, there are four other,
-less-used commands -- ! < > = -- that also take addresses. The only thing you
+less-used commands `-- ! < > = --` that also take addresses. The only thing you
 have to know right now about these four commands is that they can act only on
 entire lines; that's inherent in what they do. So with these four commands,
 every address is a line address. (Except a handful of addresses, such as ``f'',
@@ -96,6 +91,7 @@ but always before the address. What the address does with the count, if
 anything, is also a case-by-case question.
 
 USEFUL ADDRESSES
+~~~~~~~~~~~~~~~~
 
 There are four addresses that together resemble a miniaturized, localized
 version of the / and ? search patterns. In each case, the search takes place
@@ -148,8 +144,9 @@ cursor, the target character as well as all those between it and the cursor
 will be affected by the command.
 
 Editing in Columns
+------------------
 
-Although the Vi/Ex editor was not specifically designed to deal with columnar
+Although the Vim/Ex editor was not specifically designed to deal with columnar
 material, there are ways to use it effectively for this kind of work. Your
 choice of techniques will depend on whether you are dealing with
 single-character columns wherein each character in a line is in a separate
@@ -157,6 +154,7 @@ column, or multi-character columns where the columns are set apart from each
 other by a separator character.
 
 SINGLE-CHARACTER COLUMNS
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here I'm using ``columns'' the way most programmers do. A column in this sense
 is simply the characters in a vertical section of a file, one character wide.
@@ -180,7 +178,7 @@ finds ``3A  '' it will then print ``, #3A'', etcetera. Should the suite numbe
 be even partially shifted out of the designated columns, the system will either
 print garbage as the suite number or issue an error message and skip that
 address altogether. The principle is the same, and even more important, with
-computer programs in punch- card image form.
+computer programs in punch-card image form.
 
 When you are making changes in existing records, and editing visually, the
 first important point is to be sure your are at the start of the particular
@@ -206,8 +204,8 @@ you miss the count by even one character; if the actual number of characters
 you type in is 11 or 13; then all the subsequent fields on that line will be
 shifted one character out of place, which is probably a recipe for disaster.
 
-To avoid this hazard, make use of the little-known R command. It starts like
-the familiar r command, in that when you type the letter ``R'' in visual
+To avoid this hazard, make use of the little-known `R` command. It starts like
+the familiar `r` command, in that when you type the letter ``R'' in normal
 command mode the system waits to see what character you type next, and whatever
 that next character is, it replaces the character that was under the cursor.
 But instead of then returning you to command mode, the R command then moves the
@@ -216,11 +214,11 @@ type next -- the character you now type replaces the character that is now
 under the cursor. This process continues until you stop it by hitting the
 escape key. So if your cursor is on the capital P in the following line:
 
-but the greatest ancient Greek was Plato, who
+  but the greatest ancient Greek was Plato, who
 
-and you type in ``RHomer'' followed by the escape key, your line will now read:
+  and you type in ``RHomer'' followed by the escape key, your line will now read:
 
-but the greatest ancient Greek was Homer, who
+  but the greatest ancient Greek was Homer, who
 
 and the cursor will be on the letter r at the end of ``Homer''. This character
 at a time replacement is the way to make sure you don't inadvertently shift any
@@ -231,7 +229,7 @@ because the count will multiply the number of times the new character string is
 inserted. That is, in that example above about replacing ``Plato'' with
 ``Homer'', if you had typed 3R instead of R your revised line would read:
 
-but the greatest ancient Greek was HomerHomerHomer, who
+  but the greatest ancient Greek was HomerHomerHomer, who
 
 Entering completely new lines of information is another matter. You should just
 type them straight across, as you would with any text entry, but if the
@@ -250,15 +248,15 @@ to pad it if necessary), and then has fields for a last name, first name, and
 middle initial. It would not be practical to judge where fields break just by
 looking at the existing data lines, which might look like this:
 
-07215854von TarekenstuttLeopold  J
+  07215854von TarekenstuttLeopold  J
 
-12077338Henderson-Blyth La Toya  P
+  12077338Henderson-Blyth La Toya  P
 
-10108972Thistlethwaites Geraldine
+  10108972Thistlethwaites Geraldine
 
-But a simple template line can clear it all up. Here is one for the job above:
+  But a simple template line can clear it all up. Here is one for the job above:
 
-m|d|y|s|LLLLLLLLLLLLLLL|FFFFFFFF|M
+  m|d|y|s|LLLLLLLLLLLLLLL|FFFFFFFF|M
 
 It has mnemonic characters to remind you of what goes in each field, and the
 ``|'' to indicate the last position of each field more noticeably. I've even
@@ -281,7 +279,10 @@ operations code has been replaced, and you now need to change every ``B27'' to
 operations code columns, which are columns 9 through 11. Th is odd-looking
 command will do it:
 
+[source,vim]
+----
 :%s/^\(........\)B27/\1K53
+----
 
 Those eight consecutive dots in the search pattern guarantee that a match will
 occur only when there are exactly eight characters between the beginning of the
@@ -293,7 +294,10 @@ If your columnar file has all lines of equal length, as most do, you can use
 this technique from the right side, too. If all lines in the file have 66
 characters, then typing that last command as:
 
+[source,vim]
+----
 :%s/B27\(...\)$/K53\1
+----
 
 will accomplish the changes in a case where the operations code columns are 61
 through 63, without the need to type (and carefully count) sixty consecutive
@@ -306,22 +310,29 @@ always contain either a ``*'' or a ``|'' character, neither of which can appear
 anywhere else in the lines? Then you can make the above change in columns 163
 through 165 by typing:
 
+[source,vim]
+----
 :%s/\([*|]....\)B27/\1K53
+----
 
 Failing a landmark, let the editor count out a long string of dots for you. To
 use this technique, you must first create your substitution command as a text
 line within the file you are editing, next write that line as a separate file
 (and then delete the command line from your original file), and finally use the
-:so command to pull in that one-line file and run it as a line-mode command. If
+:so command to pull in that one-line file and run it as a ex-mode command. If
 you need a string of 92 consecutive dots in your command, create a blank line
 at the end of your file, next type:
 
+[source,vim]
+----
 :1,92g/^/$s/^/.
+----
 
 to put those 92 dots there, and finally put the rest of the command around that
 dot string.
 
 MULTI-CHARACTER COLUMNS
+~~~~~~~~~~~~~~~~~~~~~~~
 
 The other meaning of ``editing in columns'' has to do with text rather than
 data files. It refers to tables of data such as you might find accompanying a
@@ -343,51 +354,51 @@ misaligning previous ones. This is also the best way to create pictures,
 diagrams, graphs and maps using ASCII characters.
 
 Things become problematic when you want to shift whole columns around -- there
-are no built-in Vi facilities for doing this. Here is what it is practical to
+are no built-in Vim facilities for doing this. Here is what it is practical to
 do in the editor. As a real life example, consider the piece below, which I use
 as the tail end of Usenet (Net news) posts that announce Indonesian classical
 music and dance performances at a local restaurant:
 
-   It's at the Dutch East Indies Restaurant       ;,,,,;,,,,;,,,,;,,,,;
-on Oakland's downtown waterfront.  The food      /%%%%%%%%%%%%%%%%%%%%%\
-there is very good Indonesian cuisine at        /%%%%%%%%%%%%%%%%%%%%%%%\
-reasonable prices - dinners $8.95 to $17.50.     "|""|"""|"""""|"""|""|"
-Views are spectacular from the second floor      _|__|___|_   _|___|__|_
-picture windows, out over the water to Jack      =|==|===|=====|===|==|=
-London Square, Alameda and San Francisco.       ~~~~~~~~~~~( (~~~~~~~~~~~
-Formality is medium - cloth napkins and oil                 ) )
-candles at the tables, but no supercilious
-waiters, and the wall decorations are mostly Indonesian handicrafts.
+     It's at the Dutch East Indies Restaurant       ;,,,,;,,,,;,,,,;,,,,;
+  on Oakland's downtown waterfront.  The food      /%%%%%%%%%%%%%%%%%%%%%\
+  there is very good Indonesian cuisine at        /%%%%%%%%%%%%%%%%%%%%%%%\
+  reasonable prices - dinners $8.95 to $17.50.     "|""|"""|"""""|"""|""|"
+  Views are spectacular from the second floor      _|__|___|_   _|___|__|_
+  picture windows, out over the water to Jack      =|==|===|=====|===|==|=
+  London Square, Alameda and San Francisco.       ~~~~~~~~~~~( (~~~~~~~~~~~
+  Formality is medium - cloth napkins and oil                 ) )
+  candles at the tables, but no supercilious
+  waiters, and the wall decorations are mostly Indonesian handicrafts.
 
-The phone number for information and reservations is 510/444-6555.
+  The phone number for information and reservations is 510/444-6555.
 
-( ( (             | Broadway ||I      The Dutch East Indies Restaurant is
- ) ) )Jack London |==========||==  in Jack London Village, a boutiques &
-( ( ( Square      |E         ||8   bistros cluster that is just down the
- ) ) )            |m         ||8   estuary from Jack London Square.  Jack
-( ( ( JACK LONDON |b         ||0   London Village is rustic, picturesque,
- ) ) )VILLAGE     |a         ||    quiet and safe.  To get there from the
-( ( (        Alice|r Amtrak  ||f   Interstate 880 freeway heading north,
- ) ) ) -----------|c station ||r   take the Oak Street exit and turn left;
-( ( (       Street|a         ||e   five blocks will bring you to Embarca-
- ) ) )            |d  Jackson||e   dero on your right, just before Oak
-( ( ( parking lot |e   ------||--  curves away to the left.  (Going south
- ) ) )            |r   Street||w   on I-880, take the Jackson Street exit
-( ( (             |o         ||a   and go two blocks straight ahead before
- ) ) )            |          ||y   you turn right on Oak Street.)  Turn
-( ( (           -------------||--  right onto Embarcadero and go three
- ) ) )             Oak Street||    blocks, until you go under an overpass
-                                   of Victorian ironwork.  Immediately
-turn left onto Alice Street, where you will see Jack London Village on
-your right, and a large lot that offers validated parking on the left.
-Walk into the Village's central courtyard, and you'll see the Dutch East
-Indies on the estuary side, toward the right, and upstairs.
+  ( ( (             | Broadway ||I      The Dutch East Indies Restaurant is
+   ) ) )Jack London |==========||==  in Jack London Village, a boutiques &
+  ( ( ( Square      |E         ||8   bistros cluster that is just down the
+   ) ) )            |m         ||8   estuary from Jack London Square.  Jack
+  ( ( ( JACK LONDON |b         ||0   London Village is rustic, picturesque,
+   ) ) )VILLAGE     |a         ||    quiet and safe.  To get there from the
+  ( ( (        Alice|r Amtrak  ||f   Interstate 880 freeway heading north,
+   ) ) ) -----------|c station ||r   take the Oak Street exit and turn left;
+  ( ( (       Street|a         ||e   five blocks will bring you to Embarca-
+   ) ) )            |d  Jackson||e   dero on your right, just before Oak
+  ( ( ( parking lot |e   ------||--  curves away to the left.  (Going south
+   ) ) )            |r   Street||w   on I-880, take the Jackson Street exit
+  ( ( (             |o         ||a   and go two blocks straight ahead before
+   ) ) )            |          ||y   you turn right on Oak Street.)  Turn
+  ( ( (           -------------||--  right onto Embarcadero and go three
+   ) ) )             Oak Street||    blocks, until you go under an overpass
+                                     of Victorian ironwork.  Immediately
+  turn left onto Alice Street, where you will see Jack London Village on
+  your right, and a large lot that offers validated parking on the left.
+  Walk into the Village's central courtyard, and you'll see the Dutch East
+  Indies on the estuary side, toward the right, and upstairs.
 
 To create this, I started by drawing the stylized building and then the map. In
 each case I created a large rectangular block of space characters, then began
 trying ideas with the R command until I had something that satisfied me. (The
 pavilion sketch eventually became wider than I had planned, so I had to run a
-:%s/.*/ & / command to give me more working space.) Next I put additional
+`:%s/.*/ & /` command to give me more working space.) Next I put additional
 blocks of space characters on the left of the drawing and the right of the map,
 to make a place for the text I wanted to include. Then I started replacing
 spaces with text, rewriting the text as I went along to fit it in nicely. When
@@ -406,7 +417,7 @@ the lines of each figure, one at a time, and put them after (or before) the
 appropriate text lines, one at a time. Not that I would have to move back and
 forth between files with each yank and put; I could yank up to 26 lines into
 the named buffers, then move to the other file and put all 26 in their proper
-places. But there is no Vi command to yank a rectangular block of characters.
+places. But there is no Vim command to yank a rectangular block of characters.
 
 Also take note that I should yank using addresses that are not line addresses,
 even though I will be yanking whole lines. If I should yank with line
@@ -415,9 +426,11 @@ separate lines -- then I would have to join each pair of lines to create the
 columns I want.
 
 Next Time Around
+----------------
 
 In the next part of this tutorial, I will go over host of complications and
 opportunities that come from allowing the replacement commands I've discussed
 to use metacharacters. Th en I'll answer a couple of questions from readers
 that should be of use to quite a few of you from time to time.
 
+// vim:set ft=asciidoc tw=78:

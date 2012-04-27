@@ -1,5 +1,5 @@
 Take Charge with Macros
-
+=======================
 By Walter Alan Zintz
 
 Text-Insertion Macros
@@ -14,6 +14,7 @@ In The Next Installment of this Tutorial
 SIDEBAR: The timeout Function
 
 Text-Insertion Macros
+---------------------
 
 As befits an editor with all those built-in metacharacters that operate while
 you are typing in text, there are two ways to create your own macros for use
@@ -24,14 +25,18 @@ some of these shorthand dodges built in. These two tools have as many
 similarities as differences, so I will expound them in parallel.
 
 What These Tools Do
+~~~~~~~~~~~~~~~~~~~
 
-Both tools act only when you are in text-insertion submode of screen-editing
-mode. Nonetheless, the commands that set them up and manage them are line-mode
+Both tools act only when you are in text-insertion submode of normal-editing
+mode. Nonetheless, the commands that set them up and manage them are ex-mode
 commands like:
 
+[source,vim]
+----
 :ab ucb University of California at Berkeley
 
 :map! } Control-[k2cc
+----
 
 The two example lines above will set up two shorthand forms that you can use
 without further preliminaries. The first line provides that whenever you type
@@ -62,10 +67,11 @@ integral components of part three. And whitespace includes both space
 characters and tabs, in any mixture.
 
 Working Principles
+~~~~~~~~~~~~~~~~~~
 
 Now that you've seen what these two tools do, let's consider how they work:
 
-:abbreviate
+.:abbreviate
 
 (Shortest abbreviation is :ab ). This tool acts when you type in a certain
 character or string as a separate word, each end bounded by whitespace, or a
@@ -91,7 +97,7 @@ though, you must fall back on typing the abbreviation with a letter immediately
 before or after it, then returning to command submode to erase the unwanted
 extra letter.
 
-:map!
+.:map!
 
 (No editor-accepted abbreviation). Very similar to the abbreviation tool
 discussed above, but with three major differences:
@@ -105,7 +111,7 @@ This tool does not simply insert the related text into the file, as the
 :abbreviate tool does; it acts as though the user had typed in the related text
 instead of the short form. That is, if there is an escape character in the
 related text, that escape will put the editor back into command submode, and
-interpret any following characters as screen-mode commands. (Unless one of
+interpret any following characters as normal-mode commands. (Unless one of
 those characters returns you to text insertion submode -- then characters
 following that insert-text command will be all be put into the file, unless and
 until there is another escape character.) That makes accidentally triggering
@@ -115,7 +121,7 @@ Quoting in a character or string that you've defined as a short form via this
 command is simple. Type control-V before the metacharacter, or the first
 character of the metastring, and into the text it goes. Even that may not be
 required if you are dealing with a metastring, and if the timeout option to the
-:set command is still in its default state: turned on. In this case, all you
+`:set` command is still in its default state: turned on. In this case, all you
 need to do is be sure that you take more than one full second to type in the
 entire metastring, and it will have no meta effect. (This, by the way, is one
 reason that this tool's metastrings should be short -- so you can depend on
@@ -127,7 +133,7 @@ anyone would want to mess around with :abbreviate when it seems much easier to
 do a general substitution command when the document is complete. That is,
 instead of that abbreviation I set up at the start of this explanation, just
 run a :%s/\<ucb\>/University of California at Berkeley/g command after all the
-text has been entered. There are several reasons to use Vi's abbreviation
+text has been entered. There are several reasons to use Vim's abbreviation
 feature instead:
 
 It's not hard to unknowingly type in your abbreviated string where you don't
@@ -180,7 +186,7 @@ would be more complex. You could then type the two control-D or control-Hs
 within one second to get the mapped text typed in, or you could type control-D
 or control-H followed by a one-second pause to invoke the ordinary metavalue.
 
-Time for another exercise .
+.Time for another exercise
 
 Suppose that you used control-D or control-H as a short form with the
 :abbreviate command. Or suppose that you used some ordinary character string as
@@ -202,20 +208,26 @@ you can query either tool ju st by giving its setup command without any
 arguments. Here are examples of those queries, with the responses you might
 receive from the editor:
 
+[source,vim]
+----
 :ab
+----
 
-cat   cat   felix domesticus
+  cat   cat   felix domesticus
 
-wolf  wolf  canis lupus
+  wolf  wolf  canis lupus
 
 
+[source,vim]
+----
 :map!
+----
 
-{     {     ^[o^I^IThe End^[
+  {     {     ^[o^I^IThe End^[
 
-}     }     ^[o^I^I-XXX-^[
+  }     }     ^[o^I^I-XXX-^[
 
-~     ~     (more to come)^[
+  ~     ~     (more to come)^[
 
 Note that each response line has at least three strings of printing characters,
 separated by whitespace. It's that second string in a line that is the short
@@ -233,14 +245,18 @@ short form but precede it with ``un'', and as the only argument give the short
 form you want to disable. For example, here are the commands that will disable
 the first entry in each of the lists above:
 
+[source,vim]
+----
 :unab cat
 
 :unmap! {
+----
 
 Command-Submode Macros
+----------------------
 
 It's common that a text editor has a facility that lets a user create
-personalized commands, usually as macros built on existing commands. The Vi/Ex
+personalized commands, usually as macros built on existing commands. The Vim/Ex
 editor has four such facilities -- something for every need. While these
 facilities don't have the low-level programmability of mock-Lisp, they can
 accomplish a lot to simplify your editing, and you don't need to learn a
@@ -252,23 +268,27 @@ to good effect, by using a macro of one type to call a macro of a different
 type.
 
 :map Macros
+~~~~~~~~~~~
 
 This is the editor tool that's closest to what most users think of as a macro
 facility. It uses the command :map as its setup tool, and the macros it creates
-operate when the user is in command submode of screen-editing mode. Otherwise
+operate when the user is in command submode of normal-editing mode. Otherwise
 it works just the way its very close relative, the :map! tool, works -- which I
 explained in depth in the first half of this tutorial part, above. Consider the
 three command lines below:
 
+[source,vim]
+----
 :map v :!wc -w %Control-M
 
 :unmap v
 
 :map
+----
 
 The first line sets up a macro that does a word count on the file I am editing,
 as of the last write to storage, whenever I type the letter v from command
-submode while I am screen editing. The second unsets that macro, so that a v
+submode while I am normal editing. The second unsets that macro, so that a v
 command no longer does anything. The third displays a list of the :map macros
 that are currently in effect. All this should be transparently plain to readers
 who understand the :map! tool. Still, there are a few points worth noting that
@@ -276,35 +296,41 @@ are particularly applicable to the :map side of the family.
 
 Choosing a short-form for :map macros should not be difficult. Half a dozen of
 the printing ASCII characters and many of the control characters are not used
-as screen-editing commands or addresses. Hardly any strings of two duplicate
+as normal-editing commands or addresses. Hardly any strings of two duplicate
 characters (such as ``DD'' above) are in use, and most editor versions will let
 you map such strings. You don't need to avoid duplicating your :map! short
 forms because the name spaces are completely separate. That is, if you use a
 particular character or string as a :map short-form and also as a :map!
 short-form; for example:
 
+[source,vim]
+----
 :map }} :!wc -w %Control-M
 
 :map! }} Control-[j0R
+----
 
 there is no conflict. The editor will allow both mappings, and will use the
 correct long-form based on the context; whether you typed }} from command or
 text-insertion submode. As the first example above shows, your command string
-can include any of the line-mode commands that can be invoked from screen mode,
+can include any of the ex-mode commands that can be invoked from normal mode,
 providing you begin each one with a colon ``:'' as you would when invoking it
-directly while in screen mode, and quote in a Control-M (the RETURN character)
+directly while in normal mode, and quote in a Control-M (the RETURN character)
 to terminate the command.
 
 Suppose that you ran the two following setup commands, either one first:
 
+[source,vim]
+----
 :map Q 2dd
 
 :map V 3jQ
+----
 
 The first command clearly provides that the Q command, which ordinarily is the
-command that takes you out of screen mode and into line mode, does not do that
+command that takes you out of normal mode and into ex mode, does not do that
 any more. Instead, it now deletes two lines, and you now have no way to leave
-screen mode without unmapping the ``Q'' character. But what does the new V do?
+normal mode without unmapping the ``Q'' character. But what does the new V do?
 
 If you've left the :set command's remap option turned on, its default value,
 then the V drops down three lines and then deletes that third line and the one
@@ -318,6 +344,7 @@ line-editing mode. (Yes, that means that while you would no longer be able to
 execute the Q as itself directly, your macros could still access it!)
 
 Buffer Macros
+~~~~~~~~~~~~~
 
 There are limits to the amount of macro text you can store by mapping it -- not
 as severe now as with earlier versions of the editor, but still somewhat
@@ -326,9 +353,9 @@ practically unlimited storage. It involves those buffers where you store text
 pulled from your file, for later reinsertion at various places. Specifically I
 mean the twenty-six buffers named ``a'' through ``z''.
 
-From screen-editing command sub-mode, you can type an at-sign ``@'' followed by
+From normal-editing command sub-mode, you can type an at-sign ``@'' followed by
 a letter of the alphabet, and the editor will take the contents of the buffer
-with that letter-name and execute it as a screen-mode command string. For
+with that letter-name and execute it as a normal-mode command string. For
 example, if you have ``0d3w'' (without the quotation marks) stored in
 named-buffer ``k'', then typing @k will delete the first three words on the
 current line. After you start using this method in your editing session,
@@ -339,9 +366,12 @@ To put a command into a named buffer, get the line or lines of your command
 into your file one way or another, then delete or yank them into the buffer of
 your choice, as by:
 
+[source,vim]
+----
 "p3dd
 
 :ya m
+----
 
 to delete a three-line macro into buffer ``p'' and yank a one-line macro into
 buffer ``m'', respectively. You need not tell the editor that you regard the
@@ -358,57 +388,62 @@ command character by the editor when you execute the buffer contents as an
 editing command string.
 
 :source Macros
+~~~~~~~~~~~~~~
 
-Line-mode commands have a macro tool in this editor, too. Of course you can
-insert most line-mode commands in the previous two types of macros, but this
-tool is dedicated entirely to line-mode commands, and can include even commands
-that can't be run interactively from screen mode via a preceding colon. The
-only line-mode commands that can't be run with this tool are the visual and
+ex-mode commands have a macro tool in this editor, too. Of course you can
+insert most ex-mode commands in the previous two types of macros, but this
+tool is dedicated entirely to ex-mode commands, and can include even commands
+that can't be run interactively from normal mode via a preceding colon. The
+only ex-mode commands that can't be run with this tool are the visual and
 open commands. With this tool, you set up your macros by putting their commands
 into one or more files, then invoke them with command lines like:
 
+[source,vim]
+----
 :so /u/myname/commands.1
+----
 
-Your command files should contain strictly line-mode commands, one per line
+Your command files should contain strictly ex-mode commands, one per line
 unless you separate them within the line by pipe ``|'' characters, a nd should
 not have a colon before each command. The other restrictions depend on how you
 plan to invoke your macro files. Ideally you should give your source commands
-while you are in line mode -- then the above limitations are all you will face.
-But if you insist on invoking :source while in screen mode, there are two other
+while you are in ex mode -- then the above limitations are all you will face.
+But if you insist on invoking :source while in normal mode, there are two other
 limitations:
 
 Only the first line of your command file will execute. Due to the editor
-restriction against running multi-line line-mode commands while in screen mode,
+restriction against running multi-line ex-mode commands while in normal mode,
 all lines after the first in your command file will be silently discarded.
 
 If your first command is not complete on the first line (for instance, an
 append is not), even that command will not execute. In this case the failure
 will not be silent.
 
-Another Exercise
+.Another Exercise
 
-So if you want to source in command files from within screen mode, it's a very
+So if you want to source in command files from within normal mode, it's a very
 good idea to create one-line command files. But there will be a few cases
 where multi-line command files will be a worthwhile thing, even when you may be
-invoking them from screen mode. Here's an easy exercise for you: come up with a
+invoking them from normal mode. Here's an easy exercise for you: come up with a
 specific case in which a command file that you may source in from either line
-or screen mode should nonetheless have more than one line. Of course there are
+or normal mode should nonetheless have more than one line. Of course there are
 multiple possibilities here, so don't be disturbed if the solution that occurs
 to you is not one of those I arbitrarily chose for my answer .
 
 When you really get into sourcing, you'll be pleased to know that :source files
 can contain commands to call other :source files. This is the basis for truly
 modular editor scripts, and for a raft of rather tricky maneuvers. It also
-saves typing when you need to invoke a source file from screen mode, but the
+saves typing when you need to invoke a source file from normal mode, but the
 list of commands is simply too long to fit on one line: a single line in your
 initial source file is long enough to call a very large number of other source
 files, each with a single long line of commands. You will probably find that
-invoking nested :source files from line mode will turn off line mode's colon
+invoking nested :source files from ex mode will turn off ex mode's colon
 prompt, but you can turn it back on again via a :se prompt command.
 
 Write and Read Macros
+---------------------
 
-The Vi/Ex editor has tools for running some or all of the lines in the file
+The Vim/Ex editor has tools for running some or all of the lines in the file
 you're editing through a program outside the editor, then using the transformed
 lines to replace the original lines in your file. It can also run a program
 with any or no input and insert the program's output in your file, or write
@@ -431,11 +466,11 @@ text-processing program named myhack that lives within your searchpath.
 into nicely looking text blocks that are easier to read. I use the program
 named reform, published on pages 320-321 in the first edition of the famous
 book Programming Perl by Larry Wall and Randal L. Schwartz. At first blush you
-may ask, why use such an external program when I can simply set Vi's wrapmargin
+may ask, why use such an external program when I can simply set Vim's wrapmargin
 variable? Of course, the answer is how do you easily reform paragraphs that are
 already ragged, say due to the problem Walter posed above (using find and
 replace to expand abbreviations, instead of expanding abbreviations using the
-built-in Vi abbreviation macro facility?]
+built-in Vim abbreviation macro facility?]
 
 Note that the command to execute the outside program should be typed as you
 would type it at your shell prompt, because it will be passed to the shell
@@ -443,9 +478,11 @@ intact except for the addition of input and/or output redirection.
 
 If you want to take some (or all) of the lines out of your file, use them as
 input to your outside program, then put the resulting output in place of the
-original lines, you can use either a line-mode or a screen-mode command to do
+original lines, you can use either a ex-mode or a normal-mode command to do
 it, as shown below:
 
+[source,vim]
+----
 :196,254 ! myhack -n6
 
 !L myhack -n6
@@ -453,16 +490,17 @@ it, as shown below:
 12!! myhack -n6
 
 !/^CHAPTER/- myhack -n6
+----
 
-The line-mode command can be invoked from line mode, or from screen mode by
+The ex-mode command can be invoked from ex mode, or from normal mode by
 preceding it with a colon. In either case, you give an address or address
 range, next the exclamation point, then everything following until you type
-return is passed to the shell as a command line. The line-mode command must
+return is passed to the shell as a command line. The ex-mode command must
 have at least one address because there is no default address for this command.
 But the whitespace I show before and after the exclamation point is permissible
 but not necessary; I put it in solely for readability.
 
-Screen-mode command form is the exclamation point as the command name, followed
+normal-mode command form is the exclamation point as the command name, followed
 by the target address, then the outside command (with arguments and/or
 whitespace as would be required or permitted on your shell command line),
 ending when you hit the escape or return key. As with the c d y commands, you
@@ -475,7 +513,7 @@ press the escape key before you start typing the outside command.
 You' re not limited to just one outside program at a time. You can pipeline two
 or more together as your shell permits, ordinarily with the ``|'' character.
 (Because a | character and what follows it will be passed to the shell, this
-editor command cannot appear in a line-mode command string, including a :global
+editor command cannot appear in a ex-mode command string, including a :global
 string, unless it is the last command in the string.) The final output of the
 pipeline is what will go into your file. And you can undo the effect of the
 outside command or pipeline, putting your file back the way it was, with a u
@@ -485,13 +523,16 @@ You may not want your text to make a round trip, though. You may want to send
 your text, as modified by your outside program, off to some other destination,
 or you may want to pull some text into your file that originated in your
 outside program, or was taken from some outside source. In these cases, use the
-line-mode commands that appear below:
+ex-mode commands that appear below:
 
+[source,vim]
+----
 :1,.w ! myhack -n6 > nufile
 
 :2
 
 17r ! myhack -n6 < oldfile
+----
 
 The first command above sends the initial lines from the file you are editing
 as input to your myhack program, and redirects the output to a file. It does
@@ -499,7 +540,7 @@ not erase the affected lines from the file you are editing. The second runs
 your myhack program using the contents of another file as the input, then
 places the output in the file you are editing, right after line 217.
 
-Both line-mode commands are shown with addresses, but they are not necessary.
+Both ex-mode commands are shown with addresses, but they are not necessary.
 The default address for a :write command is the entire file; for a :read
 command, right after the current line. The space character just before the
 exclamation-point flag after each command is absolutely essential; without it
@@ -513,6 +554,7 @@ redirection into your outside program or you can put the redirection on the
 command line as shown above, using your own shell's notation.
 
 In The Next Installment of this Tutorial
+----------------------------------------
 
 I'll be putting the techniques I've taught so far to work, showing how to set
 up the editor for special purposes. Your suggestions on what special purposes

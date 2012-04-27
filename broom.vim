@@ -1,7 +1,9 @@
 " Usual replacements.
-%s/\<vi\>/vim/gce
+%s/\c\<vi\>/&m/gce
 %s/\<visual\>\ze.mode/normal/gce
 %s/\<visual\>/normal/gce
+%s/\<screen\>\ze.mode/normal/gce
+%s/\<screen\>/normal/gce
 %s/\<line\>\ze.mode/ex/gce
 %s/\<line\>/ex/gce
 $put ='// vim:set ft=asciidoc tw=78:'
@@ -14,3 +16,5 @@ let @b = "\<Esc>j4i-\<Esc>o\<Esc>gvo\<Esc>O[source,vim]\<CR>----\<Esc>/----\<CR>
 let @c = "\<Esc>yypVr"
 0
 let @/ = '^\n\zs.\+\n$'
+
+set ft=asciidoc
