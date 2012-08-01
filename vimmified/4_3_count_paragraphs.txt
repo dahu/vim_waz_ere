@@ -1,0 +1,3 @@
+% substitute /^$
+
+counts the number of paragraphs in a file
