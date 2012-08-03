@@ -62,6 +62,8 @@ will make that text line come out as:
 
   inure to Lee and Smith's benefit only if Lee and Smith shall
 
+anchor:Q4.1[]
+
 Finer tuning of the instances can be done by a little trickery. Suppose you
 are working on tables, and want to change only the very last ``k37'' on each
 line to ``q53''. This command will do it:
@@ -80,10 +82,12 @@ with the last ``k37'' in the line.
 [caption=""]
 ====
 
+.4.1 -- Substituting the second-to-last element on a line
+
 Now you should be able to extend this example. What command would change only
 the second-to-last ``k37'' on each line? This requires a shrewd guess from
-you, so I've written a link:#T4_change_second_last[solution] you can compare
-to your own.
+you, so I've written a link:4_substitute_command_solutions.html#S4.1[solution]
+you can compare to your own.
 ====
 
 A Few More Metacharacters
@@ -330,15 +334,137 @@ the same results as the first use did.
 .Spot Quiz
 [caption=""]
 ====
+
+.4.2 -- Setting a line to Title Case
+
 Now another exercise for you. Suppose that lines 237 through 289 of a file
 have unknown capitalization -- any line could be all caps, all lower case, or
 some mixture. These lines are to be changed so that the first letter of every
-word is a capital and all other letters are lower case. To simplify this,
-words are separated by space characters. What is the easy way to do this with
-one ex-mode substitution command? This exercise depends on something I did not
-state directly, so don't feel bad if my link:#T4_title_case[solution] is a
-little simpler than yours.
+word is a capital and all other letters are lower case (that is, Title Case).
+To simplify this, words are separated by space characters. What is the easy
+way to do this with one ex-mode substitution command? This exercise depends on
+something I did not state directly, so don't feel bad if my
+link:#T4_title_case[solution] is a little simpler than yours.
+
 ====
+
+Lookaround for Advanced Substitutions
+-------------------------------------
+
+Vim has a suite of powerful lookaround metacharacters that allow you to more
+specifically anchor your searches when doing substitutions.
+
+* \(pattern\)\@=   -- positive lookahead similar to Perl's ++(?=pattern)++
+* \(pattern\)\@!   -- negative lookahead similar to Perl's ++(?!pattern)++
+* \(pattern\)\@\<=  -- positive lookbehind similar to Perl's ++(?\<=pattern)++
+* \(pattern\)\@<!  -- negative lookbehind similar to Perl's ++(?<!pattern)++
+* \(pattern\)\@>   -- negative lookahead similar to Perl's ++(?>pattern)++
+
+See ++:help /\@=++ for the section of the manual that explains how these
+metacharacters are used in Vim, along with examples of what each one is suited
+for -- and occasionally not suited for.
+
+.A few quick examples:
+
+* Find a signature string of the form: ++# Some Name, yyyy mm dd++
++
+[source,vim]
+----
+  /\(^\s*#\s*\)\@<=\(\w.*\)\(,\s*\d\{4}.\d\d.\d\d\s*$\)\@=
+----
++
+However it's almost always easier, faster and better to use Vim's ++\zs++ and
+++\ze++ in these situations:
++
+[source,vim]
+----
+  /^\s*#\s*\zs\w.*\ze,\s*\d\{4}.\d\d.\d\d\s*$
+----
++
+* Find the next line containing ``invoice'' without ``paid'' appearing
+anywhere within the same line:
++
+[source,vim]
+----
+  /^\(.*paid\)\@!.*invoice
+----
++
+* Find ``include'' statements that haven't been commented out:
++
+[source,vim]
+----
+  /^\s*\(\/\/\s*\)\@<!include
+----
+
+Setting The Start And End Of A Match Within A Search
+----------------------------------------------------
+
+As useful as lookaround is for precision searching, it's quite often overkill
+and cumbersome to specify correctly when all you're really after is a way to
+specify the start and end of where vim should match inside your larger search
+area. Grabbing just the developer's name in the signature line above is one
+example. Use ++\zs++ to tell Vim to rely on what came before it to anchor the
+match, but not include it in the match. Use ++\ze++ to likewise anchor what
+follows but not include it in the match.
+
+.Spot Quiz
+[caption=""]
+====
+
+.4.3 -- Substituting the third element in a line of many
+
+Given a dataset like:
+
+----
+@items = [
+  [1,  2,  3,  4,  5],
+  [6,  7,  8,  9,  10],
+  [11, 12, 13, 14, 15]
+]
+----
+
+1. What command would remove the 3rd column of numbers?
+2. **Bonus Question:** What command would double the numbers in the third
+   column instead of removing them? This requires a feature I haven't
+   mentioned yet about Vim's substitute command -- ++:help
+   sub-replace-expression++
+
+====
+
+Substitute With An Expression
+-----------------------------
+
+Vim normally treats the replacement part of a ++:substitute/find/replace/++
+command as a string possibly containing various special characters that are
+expanded to alter and augment the replacement. One such special character,
+++\=++ (which must appear at the very start of the replacement), treats the
+rest of the string as an expression, giving your substitutions the full power
+of Vimscript. If you haven't learnt Vimscript yet, Damian Conway's excellent
+introduction article series,
+http://www.ibm.com/developerworks/linux/library/l-vim-script-1/index.html[Scripting
+the Vim editor], is a great place to start.
+
+Inside a ++\=++ expression, you must use ++submatch(0)++, ++submatch(1)++,
+++submatch(2)++, etc for the ++&++, ++\1++, ++\2++, etc that you would usually
+use in a replacement to refer to captured groups in the match.
+
+.Example: Changing the timestamp in a signature
+
+Given the following signature in a file:
+
+----
+# John Doe, Fri 03 Aug 2012 11:48:47 AM CST
+----
+
+We'd use the following substitution to update the timestamp:
+
+[source,vim]
+----
+  substitute /,\s*\zs.*/\=strftime("%c")/
+----
+
+// TODO: link there
+Now you're ready for the Bonus Question in Spot Quiz 4.2
 
 Other Uses for Substitution
 ---------------------------
