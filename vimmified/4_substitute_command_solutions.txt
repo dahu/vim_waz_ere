@@ -1,0 +1,162 @@
+The Subtle Substitute Command
+=============================
+Walter Alan Zintz
+
+Solutions to Exercises
+----------------------
+
+// TODO: folding the actual solutions in a clickable reveal would be nice.
+
+anchor:S4.1[]
+
+Solution 4.1
+~~~~~~~~~~~~
+
+link:4_substitute_command.html#Q4.1[Question]
+
+The solution here requires starting with the second-to-last match
+first in the pattern. By following it with ``anything up to another
+k37 and beyond to the end of the line'' and capturing that additional
+text, we can replace our match with the new q53 followed by the
+captured text.
+
+[source,vim]
+----
+  %s/k37\(.*k37.*\)/q53\1/
+----
+
+
+anchor:S4.2[]
+
+Solution 4.2
+~~~~~~~~~~~~
+
+link:4_substitute_command.html#Q4.2[Question]
+
+Because the original lines could be any mix of case, we have to
+capture and operate on each word. Because we want the first letter to
+be upper-case and the rest of the letters in the word to be
+lower-case, we capture them separately and operate on them in the
+replacement part as ++\1++ and ++\2++ respectively. Recall that ++\u++
+operates on the following letter whereas ++\L++ operates on the
+following word.
+
+[source,vim]
+----
+  237 , 289 substitute /\(\w\)\(\w\+\)/\u\1\L\2/g
+----
+
+If you're just changing an all lowercase line into Title Case, the
+substitution is much simpler:
+
+[source,vim]
+----
+ 237 , 289 substitute /\<\w/\u&/g
+----
+
+So, an alternative way to Title Case a line without using explicit
+capture:
+
+[source,vim]
+----
+  237 , 289 global /./ substitute /.*/\L&/ | s/\<\w/\u&/g
+----
+
+
+anchor:S4.3[]
+
+Solution 4.3
+~~~~~~~~~~~~
+
+link:4_substitute_command.html#Q4.3[Question]
+
+1. Deleting the third column
+
+We use ++\zs++ and ++\ze++ to focus the match within the search part
+of a substitution while using the patterns outside of these markers as
+anchors. Assuming you've visually selected the lines you want to
+operate on, the following substitute will delete column 3 from all
+rows:
+
+[source,vim]
+----
+  '< , '> substitute /\(\d\+,\s*\)\{2}\zs\d\+,\s*\ze//
+----
+
+The ++\{2}++ notation is Vim's way of requiring two repetitions of the
+previous element, which in this case is a number followed by a comma
+-- effectively stepping past the first two columns. We then restrict
+our match to only the third column by wrapping the pattern in
+++\zs++ and ++\ze++.
+
+2. Doubling the numbers in the third column
++
+[Note]
+====
+Read the Substitute With An Expression section if you don't know how
+to approach this problem.
+====
+
+Much the same approach is taken in the search side of the substitute
+to narrow our search down to just column three -- however because this
+time we want to double the numbers and not delete the whole column,
+we're narrowing down even more to just the numbers themselves. The
+replacement needs to be an expression so we enter expression mode by
+starting the replacement string with the ++\=++ special. Within a
+replacement expression, we use ++submatch(1)++ to refer to the first
+captured text in the match (what ++\1++ would ordinarily give us, but
+which can't be used inside an expression replacement.)
+
+[source,vim]
+----
+  '< , '> substitute /\%(\d\+,\s*\)\{2}\zs\(\d\+\)\ze/\=submatch(1)*2/
+----
+
+We use the non-capturing ++\%(...\)++ group in the column skip section
+to make the replacement clearer -- ++submatch(1)++ is operating on
+column three which is between the ++\zs++ and ++\ze++ markers. It
+would feel a bit strange to use a capturing group in the column skip
+section and then not use it in the replacement and yet have to refer
+to the subsequent capture. It's messy just trying to explain that.
+Non-capturing groups are slightly more efficient too, but I usually
+use them to reduce confusion, as shown in this example.
+
+
+anchor:S4.4[]
+
+Solution 4.4
+~~~~~~~~~~~~
+
+link:4_substitute_command.html#Q4.4[Question]
+
+So, what does this seemingly useless substitute do?
+
+[source,vim]
+----
+  % substitute /^$
+----
+
+It counts the number of blank lines in your file. That might still
+sound useless to you, unless you always separate your paragraphs with
+a single blank line. Now you know how many paragraphs you've written!
+
+
+anchor:S4.5[]
+
+Solution 4.5
+~~~~~~~~~~~~
+
+link:4_substitute_command.html#Q4.5[Question]
+
+
+
+[source,vim]
+----
+  % substitute /^$
+----
+
+It counts the number of blank lines in your file. That might still
+sound useless to you, unless you always separate your paragraphs with
+a single blank line. Now you know how many paragraphs you've written!
+
+
