@@ -70,7 +70,7 @@ Solution 4.3 -- Substituting the third element in a line of many
 +
 link:4_substitute_command.html#Q4.3[Question]
 +
-We use ++\zs++ and ++\ze++ to focus the match within the search part
+We use ++\zs++ to focus the match within the search part
 of a substitution while using the patterns outside of these markers as
 anchors. Assuming you've visually selected the lines you want to
 operate on, the following substitute will delete column 3 from all
@@ -78,14 +78,14 @@ rows:
 +
 [source,vim]
 ----
-  '< , '> substitute /\(\d\+,\s*\)\{2}\zs\d\+,\s*\ze//
+  '< , '> substitute /\(\d\+,\s*\)\{2}\zs\d\+,\s*//
 ----
 +
 The ++\{2}++ notation is Vim's way of requiring two repetitions of the
 previous element, which in this case is a number followed by a comma
 -- effectively stepping past the first two columns. We then restrict
 our match to only the third column by wrapping the pattern in
-++\zs++ and ++\ze++.
+++\zs++.
 +
 anchor:S4.3.2[]
 +
@@ -111,12 +111,14 @@ which can't be used inside an expression replacement.)
 +
 [source,vim]
 ----
-  '< , '> substitute /\%(\d\+,\s*\)\{2}\zs\(\d\+\)\ze/\=submatch(1)*2/
+  '< , '> substitute /\%(\d\+,\s*\)\{2}\zs\d\+/\=submatch(0)*2/
 ----
 +
+NOTE: Fix prose for non-capturing/capturing groups.
+
 We use the non-capturing ++\%(...\)++ group in the column skip section
-to make the replacement clearer -- ++submatch(1)++ is operating on
-column three which is between the ++\zs++ and ++\ze++ markers. It
+to make the replacement clearer -- ++submatch(0)++ refers to
+column three which starts after the ++\zs++ marker. It
 would feel a bit strange to use a capturing group in the column skip
 section and then not use it in the replacement and yet have to refer
 to the subsequent capture. It's messy just trying to explain that.
@@ -183,5 +185,5 @@ substitutions.
 +
 [source,vim]
 ----
-  % substitute /.\(<.\+>\)\@<!\_$\zs\n\n\+\ze\(<.\+>\)\@!/<\/p>&<p>/
+  % substitute /.\(<.\+>\)\@<!\zs\n\n\+\ze\(<.\+>\)\@!/<\/p>&<p>/
 ----
