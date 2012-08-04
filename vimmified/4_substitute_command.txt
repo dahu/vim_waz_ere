@@ -239,7 +239,7 @@ capitalized, use:
   % substitute /[Kk]it/& and kaboodle/g
 ----
 
-If you have magic turned off (:help 'magic), you must backslash the ``&'' to
+If you have magic turned off (:help \'magic), you must backslash the ``&'' to
 give it metavalue. With magic on, backslash an ``&'' to insert it as a regular
 character. Turning magic off is an antiquated practise and is probably not
 something you'll want to do often, if ever. Vim does offer an enhanced magic
