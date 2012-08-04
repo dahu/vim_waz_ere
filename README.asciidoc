@@ -6,7 +6,7 @@ __Vimmified version of the venerable http://www.networkcomputing.com/unixworld/t
 . (done) Editor Fundamentals
 . (done) Line Addresses
 . (done) Global Command
-. (underway) Substitute Command
+. (pending review) Substitute Command
 . Take Control Of Your Editing Environment
 . Addresses And Columns
 . The Replacement Commands

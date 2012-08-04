@@ -220,8 +220,6 @@ the correct answer is not discarded as a side effect. This is primarily an
 example of a change that can be done more simply by using other metacharacters
 in the replacement pattern. Those other metacharacters are described below.
 
-// TODO: add section here introducing \zs
-
 Replacement-Pattern Metacharacters
 ----------------------------------
 
@@ -386,8 +384,8 @@ for -- and occasionally not suited for.
   /\(^\s*#\s*\)\@<=\(\w.*\)\(,\s*\d\{4}.\d\d.\d\d\s*$\)\@=
 ----
 +
-However it's almost always easier, faster and better to use Vim's ++\zs++ and
-++\ze++ in these situations:
+However it's almost always easier, faster and better to use Vim's
+link:#start_and_end_of_match[++\zs++ and ++\ze++] in these situations:
 +
 [source,vim]
 ----
@@ -410,6 +408,8 @@ anywhere within the same line:
 ----
 
 anchor:Q4.3[]
+
+anchor:start_and_end_of_match[]
 
 Setting The Start And End Of A Match Within A Search
 ----------------------------------------------------
@@ -438,6 +438,8 @@ Given a dataset like:
 ]
 ....
 
+anchor:Q4.3.2[]
+
 1. What command would remove the 3rd column of numbers?
    link:4_substitute_command_solutions.html#S4.3.1[Solution]
 2. **Bonus Question:** What command would double the numbers in the third
@@ -447,6 +449,8 @@ Given a dataset like:
    link:4_substitute_command_solutions.html#S4.3.2[Solution]
 
 ====
+
+anchor:substitute_expression[]
 
 Substitute With An Expression
 -----------------------------
@@ -480,8 +484,7 @@ We'd use the following substitution to update the timestamp:
   substitute /,\s*\zs.*/\=strftime("%c")/
 ----
 
-// TODO: link there
-Now you're ready for the Bonus Question in Spot Quiz 4.3
+Now you're ready for the link:#Q4.3.2[Bonus Question in Spot Quiz 4.3]
 
 Other Uses for Substitution
 ---------------------------
@@ -567,14 +570,13 @@ link:4_substitute_command_solutions.html#S4.4[Solution] to this one.
 
 ====
 
-// TODO: Change this from 'script writing' to 'Complex Edits'
-A Start on Script Writing
--------------------------
+Complex Edits
+-------------
 
-// TODO: reword to change focus to match title
 Already you know enough about Vim to be able to plan some fairly complex
-edits. Here's a short introduction to the art of writing editing scripts for
-Vim.
+edits. Here's a short introduction to the art of crafting truly complex
+substitutions and knowing when to abandon them for multiple simpler solutions
+that when used together solve the problem more clearly.
 
 .A Bottom-Up Approach
 
@@ -766,25 +768,17 @@ At times a command needs to be supercharged by way of a far out use of
 substitution -- something perfectly legitimate, but never intended by the
 people who wrote this editor. Here are a few that you may find useful.
 
-// TODO: update this outdated info
-
-You can't make a substitution that extends over more than a single line--not
-directly, that is. Any attempt to put a ``newline'' character in either the
-to-be-replaced pattern or the replacement pattern of a substitution command
-will fail. But by combining the global and substitute commands, you can often
-get the effect of a substitution that spills over a line ending.
-
 Let's suppose that you have to alter a long document so that all references to
 ``Acme Distributors'' are changed to ``Barrett and Sons''. A simple
 substitution command will make most of these changes, but it will miss those
 instances where ``Acme'' appears at the end of one line and the next line
 starts with ``Distributors''. A follow-up pair of substitutions, to replace
 ``Acme'' wherever it appears at the end of a line and to replace
-``Distributors'' when it starts a line, would wreak havoc--this document also
-refers to ``Acme Supply Co.'' and to three other companies whose names end
-with ``Distributors''.
+``Distributors'' when it starts a line, would wreak havoc -- this document
+also refers to ``Acme Supply Co.'' and to three other companies whose names
+end with ``Distributors''.
 
-But we can handle this problem nicely with the following two command strings:
+We can handle this problem nicely with the following two command strings:
 
 [source,vim]
 ----
@@ -801,7 +795,21 @@ process to change ``Acme'' to ``Barrett'', but only in the right instances.
 ``Distributors'', because the first command has changed those line-split
 ``Acme Distributors'' to ``Acme and Sons''.)
 
-// TODO: insert \_s alternative
+We 'could' even just use two simpler substitutions using ++\n++ in the second
+to catch the wrapped case:
+
+[source,vim]
+----
+  % substitute /Acme Distributors/Barret and Sons/g
+  % substitute /Acme\nDistributors/~/g
+----
+
+'Or' we can use Vim's ++\_s++ which captures whitespace across newlines:
+
+[source,vim]
+----
+  % substitute /Acme\_sDistributors/Barret and Sons/g
+----
 
 Often it is a good strategy to start with a change you definitely don't want
 in order to wind up with what you do want. Suppose you are a technical writer
@@ -843,7 +851,13 @@ changes safe from the effect of your second command. Then, after that second
 command has finished, the third command changes those Q strings to what you
 had wanted in the first place.
 
-// TODO: insert \= alternative here
+Can you do it in one go with Vim? Sure -- using a
+link:#substitute_expression[substitute expression].
+
+[source,vim]
+----
+  %s/\(left\|right\)\zehand/\=(submatch(1) =~ 'l' ? 'right' : 'left')/g
+----
 
 It can even make sense to type in things incorrectly, then change them to what
 you want via substitution. When I'm writing documents in plain ASCII, to be
@@ -879,7 +893,17 @@ respectively:
   [[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
 ....
 
-// TODO: 80i-<esc>
+[NOTE]
+====
+Don't mash the ``-'' key while it repeats out thirty or eighty times. Instead,
+use Vim's ++[count] insert++ normal mode command to do the repeat for you:
+
+[source,vim]
+----
+  80i-     Terminating with <Escape>
+----
+
+====
 
 Then I only have to run a simple repeated substitution to get the line I
 actually want. Here are the commands I would run on the four lines above,

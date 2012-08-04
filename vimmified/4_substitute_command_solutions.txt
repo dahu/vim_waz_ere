@@ -83,9 +83,8 @@ rows:
 +
 The ++\{2}++ notation is Vim's way of requiring two repetitions of the
 previous element, which in this case is a number followed by a comma
--- effectively stepping past the first two columns. We then restrict
-our match to only the third column by wrapping the pattern in
-++\zs++.
+-- effectively stepping past the first two columns. We then start our
+match with ++\zs++, restricting it to only the third column.
 +
 anchor:S4.3.2[]
 +
@@ -114,16 +113,11 @@ which can't be used inside an expression replacement.)
   '< , '> substitute /\%(\d\+,\s*\)\{2}\zs\d\+/\=submatch(0)*2/
 ----
 +
-NOTE: Fix prose for non-capturing/capturing groups.
-
 We use the non-capturing ++\%(...\)++ group in the column skip section
-to make the replacement clearer -- ++submatch(0)++ refers to
-column three which starts after the ++\zs++ marker. It
-would feel a bit strange to use a capturing group in the column skip
-section and then not use it in the replacement and yet have to refer
-to the subsequent capture. It's messy just trying to explain that.
-Non-capturing groups are slightly more efficient too, but I usually
-use them to reduce confusion, as shown in this example.
+to make the replacement clearer -- ++submatch(0)++ now refers to
+column three which starts after the ++\zs++ marker. Non-capturing
+groups are slightly more efficient, but I usually use them to reduce
+confusion, as shown in this example.
 
 
 anchor:S4.4[]
@@ -143,8 +137,6 @@ So, what does this seemingly useless substitute do?
 It counts the number of blank lines in your file. That might still
 sound useless to you, unless you always separate your paragraphs with
 a single blank line. Now you know how many paragraphs you've written!
-
-// TODO: 4.5 and 4.6 need Vim enhancements
 
 anchor:S4.5.1[]
 
