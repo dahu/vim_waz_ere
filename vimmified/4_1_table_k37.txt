@@ -1,8 +1,0 @@
-this one k37 here k37 there
-this one k37 here k37 there
-this one k37 here k37 there
-this one k37 here k37 there
-this one k37 here k37 there
-this one k37 here k37 there
-
-%s/k37\(.*k37.*\)/q53\1/

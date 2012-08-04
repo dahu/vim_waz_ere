@@ -1,5 +1,0 @@
-righthand
-lefthand
-
-%s/\(left\|right\)\zehand/\=(submatch(1) =~ 'l' ? 'right' : 'left')/g
-

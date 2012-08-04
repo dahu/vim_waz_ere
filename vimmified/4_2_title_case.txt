@@ -1,6 +1,0 @@
-this is a test
-this is a test
-this is a test
-this is a test
-
-%s/\(\w\)\(\w\+\)/\u\1\L\2/g
