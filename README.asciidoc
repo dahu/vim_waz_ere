@@ -1,7 +1,7 @@
 Vim WAZ Ere
 -----------
 
-__Vimmified version of the venerable Walter A. Zintz Vi/Ex Tutorial Series__
+__Vimmified version of the venerable http://www.networkcomputing.com/unixworld/tutorial/009/009.html[Walter A. Zintz Vi/Ex Tutorial Series]__
 
 . (done) Editor Fundamentals
 . (done) Line Addresses

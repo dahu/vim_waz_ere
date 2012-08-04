@@ -19,7 +19,7 @@ containing ``EXPORT'':
 
 [source,vim]
 ----
-  :0 ?EXPORT? d
+  :0 ?EXPORT? delete
 ----
 
 
@@ -34,7 +34,7 @@ link:2_line_addresses.html#E2.2[Question]
 +
 [source,vim]
 ----
-  :0 /EXPORT/ d
+  :0 /EXPORT/ delete
 ----
 +
 . Starting at virtual address line ++$++ (last line) and searching forward,
@@ -42,7 +42,7 @@ link:2_line_addresses.html#E2.2[Question]
 +
 [source,vim]
 ----
-  :$ /EXPORT/ d
+  :$ /EXPORT/ delete
 ----
 
 
@@ -59,6 +59,6 @@ search and a negative numeric offset of ++-1++ to move one line prior to the
 
 [source,vim]
 ----
-  ?abc?+1 , /xyz/-1 d
+  ?abc?+1 , /xyz/-1 delete
 ----
 

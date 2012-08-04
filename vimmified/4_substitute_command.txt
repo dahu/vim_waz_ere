@@ -356,7 +356,8 @@ word is a capital and all other letters are lower case (that is, Title Case).
 To simplify this, words are separated by space characters. What is the easy
 way to do this with one ex-mode substitution command? This exercise depends on
 something I did not state directly, so don't feel bad if my
-link:#T4_title_case[solution] is a little simpler than yours.
+link:4_substitute_command_solutions.html#S4.2[solution] is a little simpler
+than yours.
 
 ====
 
@@ -438,10 +439,12 @@ Given a dataset like:
 ....
 
 1. What command would remove the 3rd column of numbers?
+   link:4_substitute_command_solutions.html#S4.3.1[Solution]
 2. **Bonus Question:** What command would double the numbers in the third
    column instead of removing them? This requires a feature I haven't
    mentioned yet about Vim's substitute command -- ++:help
    sub-replace-expression++
+   link:4_substitute_command_solutions.html#S4.3.2[Solution]
 
 ====
 
@@ -560,32 +563,32 @@ Now here's a different kind of exercise for you. I've already given you the
 command, above. It obviously makes no change whatsoever in the file. So why do
 I run this command? You need a goodly dose of inspiration to answer this, so
 don't be embarrassed if you have to look at my
-link:#T4_count_paragraphs[answer] to this one.
+link:4_substitute_command_solutions.html#S4.4[Solution] to this one.
+
 ====
 
-// TODO: Change this from 'script' to edit-scripts
+// TODO: Change this from 'script writing' to 'Complex Edits'
 A Start on Script Writing
 -------------------------
 
+// TODO: reword to change focus to match title
 Already you know enough about Vim to be able to plan some fairly complex
 edits. Here's a short introduction to the art of writing editing scripts for
 Vim.
 
-.Bottom-Up Programming
+.A Bottom-Up Approach
 
 That's usually the best way to build a complex editor command or command
 script. That's a programmer's term that means putting all the little details
 in separately and then pulling them all together into a unified whole, rather
 than starting with a grand overall plan and forcing the details to fit.
 
-// TODO: Change this back into simple tutorial style writing
-
-For example, reader R.T. of San Francisco, California asks how to use the
-editor to automatically add HTML paragraph tags to each paragraph of
-manuscripts. This requires inserting the string ``<p>'' at the start of the
-first line of each paragraph, and the string ``</p>'' at the end of the last
-line. In these manuscripts, a completely empty line (not even a non-printing
-character on it) separates one paragraph from another.
+For example, consider how you would use Vim to automatically add HTML
+paragraph tags to each paragraph of a manuscript. This requires inserting the
+string ``<p>'' at the start of the first line of each paragraph, and the
+string ``</p>'' at the end of the last line. This manuscript separates one
+paragraph from another with a completely empty line (not even a non-printing
+character on it).
 
 This looks pretty easy. All that seems to be needed is to go to each empty
 line, then move up to the preceding line to insert the end-of-paragraph string
@@ -637,21 +640,21 @@ At next month's meeting we'll hear from the new
 and should have been edited to look like this:
 
 ....
-at this meeting, so be sure to be there!</P>
+at this meeting, so be sure to be there!</p>
 
-<P>At next month's meeting we'll hear from the new
+<p>At next month's meeting we'll hear from the new
 ....
 
 actually turns out like this:
 
 ....
-at this meeting, so be sure to be there!</P>
+at this meeting, so be sure to be there!</p>
 
-</P>
+</p>
 
-<P>
+<p>
 
-<P>At next month's meeting we'll hear from the new
+<p>At next month's meeting we'll hear from the new
 ....
 
 It may look as though this hazard can be defeated by modifying the number two
@@ -663,10 +666,10 @@ substitution commands on lines that have already been given their tags, so the
 sample text now looks like this:
 
 ....
-at this meeting, so be sure to be there!</P></P>
+at this meeting, so be sure to be there!</p></p>
 
 
-<P><P>At next month's meeting we'll hear from the new
+<p><p>At next month's meeting we'll hear from the new
 ....
 
 .Complex Conditionals
@@ -688,23 +691,56 @@ remove one character from the existing line -- and then replace it, of course.
 This ensures that if there is no character to remove because the line is
 empty, the substitution command will fail on that line and do nothing.
 
-anchor:Q4.5[]
-
 Either the first or third solution can be adapted to satisfy that second
 condition. I've used the third solution in the example commands below, because
 the technique is easier to follow than it would be with the first solution:
 
 [source,vim]
 ----
-  global /^$/ + substitute /^./<P>&/
+  global /^$/ + substitute /^./<p>&/
 
-  global /^$/ - substitute :.$:&</P>:
+  global /^$/ - substitute :.$:&</p>:
 ----
 
+[NOTE]
+====
+All of the ``solutions'' to this problem given here do not prepend ++<p>++ to
+the first paragraph in the document, nor append ++</p>++ to the last. Special
+cases like that can either be handled by additional substitutions or performed
+manually. Sometimes it's better not to lance a boil with a broadsword.
+====
+
+What we're calling bottom-up techniques here is the practice of explicitly
+breaking an otherwise complicated edit down into multiple simpler edits. This
+is generally a good technique to keep the thought-space of a problem and its
+solution simple even if a single, albeit complicated, solution exists --
+revisiting or remembering that solution later might be more taxing than the
+multiple simpler forms combined. Having said that, Vim does have the capacity
+to solve the given problem with a single expression and it doesn't look too
+harrowing either:
+
+[source,vim]
+----
+  % substitute /.\zs\n\n\+/<\/p>&<p>/
+----
+
+This substitution uses the ever useful ++\zs++ to anchor our match at the end
+of a line containing text that is followed by empty lines. Given the relative
+simplicity of this single substitution command, you may wonder why attention
+was given to the need for separating the solution out into seemingly more
+complicated parts. The simple answer is that this multi-part solution was
+originally devised on **vi** and not **Vim**. Vim has brought a 'lot' of new
+functionality, features, power and expressiveness to the world of vi. I left
+this example in here for the very good reason that this is still solid advice
+in the general case. To see this in practice even for this seemingly defeated
+example, consider the Bonus Question in the Spot Quiz below.
+
+anchor:Q4.5[]
+
 Bottom-up techniques can be continued if there are yet other special needs to
-be accommodated. Reader R.T. may have headlines and subheads mixed in with the
-paragraphs, and may already have appropriate HTML tags at the beginnings and
-ends of those heads and subheads.
+be accommodated. The manuscript may have headlines and subheads mixed in with
+the paragraphs, and may already have appropriate HTML tags at the beginnings
+and ends of those heads and subheads.
 
 .Spot Quiz
 [caption=""]
@@ -712,11 +748,16 @@ ends of those heads and subheads.
 
 .4.5 -- Avoiding Duplicating HTML Paragraph Tags
 
-As an exercise, how would you adapt the commands just above so they would not
-add a paragraph tag where any text already begins or ends with an HTML tag?
-Hint -- an HTML tag always begins with a ``<'' and ends with a ``>''
-character. This is a very minor change, so you probably will not need to look
-at my link:#T4_html_tags[solution] except to confirm your own answer.
+1. As an exercise, how would you adapt the commands just above so they would
+   not add a paragraph tag where any text already begins or ends with an HTML
+   tag? Hint -- an HTML tag always begins with a ``<'' and ends with a ``>''
+   character. This is a very minor change, so you probably will not need to
+   look at my link:4_substitute_command_solutions.html#S4.5.1[solution] except
+   to confirm your own answer.
+
+2. **Bonus Question:** How would you achieve the same thing with a single
+   substitution in Vim?
+   link:4_substitute_command_solutions.html#S4.5.1[Solution]
 ====
 
 .A Little Trickery

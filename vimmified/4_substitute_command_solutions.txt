@@ -9,27 +9,25 @@ Solutions to Exercises
 
 anchor:S4.1[]
 
-Solution 4.1
-~~~~~~~~~~~~
+Solution 4.1 -- Substituting the second-to-last element on a line
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 link:4_substitute_command.html#Q4.1[Question]
 
-The solution here requires starting with the second-to-last match
-first in the pattern. By following it with ``anything up to another
-k37 and beyond to the end of the line'' and capturing that additional
-text, we can replace our match with the new q53 followed by the
-captured text.
+When there are two or more wild cards in a search pattern, Vim finds
+the longest match for the first one that allows any match for the
+subsequent ones, and so on.
 
 [source,vim]
 ----
-  %s/k37\(.*k37.*\)/q53\1/
+  % substitute /\(.*\)k37\(.*k37\)/\1q53\2
 ----
 
 
 anchor:S4.2[]
 
-Solution 4.2
-~~~~~~~~~~~~
+Solution 4.2 -- Setting a line to Title Case
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 link:4_substitute_command.html#Q4.2[Question]
 
@@ -63,40 +61,44 @@ capture:
 ----
 
 
-anchor:S4.3[]
+anchor:S4.3.1[]
 
-Solution 4.3
-~~~~~~~~~~~~
+Solution 4.3 -- Substituting the third element in a line of many
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+1. Deleting The Third Column
++
 link:4_substitute_command.html#Q4.3[Question]
-
-1. Deleting the third column
-
++
 We use ++\zs++ and ++\ze++ to focus the match within the search part
 of a substitution while using the patterns outside of these markers as
 anchors. Assuming you've visually selected the lines you want to
 operate on, the following substitute will delete column 3 from all
 rows:
-
++
 [source,vim]
 ----
   '< , '> substitute /\(\d\+,\s*\)\{2}\zs\d\+,\s*\ze//
 ----
-
++
 The ++\{2}++ notation is Vim's way of requiring two repetitions of the
 previous element, which in this case is a number followed by a comma
 -- effectively stepping past the first two columns. We then restrict
 our match to only the third column by wrapping the pattern in
 ++\zs++ and ++\ze++.
-
-2. Doubling the numbers in the third column
 +
-[Note]
+anchor:S4.3.2[]
++
+2. Doubling The Numbers In The Third Column
++
+link:4_substitute_command.html#Q4.3[Question]
++
+[NOTE]
 ====
 Read the Substitute With An Expression section if you don't know how
 to approach this problem.
 ====
-
++
 Much the same approach is taken in the search side of the substitute
 to narrow our search down to just column three -- however because this
 time we want to double the numbers and not delete the whole column,
@@ -106,12 +108,12 @@ starting the replacement string with the ++\=++ special. Within a
 replacement expression, we use ++submatch(1)++ to refer to the first
 captured text in the match (what ++\1++ would ordinarily give us, but
 which can't be used inside an expression replacement.)
-
++
 [source,vim]
 ----
   '< , '> substitute /\%(\d\+,\s*\)\{2}\zs\(\d\+\)\ze/\=submatch(1)*2/
 ----
-
++
 We use the non-capturing ++\%(...\)++ group in the column skip section
 to make the replacement clearer -- ++submatch(1)++ is operating on
 column three which is between the ++\zs++ and ++\ze++ markers. It
@@ -124,8 +126,8 @@ use them to reduce confusion, as shown in this example.
 
 anchor:S4.4[]
 
-Solution 4.4
-~~~~~~~~~~~~
+Solution 4.4 -- A Seemingly Useless Substitution
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 link:4_substitute_command.html#Q4.4[Question]
 
@@ -140,23 +142,46 @@ It counts the number of blank lines in your file. That might still
 sound useless to you, unless you always separate your paragraphs with
 a single blank line. Now you know how many paragraphs you've written!
 
+// TODO: 4.5 and 4.6 need Vim enhancements
 
-anchor:S4.5[]
+anchor:S4.5.1[]
 
-Solution 4.5
-~~~~~~~~~~~~
+Solution 4.5 -- Avoiding Duplicating HTML Paragraph Tags
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+1. Using Multiple Simple Substitutions (Bottom-Up Approach)
++
 link:4_substitute_command.html#Q4.5[Question]
-
-
-
++
+Where the substitution command to add a tag at the start of a
+paragraph presently removes and then replaces any first character on
+the line, now it should remove and replace anything except a ``<''
+character in that position. If that first character is a ``<'' it is
+necessary that the substitution command fail so it will change
+nothing. To arrange this, replace that period in the search pattern
+with a negative character class -- ++[^<]++ -- which matches any
+character except the one that begins every HTML tag.  Similarly,
+replace the period in the other substitution pattern with the negative
+character class that matches any character except the one that always
+ends an HTML tag. Now the two commands will look like this:
++
 [source,vim]
 ----
-  % substitute /^$
+  global /^$/ + substitute /^[^<]/<p>&/
+  global /^$/ - substitute :[^>]$:&</p>:
 ----
-
-It counts the number of blank lines in your file. That might still
-sound useless to you, unless you always separate your paragraphs with
-a single blank line. Now you know how many paragraphs you've written!
-
-
++
+anchor:S4.5.2[]
++
+2. Using A Single Complex Substitution
++
+link:4_substitute_command.html#Q4.5[Question]
++
+Perhaps now you'll appreciate the simplicity of using bottom-up
+techniques to break complex edits down into multiple simpler
+substitutions.
++
+[source,vim]
+----
+  % substitute /.\(<.\+>\)\@<!\_$\zs\n\n\+\ze\(<.\+>\)\@!/<\/p>&<p>/
+----
