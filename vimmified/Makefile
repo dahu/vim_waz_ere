@@ -34,7 +34,7 @@ html/%.html: %.txt
 		$<
 
 demand_pygments:
-	type pygmentize >/dev/null
+	@type pygmentize >/dev/null
 
 clean:
 	rm -fr $(HTML_DIR)
