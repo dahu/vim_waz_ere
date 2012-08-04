@@ -14,11 +14,9 @@ endif
 
 .PHONY: all html5 clean
 
-all: html5
+all: demand_pygments html5
 
 html5: $(HTML_FILES)
-
-$(HTML_FILES): demand_pygments | $(HTML_DIR)
 
 $(HTML_DIR):
 	mkdir $(HTML_DIR)
