@@ -1,0 +1,2377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="AsciiDoc 8.6.6">
+<title>Editor Fundamentals</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+pre {
+  padding: 0;
+  margin: 0;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #777777;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+tt {
+  font-family: monospace;
+  font-size: inherit;
+  color: navy;
+}
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+.monospaced {
+  font-family: monospace;
+  font-size: inherit;
+  color: navy;
+}
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+/*
+ * Theme specific overrides of the preceding (asciidoc.css) CSS.
+ *
+ */
+body {
+  font-family: Garamond, Georgia, serif;
+  font-size: 17px;
+  color: #3E4349;
+  line-height: 1.3em;
+}
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Garmond, Georgia, serif;
+  font-weight: normal;
+  border-bottom-width: 0;
+  color: #3E4349;
+}
+div.title, caption.title { color: #596673; font-weight: bold; }
+h1 { font-size: 240%; }
+h2 { font-size: 180%; }
+h3 { font-size: 150%; }
+h4 { font-size: 130%; }
+h5 { font-size: 115%; }
+h6 { font-size: 100%; }
+#header h1 { margin-top: 0; }
+#toc {
+  color: #444444;
+  line-height: 1.5;
+  padding-top: 1.5em;
+}
+#toctitle {
+  font-size: 20px;
+}
+#toc a {
+    border-bottom: 1px dotted #999999;
+    color: #444444 !important;
+    text-decoration: none !important;
+}
+#toc a:hover {
+    border-bottom: 1px solid #6D4100;
+    color: #6D4100 !important;
+    text-decoration: none !important;
+}
+div.toclevel1 { margin-top: 0.2em; font-size: 16px; }
+div.toclevel2 { margin-top: 0.15em; font-size: 14px; }
+em, dt, td.hdlist1 { color: black; }
+strong { color: #3E4349; }
+a { color: #004B6B; text-decoration: none; border-bottom: 1px dotted #004B6B; }
+a:visited { color: #615FA0; border-bottom: 1px dotted #615FA0; }
+a:hover { color: #6D4100; border-bottom: 1px solid #6D4100; }
+div.tableblock > table, table.tableblock { border: 3px solid #E8E8E8; }
+th.tableblock, td.tableblock { border: 1px solid #E8E8E8; }
+ul > li > * { color: #3E4349; }
+pre, tt, .monospaced { font-family: Consolas,Menlo,'Deja Vu Sans Mono','Bitstream Vera Sans Mono',monospace; }
+tt, .monospaced { font-size: 0.9em; color: black;
+}
+div.exampleblock > div.content, div.sidebarblock > div.content, div.listingblock > div.content { border-width: 0 0 0 3px; border-color: #E8E8E8; }
+div.verseblock { border-left-width: 0; margin-left: 3em; }
+div.quoteblock { border-left-width: 3px; margin-left: 0; margin-right: 0;}
+div.admonitionblock td.content { border-left: 3px solid #E8E8E8; }
+/*
+  pygmentize filter
+*/
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f4f4f4; }
+.highlight .c { color: #008800; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #AA22FF; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #008800; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #008800 } /* Comment.Preproc */
+.highlight .c1 { color: #008800; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #008800; font-weight: bold } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #AA22FF; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #AA22FF; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #AA22FF; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #AA22FF } /* Keyword.Pseudo */
+.highlight .kr { color: #AA22FF; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #00BB00; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BB4444 } /* Literal.String */
+.highlight .na { color: #BB4444 } /* Name.Attribute */
+.highlight .nb { color: #AA22FF } /* Name.Builtin */
+.highlight .nc { color: #0000FF } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #00A000 } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #B8860B } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BB4444 } /* Literal.String.Backtick */
+.highlight .sc { color: #BB4444 } /* Literal.String.Char */
+.highlight .sd { color: #BB4444; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BB4444 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BB4444 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BB4444 } /* Literal.String.Single */
+.highlight .ss { color: #B8860B } /* Literal.String.Symbol */
+.highlight .bp { color: #AA22FF } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #B8860B } /* Name.Variable.Class */
+.highlight .vg { color: #B8860B } /* Name.Variable.Global */
+.highlight .vi { color: #B8860B } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+
+@media screen {
+  body {
+    max-width: 50em; /* approximately 80 characters wide */
+    margin-left: 16em;
+  }
+
+  #toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 13em;
+    padding: 0.5em;
+    padding-bottom: 1.5em;
+    margin: 0;
+    overflow: auto;
+    border-right: 3px solid #f8f8f8;
+    background-color: white;
+  }
+
+  #toc .toclevel1 {
+    margin-top: 0.5em;
+  }
+
+  #toc .toclevel2 {
+    margin-top: 0.25em;
+    display: list-item;
+    color: #aaaaaa;
+  }
+
+  #toctitle {
+    margin-top: 0.5em;
+  }
+}
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([2-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>Editor Fundamentals</h1>
+<span id="author">Walter Alan Zintz</span><br>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_why_vim">Why Vim?</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_a_heartwarming_edit">A Heartwarming Edit</h3>
+<div class="paragraph"><p>Pity poor Hal, a corporate maintenance programmer. A large module of
+badly-broken, poorly-patched legacy code&#8201;&#8212;&#8201;the spaghetti variety&#8201;&#8212;&#8201;finally
+broke down completely yesterday, leaving one corporate division running at half
+speed. By dint of some inspired fixes during an all-nighter, Hal has the module
+up and running again this morning&#8230; but just as he&#8217;s ready to go out for food
+that isn&#8217;t from a vending machine, in walks the corporation&#8217;s VP of IS, with a
+big surprise.</p></div>
+<div class="paragraph"><p>&#8220;Nice work on that crash fix, Hal; but right now I need some formatted
+technical data about it, in a hurry. The Board of Directors' Information
+Systems Committee has called a rush meeting this morning to convince themselves
+they&#8217;re on top of the problem. I&#8217;ll be in the hotseat, and I need technical
+data I can put up on the video projector to keep them occupied.&#8221;</p></div>
+<div class="paragraph"><p>&#8220;They&#8217;ll want me to discuss the logfile of errors that led up to the crash&#8230;
+yes, I know that&#8217;s in <span class="monospaced">/oltp/err/m7</span>, but appending puts the latest
+report lines at the bottom of the file. Those suits aren&#8217;t interested
+in what they think is ancient history, and they wouldn&#8217;t be caught
+reading anything but a commuter train timetable from the bottom up, so
+you&#8217;ll have to make a copy with the order of the lines reversed: what
+was the last line becomes the first line, what was the second to the
+last line is now line number two, and so on.&#8221;</p></div>
+<div class="paragraph"><p>&#8220;And let&#8217;s take a look at that logfile.&#8221;</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>  374a12  44872  130295/074457  nonabort
+  5982d34  971  130295/221938  nonabort
+  853f7  2184  140295/102309  abort ...</pre>
+</div></div>
+<div class="paragraph"><p>&#8220;Hmmm. Explaining the second column to them would be advertising the fact that
+we knew this failure was just waiting for a chance to happen. So while you&#8217;re
+at it, go through and erase all but the first and last digits of each number in
+column two.&#8221;</p></div>
+<div class="paragraph"><p>&#8220;Oh, and when they get tired of that they&#8217;ll want to scrutinize the Lint
+report. Last month I told them that our Lint substitute was the greatest thing
+since Marilyn Monroe, so now they&#8217;ll want me to tell them why the messages it
+still generates on this module aren&#8217;t real hazards. Just run Lint over the
+revamped module; then combine the Lint output with a copy of the source file by
+taking each message line like:&#8221;</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>  Line 257: obsolete operator +=</pre>
+</div></div>
+<div class="paragraph"><p>&#8220;and putting the significant part at the end of the source line it refers to.
+And put a separator, like XXX, between the source line and the message so I can
+page through quickly. Nothing like a hefty dose of source code they can&#8217;t begin
+to fathom to make the meeting break up early.&#8221;</p></div>
+<div class="paragraph"><p><span class="image">
+<img alt="images/slimy_vp.png" src="data:image/png;base64,
+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">
+</span></p></div>
+<div class="paragraph"><p>&#8220;And get right on this. The meeting starts in 35 minutes.&#8221;</p></div>
+<div class="paragraph"><p><span class="image">
+<img alt="images/hal_deletes_managers.png" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAASwAAAChCAYAAAB9JILHAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+AAAE0gAABNIB9duA0gAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAACAASURB
+VHic7Z13eBTV18e/Z3fTe0joNfRepXdUpIoICigqSrcBYgNF4KfwothAUJQmCAiCSO9NivReAwQC
+ISSk97LlvH/c2WR2spueTQLzeZ55snPn3pm7m5kz9557CjEzigoi6grgLQANANQD4AogDMA5ANsA
+/MzMpkK4DnFRfhEVFZUSARXFc05E3QFMB9Aph6rHAbzFzFfzeH4NgDcBvASgOoCqAAIBfA9gNTOn
+5bHLKioqpYBCF1hE9BmA/+WhSRqAtsx8PjcjJSLqAuAHAM1sVLkK4Dlmvq9o5wZgFID2AFwAOANI
+BLAbwA5mvpuHPquoqBQD+RZYRNQcQEcAFQEEA1gM4GMAXyqqXgPwF4BbAB4AqAPgBQDPKuosADAN
+gA+EIFkAYCYz62XX7A1gMwBtDt0LgRBaV6R2EwBMBeCXTZtzACYy86HsTkxEPlIftQCSmDnURp0k
+Zk7P4VwBAMYCGCad0wlALIATAI4B+J2ZQ7I7h4rKEwUz52kD4AtgEQAjAJZtgRCjJfP+bQAvAtDY
+OM8IAAbFOZTbOQAVpPrNASQoju8F8DaAIRA6MfmxuxBCYHYO11BuKwB4KfqqAdATwEYrfT4B4B0A
+OohR2ywAeulYOMRosJ7ifATgMwCmHPqSDmAZAE8AL0NMs18F4JTX/5u6qdvjsOWtsphKncrFQ38V
+QPlcnG9OLs61VbruPVlZMoAXrZzvbYUgvas4lxHAJgDzAHwDYC2AaCvX/A+Ah3ROZyvC0Np2GMAq
+G8eMAH4HUA2AG4ANeRSiUYr9RwA6FffNo27qZu8tb5WBlYoHJwLAacVIwQigVS7P1wjAdVnbvQAG
+AFhjRRiYP+sB9MnmnO9mI0TrWKmvBTAQwB1F/SMAKgA4kEfhkt2WCjHVUwqjHwA8D6A3hJ5tKbKO
+JpVbEoDOxX0DqZu62XPLfUUhXOQPzDIA7tKxThAjrzQAb+epA0AlAFMAzAegk5X/YeNB/SIX59yo
+aBMIoGwObVyQdYSUotg/B2AMgLoAAgD0B7DHSh/vAegDMYK0NoIzb/sA+Nroj7ckuOT1H8JyBHkf
+gGdx30Tqpm722nJfEfhZMfrQKY7rANQvtI4J/VOc4oF9ZBaSObT1ReYU0ohcTp8gRlu2BOVKAFob
+7SYo6r4rO+YFYCaAeEWdw8rf0Ma5D8nazALQDWJRwlz2a3HfROqmbvbacldJKJ0fyh6S3nbpXNYR
+z0d5aOsPYDKAJnm8phZiJVJ+3V9gY/FA1u4vqe4DAD5WjvtJ38cgCeJuuezPdFk/FktloxX9e7q4
+byR1Uzd7bNmaNRBRRQh9UjsADlJxHMQ0psAW6jlBRC8CWC8rCmDmO3a4rhuAnwC0ArCKmf8vF228
+IHRhfzJzSjb1nCGmcY9y2ZeaAG5Ku62Y+axUvhdAD6k8GEBtlpmAqKg8jtgUWETUEEI/U0FxaBsz
+9y3qjkl9qAbgLMQU7xgzd7DHdUsaROQNoYMLlJVVB3AJgLtU1JeZt9m/dyo5QUQDIExUDmT3MlPJ
+GU02x2Yiq7BiAJ8XXXcUF2MOBtAPwrRhqL2uW9Jg5li5sJLK7gJYIit6ya6dUskLH0OYxkRJniAq
++cTqCIuIakOYG5gF2gwI26QYZj5pv+6pZAcRtYHwxwTEVL0cq36UxQYRPQPxkt/EzHFSmQPE/8ZF
+qmaC0F/+Wzy9LN3YGmE9Izu2n5mnM/OuwhJWRORORE6Fca7SChF5EZFVFyMiqkREfYlIOcJVcg5i
+xRAQq5HDC7OPKnnmXQgD4UdE9JVUZoAwqzGjAfA7EXnYu3OPA7YEVhXZ5/1FcN2PAcRLyu0nlcWw
+vJEBZCj8QwBsgYhCkR0fQljOm/mSiDwLrYcqNiGiDUQURUT3iWiB9PJ5WjrsCGAKEb3MYgrzlaJ5
+dQAfKc73KhEtl7b+Rf4FSim2BFYl2ee7RXDdrgAuMXNSEZy7tNAZYpptgfSbGKXdbJ2nmfkriKgV
+kVJROQiTB5UiRFrwGACxGFQZwoG9AYQaRc5iIqoD4YqlPPa0Yv99AK9L25TC7fHjgy2BlSr77GCj
+Tr4gIhcArSEMIp9IiKgBgLKw/RvES39z1Ecx80UIg1IzfQrWu8cbEhR0FBoFyxe5BmIUtVFRzx3A
+OGY2+fm4fQyhvzLTyjzDICJHWIZLaiMJOhUFtgRWlOxz+byelIhcJWWjNdpBDJkP5vW8Nq7lXMD2
+mmz6ar7Bs9U35EMf10X6m5PAynaEJcPsewkAHVT9iAjxQ0TjiaiL4v87DEAcESUQ0VobbYmIGhPR
+S0TkrzzOzAkQ0TPk/59+w/q3PO/l4Rwsr1u5vPf4wL1T44+ue3/Tp2Oflj9vui2/jjoeuHfq6yzC
+EB1QXGY4EU0novPS9rqVfnoQUTdbutDHEVsCK0z2uXZuT0ZELxLRDQhFcCoRhRDRGSLaIKvWBeJN
+c5iI6hHRHiLaRURaIvqAiE4S0Xoi8pOUz8ulf9gk2XXKEtEcIroJIJmI/iOiPtIxkvQLIUTkQkT9
+iWg7ER0goqdk5+hKRFsAxACIIKJVkr2T+Xhlqd+JEPq2WCK6SkTHiai9VKc+ER0HkEREp4looFTe
+nYiOENECaX8sEX0i+w26AniosKsaTUQHiegWMl8SuVrxY+YwABekXQdkGpQ+kUgC6g5ETLWDAM5I
+I3tAhPUBxOjnJfP/TIEDgIsQ0TyCpftyAxElEVEEEa1g5tNVK/rMQOaLAl1a19y85ddR1QKqlMk4
+UUhYrGN8YqoHALzxYmu81FsMpHy9XFG7un8jAMsD905dX7aMu9xAGgBegwjB1FTa3lN8x/bSd9wP
+IISIPsnuxfvYIDd7h7DluYrMeE4M4I4tM3mI0VI16fMrUv0LEP9os+/caQAzZG0OATgrfW6OTGfh
+XbB0N/kDWcPD1JTanZX2I2XHzsquESOVLVa03ykdbyvtp8HSX3GkdNwL4maIhRi9XJGO6wH8CiHE
+AyBGojEQUSaMEMpyDYTNGEO4+Jj9DL+W9S8MwBrZ/reKfpq3crl1WYCYFma4EhW3C0Vxb7J7xLwt
+lcp/VpQHA3C10j5JVkcPRfy3edMGrrqxZ4px2Zyh3LJRFa4bUJbnfT6Qb+yZwsf+ep/rBZRlAFy2
+jDvf2DMlY7u68xPesGAEX97xsUX5mU0fHEPWCB16xX5TWf9aWLlfEgG8k8Pv4oEcAgGU5C3DDouI
+foRCissow8zR8gIiGiI9zMeZuR0RhUs/WiVmNhLReIg33FJmfktq4ywJgZ+ZeSKJZftQqd1+COO6
+oQCekn789RDKyg8BlAHwOjOvIJHc4i4z3yWi8hCCzQki2F8YEV2DSHpxRepjI4ggf3HM7E1EBDGk
+3wgxrP9EeuA3MvNAIvocwnB2GDOvkfodCbEi58bMyUS0DkJxXpeZ44hoP4RjcksIgbcfQqC5QbwE
+vmHmP4moHkSE1bHMvIiImkKYJ2wBMBHi7b4XQpnrw8yxNv4nFhBRZ2ROMe8xc7XctHtcIaIfIBTZ
+cl6B+K2vQARRNPMVxP+7D4B9zBxPRLchXkpm4iECKQIA2reogWVzbNsyxyWk4MDxW2jfogbKlnG3
+WU/OyCl/Bh8+FST/vxlhGV13PjO/J30/BwgBp1RHREO4sMWZC0hE3PWAuCf/gPCznQvxEk3OVedK
+CBoAIKLnYFtYnVUKKwnzD3WUiPwglMipyFQsmh+0a7I2baR2B6X9R1L9GGZ+mpm/B/CjdGwzM49g
+5jnInN+nAAAzH4SYcr4MIXgipONmfZZ5SjuMxUraJEV7ZuY/IRSdoyD+gUCmcV996a/5n6mXPt+T
+hJUHgMEQo8mhRDQbmTf3I9n1kyHeii2l6wFZ9VdvQjw8c5k5iJlvmPuJ3OuwABFny7y6WDkP7R47
+SPh1/oFMGzUzsyAi4e5RlE+GcHP6G0AoCWv0xYo6npAtRh07eweBd2y7g3p5uGDAM41zLawA4KNR
+3asRWSjmlbqpkURUFwBY+I1aMz71hfg+AABpUDBT2rZAmFS4AfgC4tkpVWiISAfgO1nZZQh3mM8g
+3vhvWWvIzL8DqMzMk5k5EuIBrAZgLxF9BxEL6iZEOGUzXZEZWgXMbIR4c+lkdczCx2CrjIjeBBAE
+YCHEP0f5gJoFrHlOb172N7d3IaJdEFbiH0MILTlmndsCaeS5HSLawodSuVmv1xbAOIhR1b8QN8ED
+2fUt9FQSXQGEM7N5mbuB9DdLbHgIQZkXzDf4E+kETUSDiSgS4mW5DFnNA6pB3M8fwfL+ckLmC8f8
+MO+GmBbKz39Yo8kcmIWEx6EwqVOjLF7q3Tw7X0MXAL8f/vO9KoF7p/7xdIc6K23Um0BEZaXP/SBG
+V4AI2SSnPkoZZn2LueOpAPoz81aIN/4PzHzeVmNmfiDbfQfiJnkKQtBdA9CRxYqKmS4Q9lfyEZsr
+Mh14zfuwVSaN5hZB3JQtmbkKMt1TtMr60l8Xxf5EiCQYiwHUQmY6MvMixCaIaWIMxMizFYCBzLxO
+8ROcZeamzPwsM78G4FsWc2xr38FMF1iuDppHqt0BQFrxMQtauSDPCV/Z57yMzB4nhkKoDgChBjBC
+MQrRaTVf3NgzpWff7g2vKNrqFJ8nQtzPGTg56uqs/v41tG9RA03qVUR6ugGFzeSR3dxcXRyzE1pt
+Jny5cSaAVxZMHzTd0UF7zEodd2QKa+X3lFMvv/0sLjSQHhSJeSyFb+EcfNKIqCERXSai76X6lyFc
+E8IgHpgPWRZChcTSfzvIzBlI2J84Qoz0zA+52XJb/rDLy9wgBJMngNaSrqKpdLyl9NdTVt/aOc3H
+K0MMi+dJ+y2IiJjZIE1FV0vlayCEmBnzSmhXIppFwo3mNwA3iMjdyvXN37c2hK/ZQVnxWenvQiLa
+CLEAYbZwb4zc003RvycCEiY0jYioFsS0Ts5MAJOIMqbYMBhN5eITU+fM+qBP02oVlQMOC4YC2KrR
+UMZoNTVNX62cnweWzRmKv+a/gec6F/4AxdPdGZ+M6ZGtmczZKyHDbgVHpgAImDdtoLeNamOJqArE
+aqetGFKlUmB1lu3/k4e2fQA0hOVDlQahCHQEcIqIfiEi83StNYSOST66kBvw2RIuFmUsIjgclMrW
+QmSzWSUdb6c4r/KcOklw/gExJXgO0sIBRIabMhBpyMyYp5JvAzhLRP2ADGt0czqzTyF0AyMhFhgS
+rVzfTFfpr/w3mAsxHdRBWE8vhwgGCIjfLLe8IPu8Mw/tzKYgbaQbvNQg6Q4TIQTVMYhAi1tkVcpM
+Htntgy2/juKWjTK/WmRMEpwcdfjiveeyO70GwGgnB52F50DQvUgb1QuPwb2baWpUKROfTRXHj+Zs
+jgKAbm1rN6gbUDbCSh0niHDiCRAr3taoUdpMITTInLsnQ8Rlzy1/QOQRHAcA0mrXXwBqAPgN4qEc
+A+Amifx7XSEkvXyIrofQKTyFTGPVa9I5x8vqbYAw+PtD2n8WImnDaxCJUadBpBQzKxvnQIw4zPGh
+kiH0Fk8D0EujwSrSNboy80cQNi/1mPmG9NaeArF69C/ECKwWgM1ENAsApBHYEIhpww8QCSGmSdcL
+gUjHZVawm+kCIIJlma5Z5B1sAeHe0YOZp0JMeYdLv2OOSCu28vAyuRZYkv3abQihfY2IviGivUR0
+nYhsLcSUFLoic7XPHyIG/nDIvr9Wqxlau7q/66rvhmPmhF7wdHdGZIxQTXVoWQMdW9bI7vwDWzWp
+8vDNQW0yClyci/751hBh9uS+nrAcGVksfF25GVb56Bkhh7799Hl/RwetNTXAG5KS3paBsg7ivi41
+EDJ/lERmzpeFtGSUdxtiBFWTmWOk8mMQo55PIYRFOWbOyzSnWCCimRBxv95l5p+ksqEQU8RQZq6U
+XftszhsC4D9mHlxI/WwKMVWVL4X/B6ADm+1VLOvXh1gwcIfQzw1F9hEe9BCrnNeyqWM3iOhViFGw
+HsB5iBfGu/I6To66iRe3fVTv0o2HY5wctaha0RfOTpnqqcjoJCSlpsM8Hbx6KxwDxy+B+dciIsh/
+umYNKoWv/v61cmM/X4cOLWrgjRfzMugtGGM+Wxd68MStitLudQihnGGVGlC1jH7b4tEOGiLsPRqI
+t6evZ1iaawBCF3sPmeoNJTuZuVdh972o0CDTDMGNiLIL6Jcd3hAPgQ+AmUT0GhHNhTBjSIIY6RyD
+MNorDZjnD28Q0TjKzBwNAErFe66QhPrfsH3j5IeJsBRWyQBGK4WVtCq6AGIFeBPEFHo7LIWVNT2H
+A4BRRORr5VhxMBRiNLsAYtRwASLxbQZeHi6zAYxpXLcC6tQoayGsAMDP1w1y3VWDWuXw21dD0LJR
+FWiI0Kqx5az40vXQcknJaVj05Ut2FVYA8NWkPhU1GkoGgFaNqxyY8X4vi6ld0L0oh0eRwnLj6Q51
+sOaH10xly7iHQ7bo4uri2Gnrb6PkgwTlnNYLAIjIk4hqSDaKJRaCmIqZb8jWzJyXaWHmicQIZDKE
+TssB4gHYA+BzLmVB/6SVyN8hdEjm9PYhEFPDudZGL8WBJITMU+ebEMlllYpnENEXEMksbLEHIsrD
+aIiRcBAsbXSMEAkwxhZCt/OEtDCzHOI+bQjLxQVAKNYDIKbgAIB9K8ejcnlbumjbRMUmwdXFEc+8
+9jMiojNNuH6a/iKe6VA3750vBL7+bf+1lRtPVTuxYaKjq4uj7pNvtoZu3H3RPOrC7uVjUa2S5ftk
+z5Ebdyd8udHbYDR5+3q5pvy3foLL5cCH2HHo2tLF646/Aktj070Qg5auELrnOABPMfNNlEAIwJ/I
+vDm/kfQ5+T+hsAqvAuA+M6fmVL+kQyKufArnMmmEPZFZ5APC/Wm6lTo+EPkLzQsP/0F4BgRA6M7O
+APhKMmUxt9FCTEHk+o3zzNy8kL9CjlgRttamPW/88NkLL1+9FdarSgUfdG9bG36++Q+19jAiHrN/
+2Ytd/wpTuVf6t8S0d3vm+3wFQW8wYsv+Kxj4bBMAgMFgwnNv/vLw/sPYCs90qHvtp+kvWl2qjI1P
+Me09Fki7Dl+nbz7uD29PFwDgxr3nJKfrjfIf5wIyV9kB4AQzt5UWp7pACLJAAFuYWR4UoVggiGSg
+5iX7FAjFr0WcJsn9JZKZC9/wRCXfENFIZCrmlzHzm4rjHQA0gTCwBYBbENmvWTqulYx3rZ3bHcKg
+2GxUW1wCaz6EjZ9N3F2d4o6ue99LOf0rKDfvRiA6NhnOzg5oWq9izg3sRFhEAr5dcgD/91E/aDV5
+m8G9+fEaHD2bMbNMg3gxyQXWCAC9APRFpj0hAJyA0I1avV/sBUEMA0ORqcxLgVj5OgqgIkTHO0Po
+R5owc1Ax9FPFCkQ0BmIpHxAJVcfIjv0CsUor5wzEtD9XKdqIqBMyV3WLJWsREfWGSEKS7ZM56c2u
+GDO0vV36VNr5a8cFnL5072zzBpW+27zvSvszl++PgxiFL4Qwz7G1cvgsMyvdmuyKjpnTSeT/2wUx
+t3WB0IuMV9R1gzA3+BBPAETUCMCtnKa1kh1LO4i31CobfpdZ2nDh5BCsLvucEYdJmtKNsFK/am6F
+lUQZ2eeiN0CSkJT8vQEkMfNGSWj9CUlBbO6PTqvxMxjF1zl/9UHWE6lYZXCvphjcq2kLAH8M6dsC
+yzec/Gb2L3v3Qtg1ypV/yul3AhGVg9AXxjDzUvv1WqABAGY+BLFilFPOtGY5HC9REFEfIlpERMPy
+0KYNEQVDGCNullngW6vrDBFC5hCEQn4d5S6Y2ie5rJcTciOiu+YP0rBdGZIXEGFs8oJcOduK7BAv
+XhJOEQBWAviLRE6/AbAUVgCQvPbH17l2dX9oiFA3oKzyVCq55I0XW7+k0dBkWAorwFJYJUHoukMg
+jJ2XUDGkLMswY2DmvyDe2F9BrBLFQkQe2Cqr39CenSsIJMLbbIVY+fqDiD7NRZveEMv9ZteYZwDs
+khTvyrrNIQxt5ebSPSCW3bO7Rk0I26Erkm6wIFgVWBJyi+9tECYm3+Tx/P8i0+ylIoAdVPTRTCsi
+877UQoysWinqGInwfaO6FWjDghHYtmQ0JoxQ2uiq5IFqfj7u7XKo4wYR202uKLQW/LBIsbC7YuZH
+zPwZM9dkZh9mLgehlDd7rVcgEYuqRENEryHTPxAQb4pZJKJGZkmdRUQORPQNhIBT2hx1BHCViKaQ
+iIJaQVq5OgHhYKvkHRJRUh2tXMcNIgaXP4C6EKOIfCGN/ORr7XcVVeQCqz2Eo3ZepoNg5oewVHi3
+h2WWnqLgAixzCjhB/M4WYVeYMT0hKS3dyVEHeYRPlfzRvGEldyKAiGKRNVyzLdJIhJH+hIg+JSLl
+i6XQsZmq3qIS0WaIMBWAcKztKIWUyU3bAIhMIAMBfMDMu/PZ11whrZwtgu3wz3EQlveHIFZJ2kBE
+ZGgjq2OEWHTonKW1dZZBOJLK31L/QoxozkH4LQ6HcL+pqWjbkZmP5vI6GRDRDAiXJEBMocrJ7cMk
+gRaFzBhh7Zj5OPKIpN80h++9wszWhHShQiLO2RpYTkkYQmWRMUX/aFT39LdeapvlxaCSP4IfRMPb
+0+Van5G/7Y6ITlQGP8wNE5k52xlGQcmtZftkZFrP1gVwmoj62XKcJCI3IhpBRAchltKnQbwldxBR
+ruONE1EzIvqaRIz37rmoPwkihLH5e0VATNnkxpReEKshV6S+rYKlsEoDMAjCQHFuDpeMgAg78yaE
+nkVudNsZYpQTAhHB4htkFVaAmK4q9TPy71SVRFSMjUQ0jIieIqI5yBRWADBHIawIYvQmT9CRX620
+3Pl3m81ahQgzr4WISSWHIITVHQCpWo0mLjwqURVWhUi1Sr7w8nCp/97rnZ7N5ylccq5SMHI1wgIA
+EplslQHRoiCspB9C6LwqQ/iqtURm0DAldwE8zcy3bVzHBcKU4hWIUZ1Z+KQBeIWZN1hp4wkR20ru
+oxcBYVN2SZqKLZLOmR2XAYxh5owYQyQiNExCZqQFQExPNgIYrwih4wLhKjIoh+usk76b+R+8jpmz
+RH+UHFf3wDKxrZL7ELZVGdMoygxPbeY9Zp6fQ5+yQEQ1IHxEzSOdusqAhJI7l6YobPRIhC6aYKV8
+y+XtH1fT6TRNCvuaKkBsfAqefv3nRwmJqXldyXgPYgBQE8Dt3KyY55W8CCwNREiVHJXXVngAkQnG
+vDKWCGGsGgwxXTJATMPqQYxUbAk7E8To6DOWYlYTUTMIASDP7pMhrBTfoTuET6B8tJYOMTJaDWHL
+ZPXBk9x1akI8vBfZRixsaXTzKUT0CLObkpmrACYx8y6FDRWk67/PzJHSCuLrAL6HZQgeJUEAejLz
+LUUfpgGYIe0uyq9LjbQK9D9p9yAzd1McbwYRIcEHwll8PYQpxMO86Muke6sTxEg3GcACmXHrhxDR
+NyzssGpUKbN559IxfZA1jLBKIRAWkYC5Sw7g4vVQODvpoiJjkn6IikmahuzzlO6AmJk4Q1jH97Y1
+MMkvuRZYGQ2IXoAYrjfNoaoRIszsEgjhNBHA1/noYzTEjyQXYuEQq0e1IKxy5VPb4wBeYub7tk4o
+jbh8IYTB7aJyIZLcG5pArL6esyJY/oZlHCs9xIimIiwFlRFCyd8W4rvGQqxmTmLmcCvXnYrMeF3T
+mXmGsk4u+q6BEOQtpKJXmHm1dMwNwBsQgkSuhE+FuFnTpP4GAXjblnCXXas3LKeb2yASjkQF7p3a
+ffTUtV0Pnbz9CRQPyzvDO11/97VOpS4IXSllRd1nZvVF1kUpW6QCaM6ZocALhTwLrIyGIjPtYIjw
+yn4Qb9lwiJv0OkQGmnBFmxEQOqacfCjMcbNWQShf60HYO2VZ4VPwI0Sk01IR01wykDyK7CM/JgN4
+i0XGHS1EOvpH2U3BJBMOczbopRCp1toDOKmcGhJRCwhhKteBaSCm2GbjUz0AP2aOl47PgYgvlhv2
+A+iXndAiop8ggiTKuQ/g5Rt7powAMGrfscDg8V+sLwNZUMSOrQLuL5k9pFQFHSzNtBv0w/nouOTc
+2mJOZeZZOVfLG/kWWPm+IFEliGB8z0LYO5lvuEgIBfU/AFZLge3k7cpDWOJaW7mLhtA9KZNRlnik
+UdinEHGLlKFxjwEYodQb5eKcA5A1bbqZd5EZIHACxLT1bwCvMXOSpDdbAkDuhjOXmTM8HIgoEJlT
+cHNOSbPPYTSyvoUnMLM5G5J5ej0MQof3tVT/KCzNNADA4OrsMO3s5smvEFHDgydurR/72brOLDI0
+YfwrHYzvv9FFnRLaiau3wu68MG6pN8RIN7t0QOchIj4Uvl6zhERKyTVE1AXCRcgbIuPObggBV6ry
+qymRXB6aQ4xYUwDsYim+fj7OpYMY5VpblUyFGAkrjWFPQURyGA3L1UWlj6I5JJE5qFQAM98hojYA
+glnkhRwDsUBjNsDdxsx9pfYtIQSxeYVvG4Tw9JauX07ZYU9350N7fh/X2tvTxSX4QXTkxK/+cR0z
+pL1rz87qbLAYGFL3mVnTkJntSclNAF0kG75Cp9QJLJXcIdm/7YbQnwVCLGzkJdprOoTC/SvFdNEc
+eRUQBsUeiuPuEKNkuflKxiooiSipykxMQRDqhTiIMNhtlZ1xc3WM3vrrKN+K5WxagKjYgaiYpCvt
+X/rRlsfLHYgZUBjESr8jgJvMfK6wrp/fCKMqJRwWSVlrMbOOmRtAxMC/J6sSCuHIbs1A8CzEkP5L
+zvpGk+dwnK8QVoMgdFZKWzt5HP+7EJlc5ARAKOlHQgQQnIHMpLAAgKTkdN9XJq1Mjo3Pyd1VpSjx
+9XZrqNGQMsQMN65T4dK3U57/EMJcJxhCJbEWmYmRCwV1hPUEQURlIIKyuQBYz1IqNyKaCDHE10NM
+0XZlY94ht7D/lZnHSC4Z30O4MSn5F2Kp2w1iIaA+xBs4AJaeAWZuQgjFNIjRlsW0tmm9iqaV376q
+cXIs3NhXJYWo2CRs2nOZ120/H9uhZY3ED0Z2K+/q7FCiMtts2nsZXy7YQVazcgAAIABJREFUnWYw
+mtKb1K2Y/um4p8vUE87naU36fH09Ld1gEV+LmZcX1rVVgaWSJ4ioNcRoCBBC5Sgs7dqUtJPqH4FY
+qTSTBDHisxYxkwF8AOC3iuW8fo2JS342JVVfBgDq1ihrmjr+GU2bZln80R8LZv28x/T736cyZj46
+rSZ80ltdQ94c1LZlyY62Lmg14NtbCUlp5nhaEQBqsEiLVyg8nq8plaLkFISTeF+IVU25sNIjMzdg
+NET6tlYQAmsnLAWWG4SwioBQ4MvvRYKIdlpl/8rxHYmoTER0IlJS9aha0eexVmOkpOqTILM5NBhN
+5b7+dX+59TsuXNu0aGQ9RwdtrsVWWroBh07ejm/brJqnp7tzzg0KgS5tam3duv/KOIhgkSOklefa
+XEgx4tURlkqekQxHDyEz0zYgDFkn2jLBkGzIDkBYtCt5ADFaC1AeGNK3ecyM93tlm6L5cSImLhn9
+Ri++FRGdmCXqZ+Xy3hd2LB3TwNFBm+MU8eOvt4Rt3nfZ22Ri5y6ta0b9+tXLRR7S4sL1UIyasvZi
+XEJKQwgPBBOEquBFAI1ZJBkuEI/120qlaJCG+H0BzIcwX+jJzH2ysxeTggr2hFDCKt+SlSBWlLKk
+UDt8KqjIHWpLEj5erti7YnyVyuW9/1MeCwmLbfrMawvP6fXGHE14Dhy/lWYysTMAHDp5u8wfm04X
+eQKJzXsvp8UlpDRBpruUHsJ8pjqyJhXOF6rAUskXzBzGzO8x8+zchgxi5hRmngAxjQxWHK4MoH6r
+xlVGEFGGh4Svt2uxJj0oDpyddE57Vox7qk+3BrsgzFEyCItMaP3cm4su53QODzcni0gWXy7Y4x54
+NyKhkLtqwdGzd5QjqK3IDASQ6ygt2aEKLBW7QETe5qCGzHwQwibsawjjXwCAq7NjuVXfDV/231/v
++7RtVu1R0/qVAld9l11i6tKP0WRdJaMh0n03ZUDPpf839IxWq7krPxYSFtt62YaTJ6w2lJg5oZc/
+ZCNZZnYa8v7vUalpBmsp7QuFlo0quwCARkOpEH6mcmFbKAJL1WGpFClSzLTxENEcUiDyKC5jZgMR
+LYTwWgAA9O5a/973U18wW8eDGbDHyhgzcOXmQ9y+FwWdVgNHRy3q1ChrkSG6KNj57/Woj+ZsdiBC
+Qrvm1c9/N2VAK1cXxyyW/onJaeHPjVgUFBGdmGEG4uioizi5YaK/i7Ntddb/ftod88em0xZfomZV
+vz3bl4zugkxPg0LDYDBh+YaTeKFnYy7j7fZ23WdmDUem6QpDBJmMKMg1VIGlUqTY8Gu8BeHUPhWy
+Uf7ZTZNT3Fwd7aKzSknTm7YfvHZ+xd8n427fi2qsNxj9lHV8vVyTnu1UT/fu8E5OBUnMag1moOXz
+c+OTUtIzonJoNZrwX796yadjq4AswkSvN6Z3HDIvNDY+pbq5bOzQ9pj4Zleb1zAYTOj11qKIe6Ex
+/vLyapV8DmxfPKa9TqdR+q4WJrGNes+5qNcb5b6/Q6TgjPlGnRKqFDXWfMpqQYy45PdfpJur4yUr
+dQuVlDQ9pny77V7zfnP1U+ZubXE96FE3a8IKAKLjkt3+3HrWqdurP6X/suaYydb0LT8QAd3b17HQ
+4xlNpnJjPl+nOXM5a2QkBwet47efPl/Ny8M5HAC0Go2pTo3s4+vpdBosmT3EX6fVWLgHBD+I6dZl
+2PzrCUlpaQX/Jjbx7t62tvLlU+BpoSqwVIqa0xARInJS+Drt/+/mvRzqFIgzl+8bugydH71h54Wq
+zJzr0UW63uj4/dKDmvdmbIgyFeKMZMIbnRvqtBoLo0qDwaQ7dvau1fodWwXQyb8nldvy60is+n64
+pk83W/7HmVSt6IM/vhsOnVZj8ftHxiQ17Trsp4eh4XFZ4qkVFs91rq/0XVUFlkrJhpmNzPwThOvP
+1myqeoyb9teLH3+9xRgRXWBznSzsOXrjwauT/jDGJaRaDUCn0VBkv+4Nd8z5qN/uES+2/ocIoco6
+e48Flnnp3eUnmLlQVtsql/fWrJ33upOnu3OcuUyrIUOtalYHfBnUqVEWzRtUyvV1mjeo5PL3z286
+ODpoLUIWJyanVe8+fKHxnz2XVkOYIBQqTetXVFqrBhBR9YKcU9VhqdgVIuoMYAyAIbDxwuzXvWH8
+3E+fL7SkrfuP38T4aev1zJxFQ63Tah69/mLrkPde69zM2UmX0Z/Y+JTz3YcvSEhKTs9i6Orr7bro
+v78mlIVltNgCERGdqL9442FKner+HlUqeBfJUsO90Ji0/mMWx6Sk6rPkw3R3czr84+cvOHZsGdDG
+WltArGimpxuQnaJfSYvn50YlJafLjVZHMvOSvPU8E1VgqRQLRLQdIrx1FkYMamP8ZEyPQgvM99XC
+PVix8ZRFmUZDicMHPHVj8shuzRwdtFavZTSZEoZNWHn0/LUHz1k5/N3aea+fbVa/0vsQLkhWSUs3
+QKfVQKstGZOZ8MiE9D4jfw1LSEqrau24g4M2tGHt8rdaNaqic3F21DvoNHFXb4U5nr0SUjYqJqle
+xXJeSduXjPF3dMjdv+edGRsu7zlyQ54abg0z5zoTuxJVYKkUC0Q0H5ZJWu97e7pETR7ZrVGfrg10
+ri6Ft+p+5HQQ3vr0T/Mud36qZvDsD/tW8fNxy9VT99PKw//NX3G4FbImYEgBcNXDzcmxnJ+Hj4eb
+k7O7m5NzfGKqNiwiwRATl+yQrjc6E5HJy8M55qXezdImjOhaUaspXi/mlFQ9Js/eFLj3WGBtKJJ7
+5IZh/Vvii3d75qruv6duB42aslbuchXOzPnOeK4KLJVigYjeg2WspP9u7JkSAZFpvFDRG4xYvuEk
+dFoNWjSqgqb1Kub5HCcv3EseO22dISk5vUBT1fo1yyXNmzbQrWoR23jlhiOng1Le/9/GtMTkNO+8
+tBvcqxm+nNQ7V3WNJjY1fG52DDPk08Is6eJyS8kYp6o8iVjcsBoNVYSNKWJBcdBpMerldhgxqE2+
+hBUAtG5a1fXEhomeM97vFe3l4RKScwvr3Lwb4bxsw0mbFu72pGOrAJdDa97xfql3sxiiLEH5rMG1
+qvmlTXgj926BWg1pKpT1UkaYzeLYnVvUEZZKsUBENSEMSM37add3f1qUhoyFyt6jgSE/LD9kvHk3
+IleBuTzdne+88Gzje+8M79TR0925xCXOiI1PwYkLwcYjp4NCwyMT4hKT0w3JKemGxOQ0g6ODNqJf
+j0aGl3s37+Lr7ZrbNF8ZjJqydse/p27LX0bvMPMCmw2yQRVYKsWCFG4mBTK90KmNk2CvuE2Fxb3Q
+GJy7GpJ+7Ozd0PPXHhjS0g0wGpkcHbSmejXLGls1quLRrkWNCvUCyj6xs5nZv+zdtnzDyT6yom+Z
+eXJ+zqUG8FMpFpjZSERBkKX2unk3Ai0bla40g1Ur+qBqRR/H559uXL24+1JSqVsji7DOEvcst6gC
+S6U4CYRMYF29FWZo2aiKek8WMXEJKTh/LTT9xp1H8TqtxsHFycGjVnU/TfP6laHTFf5AsEJZTw9F
+UY38nku9OVSKE4uwueeuPIgfPuCpPOtIVHJGbzBi/Y4LEb+sPoqwyAR/iGgNFib1Gg2l1Knuf+PH
+zwfWrF7ZVylk8o2nu7NySTTfw2hVYKkUJxYrhRdvhJaoYH13Q6Ljt+y/8ujQiVu6lDR9SsWyXh5V
+K/pUqFPDX9uzUz14e5b8YKgxccnp3y09ePXvXRerG4wmi6gNWq021Wg0OkKyFjCZ2OV60KOmPUf8
+Yhj0XNPzX7z3XFODwUhGE8PDLf/rIZ7uzkpfI9f8nktVuqsUG0TUFiLbMwBAoyH95R2fOBS3YeXp
+S/dT3pv5d2JUbJK/rToaIh7Uq5n+s7efcSyJKccSk9NiPpi1KfDQiVstWLawQUSGfv36XZ8yZUqt
+OnXqOD969Ag///xz2OLFi52SkpIsRkIOOm2K0Why2fLbKOTk35gd0bHJhnaDf5D/SAxAayXnZY6o
+Akul2CAiD8gijgLAtsWjuVY1v2KRWAaDCTN/2hWydtu5SpBZgLu4uMSnpKR4SGUsP+bh5hS0bM6w
+U43rVugGIPt4L3Zi5T+nL8xauKeSidlCyrRq1Spk0aJFlWrUqJHl9zWZTNi9e3fKZ599FhQUFNQA
+0nd0dXYwntvyYYHMMFLS9GjW9xtlsRsz5xibXskTu9SqUvxIUQ8sQsqcuXw/azAoO/H9soNha7ed
+qwzpYdXpdPFz584NDQkJ8QwMDKQFCxbcb9269SUiygj9m5CUFjDonWV96j87++dfVh8b+Cgq4SO9
+wbjh/sPYiJ3/XsO0H3ZgytxtWLvtPIxGU5H2/1ZwJF4YtzT6ywW7m8qFlY+PT+SsWbPSvL298cYb
+b4Ru3rw5SzgMjUaDHj16uGi1Wi/I3XUIxj+3FizTvLOjA5A18Ui+poXqCEulWCGiHQAynIuf6VD3
+1E/TX7TpTFxUBN55FN5v9GJfiOmTSaPRGHbv3s0tWrTIoryJiIjAwoULI5csWeKQmJjoldtr9O3W
+MOLbKc/bnGYWlLGf/4UDxzPXMRwcHKK++OKLlOHDh1euU6dOSlpaWobS7eDBg6YmTZpYDFhGjhwZ
++ffff8tHZablXw+726hOhYCC6LAAoH7P2Wkmk0UMsqrMnOeXkzrCUilursh3zl97UCxW4NN+3BkE
+IayYiHjx4sWpZmEVHR2NCRMmPKxatWrC4MGD78THx+OLL77wu3PnjtfixYtTAwICchUEb+uBK/67
+Dl8vsu/w9vCOGXG6/P39LwUHB/uMHz++8oEDByAXVgCwdOnSR/L9efPmJSiEFdo1r76pXfPqBRZW
+AOCg0yqTX+Rr2q8KLJXixkJgRcYk2d1ydMOui6mXboSaHyjDmjVrogYMGJDh5Pz111+HrlixokJi
+YqLHvn37aowcOTIEALRaLQYOHOh8+vTpchcvXsSXX34Z6uLiYnPU8GzHumhQK9+BCnLE1dkhQ7ke
+ERHReP78+dEA0LJlSxCRxXy0a9eu7ubPCxYsuD19+nSLKVo5P49rS/5vqNw6vUA4OGiVAQLzNT9W
+BZZKcWMhsJjZPzwy4a49O7Bl/+V4g8Fk9uh1WLRoERkMmRmqNmzYYOEvdOHChUpxcXHyIlSuXBmt
+WrVyT0lJyeJd7erieGn196+Z5n/xIqpUyFNghDxRzs/D2cXZIUM/NXv2bL/Bgwff1mg0PHny5BhH
+R8ckjUZj6N27d0SfPn3cjx49mtKuXbu7n3/+eU1kJj+Fh5tT1IYFI+ppNVRoMX6sjLBUgaVSKrkK
+hUL2xIVguyreWzSobLG6d+DAAf++ffveT08Xz1iPHj0s4q7XqFEj1MvLUnUVHBxsHDhwYAJkDz4A
++Hi67D61cZJPy0aVi/xZc3d1wtcf9bMo27dvX83GjRvrd+zYETtkyJCHw4YNC0tLS4utU6dOZL9+
+/Vxu3LhRXV6/WkWfowdWvePr7+teqCu1Oq1GKbDypTxXBZZKscLMiVCsFAY/iLGrAemIQW3QrH4l
+iyX2kydPVqlXr1742rVrY6dOnVqlU6dO9zQajaFu3br3fv311wryujt37kxs06ZNanJyskWg9XJl
+PPYfWff+UzqtprI9vgcAPNupnvsnY3okEGUmMTWZTI6XL1+uuWLFilp//PFH5X379tWOi4tTGlbp
+e3dtsHD37+Oae7g5FbpZiXJKCiBfHg2qwFIpCVhMC8MjE+xqienh5oSV377q2qReRQuNeGxsbLlx
+48Z59+zZM7R79+60YcMGzfbt26u2bNlSc+fOHaxZsyatT58+F4cNG+aWnp5ukbiwTnX/bQdXv9NO
+p9XYPVLfiEFtPNbNeyO9vJ9Hbkeq+i/e6/nv91MHjEcBrNCzg5mVQjBLwtjcoJo1qBQ7RPQ1gA/N
++z3a1TmzcOaglvbuBzMwbtpfpw4cv5mtWYVGo0k1mUw24+A8/3Sj419/3P8pKKaHxcHRM3fCvlt6
+MOH67fDyBqPJwj+QiIyN61aInDiiq1/7FtWLtK8dXvoxODImSR47bBgzr8nreUqeT4HKk4jFCCsh
+ObVY4gcTAb/8b/BTcxbtO7p0/Yl2sDEDsSWsXJwdYr+a1Ad9ujVoW6QdzQMdWtYo36FljfLMwO17
+kbgXGgONhqDTatCgdnmtr5drvkY6eSU5VZ+iKMrXdVWBpVISsBBYd0Ki7fIQ2eLjMT061K9V7vKn
+c7dWNRhMuYnhzv16NAyf/t5z5d1dS2bQVCKgVjW/AvkEFoD4lNR0ZZbpfNl3qAJLpSRwDTIfvYio
+RLewiASU9y+0CCd5pn+PRo3aNa+OL37c+ejg8VueRiujKl8v17j+PRo5vNCziWu9gLJFZ2BV+jnC
+DGXm13z9c1WBpVLsMHMSEd2FLLDbiQvBeP7pRrYb2QF/X3csnDGobEqqHueuhiAt3Qi93qhPNxgM
+NSqXcWlYu3yu3XKecA4CeE1R1peIqgAIAnAbwD5mvprTiVSBpVJSuIISJrDMuDg7oH2LjK45IGt+
+QhUbMAMdXvqxL4CGikNVpS0DItoHYB6Abcxs1bRFNWtQKSlY+hRefVBc/VApRHYcuoqo2KTOyJ3v
+YA8AmwDsIyKr+dhUgaVSUrAQWCFhsVAtbko/CUlKXXuu6ALgAhFl8WVUBZZKScFCYKWlGxAZkyVs
+k0op4+U+zdGrc/07AOSSywBgnpuL41JnJ4dj0r4SPwCbiWi4vFA1HFUpERCRC4BEyF6if/7wGpo3
+tJtXi0oRcvTMnaQt+6/Enb50z+fNQW0ShvVv6QnAGQBi4pL1P68+enLFxtMNmVnpHW4EMISZ1wOq
+wFIpQRDRLQA1zfvzPh+Inp3rFWOPig8TMy7feIg6NcrC2enJWBuLiE58NPjd5UEPH8UrDW/jAdRm
+5keqwFIpMRDRJgD9zfubF41E3YASESbdbiQmp2HZ+pMhS/46rktJ1ZcnorSyZdwvdmoVcH/M0PbN
+q1b0yXdOv+LAaDTh6Jk7+H3jqQcXrj1wZcDBy905vXu72tFD+rYoU6uan4VXg4kZr07648yZy/eV
+rlm/MfNoVWCplBiIaBaATwGgjLcbDq99D8WdQcfe3Lwbgf5jFqebTGw1FpW/r/vNJbOHVKgbUNbd
+2vGSxhsfrcZ/5+7aPO7j5fpg7ND22kG9mpV3cdJBq9WAGdxpyLyzEdGJcqFlAuCtKt1VShJrAJi0
+Wg1++PyFJ05YAUDt6v4Y/0rHK7aOR0Qn1n5+7BKnX9YcS7Vnv/LLxDe7gkj8H4nIoNVqrgOIMB+P
+iUuuNPuXveVbDfjWtP3QNb2oB1r9/fBKAORxyDQAWqkjLJUSRcWyXn+9ObjNoNdesHseihLFFz/s
+CFq7/XxVZrapwJr9YV8MfLaJPbuVL85dCYGvtysql/eGVqthvcF4ffmGkxd+WH7I22AwPSeryt98
+0p/69xAGw8++/vOm4NCY52XHP1ZHWCrFDhE5EJE3EVX64K1uvz7pwgoAZkzoFbBjyWjd26925Kb1
+K8VpNJQlh9+073eYAu88sta8RNG8YWVUq+QLrVYDAOSg09Yf9XK7IRNHdFXG76dEmd3W+Fc7Ku1a
+WqsCS6VYIKLaRPQVEYUASAcQAyDkwzmbtr/16Z9Yu+0cTE/46L9GlTJ47/XOtG7e616Xd3yi7de9
+4SQAUebjeoNRs/3gtWLsYcG4eD20umx3bMWyng+a1s/0kX6mQ12l1WnrJ2O9VKXEQEQ6AJ8DmAor
+Ae6YoTtyOghHTgehbkBZNKuvdPJ/MtFqyGnup8932LL/yncAvjKXX7oRWoy9yj8mZhw6ecuss0q8
+vOOTjjqtppL8HeXm6ugI8TIzL0D4qyMsFbtBRO4ADgGYhlxE4wx+EFPkfSpl1AdgEXDLyVFXKpTv
+SlZuPHUjNc3gDQBtmlYP12k1rwIibpeZ60GPImAZoCFUFVgqdoGINABWA2hv5bBJo6HT0vQQANC2
+WXWYla8qApOJkwG8Ii+rWc2v1M2bmWGcu/iAOQY+f/b2MwHW6s2cv9Mblu6DIeqUUMVejAXQT1EW
+37tL/RMfj+nRtby/ZysAiE9MxZ2QaFSp4G3xtlUBfllz7CaAobIi0+BezVxs1S+pEOHndL1xp06r
+Wfnh6O4ptav7Z4nMkJqmf3j2yoNuiuL9qsBSsRdj5DtElLhsztCQds2rP3P7XiS//tHqiAvXHmh0
+Wo3LsjnDXH29iiR5S6klPjE15aeVhzvJy8r5eRytWtGnk602JZj6N/ZM8TMYTN46nfWsQq9NXnWD
+mbsqiv9Wp4QqRQ4RtQIgNxgyfD91wJ42zao1+HbJgVt9Rv6mP37urn9Kqr5MQlKa6+xf9hZXV0sk
+zMCQ93+/bjSaLDzB/zehV76yJ5cAegAYotNZtwxevO74pQvXQ7sqio8x8yV1hKViD96S77i7Ov37
+XOf6fd+evj5q37HAWrJDEU81qZq4cMagUuUvV5Skphnw+oerbt++F9VcXu7h5nS0S5taHYurX0XF
+zJ923Vq16UxjRbERwNuAGiJZpYghIi0s9S4Y90qH5O0Hr0buOxYoz6Acc2PPlLcAbLZrB0sw0bHJ
+xhffWRYaGh5XU3ns55mDA1AC8h5aIy4hBcfPBePpjnVz7V51827Ew3dnbAi7ExLd3MrhOcx8HlAF
+lkrR4whAnqxB/+rzLR3HfLbOIn2WhigCwE927VkJ5szl+ztf/3B1Q73BqLQGx9hhHUKfalLVagjh
+4ub2vUiMmrJW/yA8zsHN1TFi4LNNzk4Y0SXd3dWpDoBakAnZlFQ9jp8PNvyy+uiV89ceNAJQwcop
+f2LmqeYdVWCpFDVKPWmqk6Ouetvm1d2u3X50IC4hpQMAxwplPd2ALKmgnjgSktIwfd7OoK37r/SA
+lWQXr/RveXTiiC4diqFruWLd9vP8IDzOAQCSktP9V/5zuufKf04bAMQR0VV/X/fbrs4OFfVGY/mH
+j+IrmkysA9DUyqmMAL4EMENeqCrdVYoa5ZwgnYiqjBvWASf/nngNQDgAEEEZaTJb0vVWk6qUev74
+57Rx6/4rAcgqrCI+Hff0P9Pe7VlihRUATBjRhSqU9VT6PeoAlGHmxo+iEgbcfRDd+kFYXFVJWFnj
+DoDOzDydFdEZVIGlUtQo7zFno9Fk9icZ7e3pchkAHoTHuSYm5y5hwerNZ9J+WnG45Hv95oOTF4Oz
+GILWr1nu5uE/3018Y2DrAcXRp7zg4uSApf831LVZg0r5WcFMA7AIQFNmPmatgiqwVIqadGkz43b8
+fPBD6bPu5T7NqwAAM+jE+eC4nE6271ggZv60y3HdjvP5SsdS0vm/D/vp6tYoa3R3dTK83Kd5/PYl
+o/HPL2/VLlvGo9SsnAZUKYM/f3hdM3ty3ziNhh7m3AK3AXwEoBIzj2XmBFsV1XhYKkUOEW0FkJGy
+6aXezQ79b2LvLgBw6cZDDHpnGQCga5tayYu+fMmmxejNuxEYOH6pMV1v1ALAruVjU6pX8i11lt45
+kZKqBxE9FrHc0/XGDxv3njMaQG2p6CCAm8jM+HwbwDnl1M8Wpf8XUSkNbIBMYG3Zf6XSjAm9WENE
+jetWQIuGlXH2SggC70ZkK3y2H7qWkK43epj3l284eXX6e88pY3/blYcR8bgdHImHj+IN8UmpqfEJ
+qWlxian6+MRUfXJKutHT3UVbtoy7Szk/D3dfL1dnL08XVCrriaqVfG0u+bs4Pz6JpVPT9D0hSywC
+4Dtm3pLf86kCS8UebILIPacDgJRUfa1f//zv9Nih7VsBwLI5wxD8IBrBoTHZGe3wP7svngPQ2Vyw
+Zf8V9+nvPZdNk8IlLCIBe4/dSD929m7UtVthpvCoRB+j0WQeEeoAuEtbjmg0ZPD1co2qVsk3oXHd
+CrpOrQIqt2pcVfc4jKrknL0SUgmWqicnW3VzgzolVLELRLQbwDPmfZ1WE37srwneXh7Oub2Bp9d9
+ZlYVKKzmdy8fF1ytkk+1QuyqBZcCHyau33Hhwb5jge4R0YlFanah0ZC+VjW/Rz071XPt1ra2T4Na
+5Uu9A/h3Sw8GL1pzTP7/6crMh/J7PlVgqdgFImoJ4Dhko3pXZ4drB1a94+Tt6WI1vAgAhIbHpU37
+YcfWw6eDmkIYHlrw/NONd379cb9CH2YxA/3H/GYIvBNRbEMeN1fH2Bd7No0YM7R9FT8fN+fi6kdB
+GDJhxe1zV0LkU8KazByU3/OpAkvFbhDRZwD+Jy/TajXnxg5t/7Bbu9q6RrXLOyUlp/sH3o1wu3Tj
+oW7Dzgt0486jCshqy5WBo4Pu3KXtHzVFIa94Hzt7ByM+XpNTtVQiuq7VUKJGo9HrtJp0nU5jcHDQ
+GhwdtAYnB53BaDJ5paYZfBOSUt3T0gw+DPgj76qY9BqVfY9/9vaznh1bBTTL3zcqHpr3nxuZnJLu
+JytyZuZ8r/CqAkvFbkh+hYcBtLNRJQmAK7IRUNZYO+/1o83qVypUg8ofl//LC1cdydIPRwftrXYt
+alwb9XJbtxYNKz+l1Wg8rLW3gYmZQyKiE4Ov3gqPPHD8Fp+5fN/7/sPYKqlp+lz5Brq6OF4f9XLb
+2LcGt23p5Kgr0dr5qNgktB/8o7wogpkLlBlXFVgqdoWIagD4C0B+V/dOAWgO2SildnX/g1t/G9W1
+4L3LJCVVj1cmrTQZjKbkqhV8UhvUKuf4dMe67nWqF01Y8ZRUPc5fexC571jgnd1HbjiFRyY0RDYC
+TKOh2D5dG4ROGNGlfuXy3nkS8MzAz6uOICI6MbVDywDnpzvUKXD/rbH7yI1H787YIBdQ55i5RUHO
+qQosFbsjjbTegfAVy20G4yMAZjDzXiL6GSKCqZn0w3++l1S2jLvVYHClkajYJP3abedur9t+XvPw
+UXwt2J7ycs9O9SLnfNTPP7fmENN+2IG1284BAF7u09wwc0KvItHTTZ696dyW/Vfk0Rc2MvPAgpxT
+tXRXsTvMbGTmHyGSKiyFMCS09uYMA7AVwDPM3ImZzZH9ZsAyK7Ah80vgAAAKWklEQVTjZ99tO1OU
+fbY3ZbzdHMa/0rHewVXv1Pl3zbsJw/q33OfkqLtopSrtOnzdv9OQeWGXAx/atBA3k5pmyBBWAGAy
+8b3C7LecA8dvKf1DjxT0nKrAUik2mDmEmd9i5joAPAF0ADAKwHMAyjNzBWbuJxNU5nZhAObKyw6d
+vN0iKSX9jr36bk/K+Xl4ffFuzx4Xt33U8LupA464uTqeUNZJSEorP+idZU4/rTx8N7tzXQ8Kj5Xv
+N6pTXl/I3QUABD+IiU1MTlO6Ex0o6HlVgaVSImDmRGY+xsyLmXkXM4fn0GQupEgPEr4fz9lysOh6
+WCLQ9unaoOPZTZNbzP3k+T80GrosP8gMx/krDlfvP2bxrdj4FKvOx18t3JOReVWn08S++FzTukXR
+0ZWbTt9QFMUAuFDQ86oCS6VUwsyJAKbLy/YcvdEtNd1wqnh6ZFcc+vVo+OqZTZO9A6qU+Vd58EbQ
+o1qdh86PuXg91MJ8ICwyIeji9dCMxY7nezSOcNAVTdDSrfuvuCmKDjJzgWPQqwJLpTSzGMAt2X71
+VyetPF9cnbE3rs4OlXcsHdN51MvtTgCwmNqlpRvKDJu4MuVuSHSGrm/8tL+OIzOLMo9/tUMWQ9zC
+IComKTomLrmBorjA00FAFVgqpRhmNgCYLS+7dOPhsLsh0TuLqUvFwuSR3dosmDEokIgS5eV6g9G7
+/5jFMdGxybGBdyP+vHIzrK/5WJN6FUPyag6RW37feOoSssqW3YVxbtWsQaVUQ0QOEKuMGf5qPp4u
+W49vmPgcnjDn/gvXQ8OGTVjhaDCafOXlnu7Ox5JT09lgMHUAAA1R+q7lY3VVK/oUyYCl1YBvbyYk
+pdWWFR1j5kIx7FVHWCqlGmbWA/g/eVlMfErf7Qev5TuESWmlab2K5bctGe3i4eYUKS+PT0xtbxZW
+APD28I5xRSWszl4JiVQIKwD4rbDOrwoslceBpQAeyAs+nLOplslkO3Ll40r1Sr4ue34f59e4boUI
+a8crlvV8NO6Vjv5Fdf3vlx5Uhq6OA7CusM6vCiyVUg8zpwP4Wl5mMJgafzD7nywraE8CPl6uWDf/
+DX9fL1cLQaEhSl84c7BfbnMF5pWY+JT0U5fuKXMormJmZVKKfKMKLJXHhV9huWKI7Qev9Tx8Kuh0
+MfWnWLl2K/xWdFxyD1kRz53yfEz9muWK7Jmfv+Lfc8xZAvQV2nQQUAWWymMCM6cCGAFAbuujG/P5
+ugqxCSlRxdStYuF60KMHg95Z5gOgjLns5T7No/p0bVCuqK6ZmmYwrN16rqqi+Kg5Y3NhoQoslccG
+Zj4CYJ68zGg0VRo4bunNYuqS3dl3LPDhgLFLvEwmzhBWwwe0ejhzQi+/7NoVlDmL9l40GE3KzM2f
+FPZ1VIGl8rgxFYqp4YPwuLZfLdxzuJj6YzcWrTkWMf6L9eWYOSMCxuBezR589vaz1lLAFxoxccnp
+f247p4xRs0l6gRQqqsBSeayQFLzKqSFWbDzV5uiZO4+tPmvmT7v03y096A/pmSbA+PHoHkFfTupd
+pHHoAWDSrH/OmkwsDxNkQBGMrgBVYKk8hkhv9q8VxY5vffpnwJWbYY/d9DAiOhGrN5/NMJJ1ctSl
+Lv96GL85uI3NWPmFxa3gyOvHzt5VBmNcwszXi+J6qsBSeVyZCuBveQEz+w5+Z7nn3QfROUWCKFVo
+tRrUCyibDABlvF0NmxeNdG7bvLo9rPyNwz/4IxyAPHJgEhRO6YWJ6pqj8thCRK4QmYafkpc7OmhD
+9q0c71W2jEde4rGXaPQGI+4/jIWfjxs83e2TYGf2L3t3Ld9wsqei+D1mnl9U11QFlspjDRGVB3AC
+gMWSu4uzQ9DBVe94e3u6+FpvqZIdl248vDDonWV1AMizde9g5t5FeV1VYKk89hBRIwBHIaKaZuDs
+5HB538rx3n4+bpWLp2elk5Q0/YNWz3+baDCa5MH/HgFokovAiwVC1WGpPPYw82WIsMsx8vLUNH2j
+zkPn8+WbYbest1SxQnKvEYtOKoQVALxZ1MIKUAWWyhMCM/8HoAtEYosMjEZTlUFvLy2/df+Vy9Zb
+qsh5d8aGNQ8j4l9QFC9k5m32uL46JVR5oiCiAAB7ASgTJJhe6t183/8m9uoB9UVulanfbtu4fucF
+pbD6F8CzBcnmnBdUgaXyxEFEFSAiYDZSHqtWyWfb5kWjWjg76YrUOry08fHXW9b/s+fSIEXxRQCd
+mTnOXv1QBZbKEwkR+QJYDUC5LA+tRhM0b9rAsKc71Glv/56VOHjSrH/WbTtw9WVF+R0AHZj5oT07
+owoslScWIiIIF5L/IWtaeG5Qq9z+FXNfre/h5lTR/r0rEZjGfr5uw4HjtwYryiMghJXdvQZUgaXy
+xENEHQH8CSCL3x0RhX40uvuxNwe16Y/MjDOPPY+iEqNffHvp7UdRiU8pDsVAZOIulkzbqsBSUQFA
+RH4AVgDoZe24p7vz7oUzBrk91aRqoSRTKMn8s+fSjU/nbvU3mVhpVBsEoDczK5Ok2g1VYKmoyCCi
+1wB8A6CstePlynicmTmxl0fXNrWU4VRKPckp6Rj/xfrL/527m2UxAsB/AJ5nZqux4u2FKrBUVBQQ
+kQ+AWQBGw4aJg7eHy42Px/TgF55tUo+KJkS6Xdl7NDBy8v9tMqak6q1FJf0LwGtSVNdiRRVYKio2
+IKKnAPwCoIWtOq7ODvfGDO2Q/MaLres5O5W+NIjhkQmGt6evD7p046G1ESNDJKr9jEuIoFAFlopK
+NhCRBsBwiHA1ynx7Gei0mrjeXRsEf/BWt1rl/T1c7dbBfGI0MRb+cSRo4aoj5UwmdrNS5S6AEcx8
+0L49yx5VYKmo5AIi0gIYCuAzAEo/Ojn6OjX8z37+dk+X1k2rNrFP7/LGkTN3rn8w6x+n2PgUpbW/
+mSUAJjKXvLyOqsBSUckD0ojrZQjB1SC7uk6Ouls92tWOeGNQmypN61Us1ogQiclp+P3vU1eX/nXC
+MTE5rZaNamEARtrLLzA/qAJLRSUfSEanXQGMBDAQQLZR83RaTUizBpWuvzGwta5H+zpNNBqyRxwu
+PnE++PbCVUfSTl64V9PEbKuPBgC/A/iYmUt0SjRVYKmoFBBpVfEVCOHVNBdNYr08nG81qVcxqUOL
+GpqOrQK8a1Xzq0FE7jk3tU1qmgHnrobc2Xss8MGR00G4FxpTxWTiatk0SQOwDMAcZr5bkGvbC1Vg
+qagUIkTUCkJwDYUiYGAOxDk7OVyt4O8RX7mCt65SOS+tv6+Hsby/h6m8nwf5+bhpklP1bvGJqa7R
+sclpYZEJieGR8anhkQn6kLA4xwfhcdWTU9JrAsjNUmUyRKbsb5g5NO/fsvhQBZaKShEgxZN/CUJ4
+lRTr+EAAawHML24D0PyiCiwVlSKGiOoDeAtAX2S/wlgUnIXIHrSRma/a+dqFjiqwVFTsCBH5A+gI
+oJO0NUfWSBH5xQTh73cZIlvQRma+V0jnLhGoAktFpRiRFO2tAVQDUFG2VZL++kAox1MBpEh/zZ9j
+AFwFcAVCSF1j5hQ7fwW78v/7aVY04qVhngAAAABJRU5ErkJggg==">
+</span></p></div>
+<div class="paragraph"><p>Our VP walks away inwardly smiling, thinking he&#8217;s getting out of detailed
+explanations and putting all the blame on an underling, just by demanding more
+editing than anyone could do in the time available. &#8220;I&#8217;ll tell the Information
+Systems Committee that I made it perfectly clear to the programmer that we
+needed this at 9:30, but when I asked him for it a minute ago he said it wasn&#8217;t
+finished and he wasn&#8217;t sure when it would be. Then I&#8217;ll remark that those
+programmers just can&#8217;t understand that keeping management informed is every bit
+as important as writing code!&#8221;</p></div>
+<div class="paragraph"><p>But Hal has a secret weapon against this squeeze play: an expert knowledge of
+the Vim editor.</p></div>
+<div class="paragraph"><p><a id="T1_move"></a></p></div>
+<div class="paragraph"><p>Reversing the order of the lines in a file is a piece of cake with this editor.
+The eight keystrokes in:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  :g<span class="sr">/^/</span>m0
+</pre></div></div></div>
+<div class="paragraph"><p>will do it. Taking the digits out of the middle of the second column throughout
+the file also requires just one command line:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  :%s<span class="sr">/\v +\zs(\d)\d+(\d)/</span>\<span class="m">1</span>\<span class="m">2</span>
+</pre></div></div></div>
+<div class="paragraph"><p>And integrating the Lint messages into a copy of the source code? Even that can
+be automated with the Vim editor. The editor command:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  :%s<span class="sr">/\vLine (\d+): (.*)/</span>\<span class="m">1</span>s;$; XXX \<span class="m">2</span>
+</pre></div></div></div>
+<div class="paragraph"><p>will turn that file of Lint messages into an editor script, and running that
+script on a copy of the source file will mark it up as requested.</p></div>
+<div class="paragraph"><p>Rather than being portrayed as a bungler, Hal can have it all ready in a couple
+of minutes, just by typing a few lines. He&#8217;ll even have time to guard against
+vice-presidential prevarication, by disappearing into the coffee shop across
+the street and reappearing just as the meeting is getting started, to tell the
+VP (and everyone else in earshot), &#8220;Those files you wanted are in
+slash-temp-slash-hal&#8221;.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_the_plan_of_this_ongoing_tutorial">The Plan Of This Ongoing Tutorial</h3>
+<div class="paragraph"><p>I&#8217;m writing here for editor users who have some fluency in Vim at the surface
+level. That is, you know how to do the ordinary things that are belabored in
+all the &#8220;Introducing Vim&#8221; books on the market, but rarely venture beyond that
+level.</p></div>
+<div class="paragraph"><p>This tutorial series will explore a lot of other capabilities that hardly
+anyone knows are in Vim. That includes quite a few tricks that may be built on
+editor functions we all use every day, but which nonetheless are not obvious&#8201;&#8212;&#8201;for instance, telling the global command to mark every line it encounters.
+I&#8217;ll also be clarifying the real nature of the many misunderstood aspects of
+this editor.</p></div>
+<div class="paragraph"><p>To do all this, I&#8217;ll be explaining things in more depth than you might think
+warranted at first. I&#8217;ll also throw in exercises wherever they seem helpful.
+And to save you readers from gross information overload, I&#8217;ll write this
+tutorial in a large number of fairly small modules, to be put up on our website
+at a calm, reasonable pace.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_editor_8217_s_basic_concepts">The Editor&#8217;s Basic Concepts</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>To get a real grasp on this editor&#8217;s power, you need to know the basic ideas
+embodied in it, and a few fundamental building blocks that are used throughout
+its many functions.</p></div>
+<div class="paragraph"><p>One cause of editor misuse is that most users, even experienced ones, don&#8217;t
+really know what the editor is good at and what it&#8217;s not capable of. Here&#8217;s a
+quick rundown on its capabilities.</p></div>
+<div class="paragraph"><p>First, it&#8217;s strictly a general-purpose editor. It doesn&#8217;t format the text; it
+doesn&#8217;t have the handholding of a word processor; it doesn&#8217;t have built-in
+special facilities for editing binaries, graphics, tables, outlines, or any
+programming language except Lisp.</p></div>
+<div class="paragraph"><p>It&#8217;s two editors in one. Visual mode is a better full-screen editor than most,
+and it runs faster than those rivals that have a larger bag of screen-editing
+commands. Line editing mode dwarfs the &#8220;global search and replace&#8221; facilities
+found in word processors and simple screen editors; its only rivals are
+non-visual editors like Sed where you must know in advance exactly what you
+want to do. But in the Vim editor, the two sides are very closely linked,
+giving the editor a combination punch that no other editor I&#8217;ve tried can
+rival.</p></div>
+<div class="paragraph"><p>Finally, this editor is at its best when used by people who have taken the
+trouble to learn it thoroughly. It&#8217;s too capable to be learned well in an hour
+or two, and too idiosyncratic to be mastered in a week, and yet the power
+really is in it, for the few who care to delve into it. A large part of that
+power requires custom-programming the editor: that&#8217;s not easy or
+straightforward, but what can be done by the skillful user goes beyond the
+direct programmability of any editor except (possibly) Emacs.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_search_patterns">Search Patterns</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In quite a few functions of this editor, you can use string-pattern searching
+to say where something is to be done or how far some effect is to extend. These
+search patterns are a good example of an editor function that is very much in
+the Unix style, but not exactly the same in detail as search patterns in any
+other Unix utility.</p></div>
+<div class="paragraph"><p>Search patterns function in both line editing and visual editing modes, and
+they work the same way in both, with just a few exceptions. But how you tell
+the editor you&#8217;re typing in a search pattern will vary with the circumstances.</p></div>
+<div class="sect2">
+<h3 id="_searching_from_where_you_are_now">Searching From Where You Are Now</h3>
+<div class="paragraph"><p>The more common use for search patterns is to go to some new place in the file,
+or make some editing change that will extend from your present position to the
+place the pattern search finds. (In line editing mode it&#8217;s also possible to
+have an action take place from one pattern&#8217;s location to where another pattern
+is found, but both searches still start from your present location.)</p></div>
+<div class="paragraph"><p>If you want to search forward in the file from your present location (toward
+the end of the file), precede the search pattern with a slash ( <span class="monospaced">/</span>
+) character, and type another to end the pattern. So if you want to
+move forward to the next instance of the string &#8220;j++&#8221; in your file,
+typing:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  <span class="sr">/j++/</span>
+</pre></div></div></div>
+<div class="paragraph"><p>will do it. And so will:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  /<span class="k">j</span><span class="p">++</span>
+</pre></div></div></div>
+<div class="paragraph"><p>When there is nothing between the pattern and the <span class="monospaced">RETURN</span> key, the
+<span class="monospaced">RETURN</span> itself will indicate the end of the search pattern, so the
+second slash is not necessary.</p></div>
+<div class="paragraph"><p>To search backward (toward the start of the file), begin and end with a
+question mark instead of a slash. The same rules of abbreviation apply to
+backward searches, so:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  ?<span class="k">j</span><span class="p">++</span>?
+</pre></div></div></div>
+<div class="paragraph"><p>and:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  ?<span class="k">j</span><span class="p">++</span>
+</pre></div></div></div>
+<div class="paragraph"><p>both head backward in the file to the same pattern.</p></div>
+<div class="paragraph"><p>Either way, you&#8217;ve expressed both your request for a pattern search and the
+direction the search is to take in just one keystroke. But don&#8217;t assume that if
+you search backward, any matching pattern the editor finds will be above your
+present position in the file, and vice versa if you search forward. The editor
+looks there first, certainly, but if it gets to the top or bottom line of the
+file and hasn&#8217;t found a match yet, it wraps around to the other end of the file
+and continues the search in the same direction. That is, if you used a question
+mark to order a backward search and the editor searches all the way through the
+top line of the file without finding a match, it will go on to search the
+bottom line next, then the second-to-the-bottom line, and so on until (if
+necessary) it gets back to the point where the search started. Or if you were
+searching forward and the editor found no match up through the very last line
+of the file, it would next search the first line, then the second line,
+etcetera.</p></div>
+<div class="paragraph"><p>If you don&#8217;t want searches to go past either end of the file, you&#8217;ll need to
+type in a line mode command:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  :<span class="k">set</span> <span class="nb">nowrapscan</span>
+</pre></div></div></div>
+<div class="paragraph"><p>This will disable the wraparound searching during the present session in the
+editor. If you want to restore the wraparound searching mechanism, typing:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  :<span class="k">set</span> <span class="nb">wrapscan</span>
+</pre></div></div></div>
+<div class="paragraph"><p>will do it, and you can turn this on and off as often as you like.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_the_find_them_all_search">The Find-Them-All Search</h3>
+<div class="paragraph"><p>Up to now, I&#8217;ve been considering searches that find just one instance of the
+pattern; the one closest to your current location in the file, in the direction
+you chose for the search. But there is another style of search, used primarily
+by certain line editing mode commands, such as global and substitute. This
+search finds every line in the file (or in a selected part of the file) that
+contains the pattern and operates on them all.</p></div>
+<div class="paragraph"><p>Don&#8217;t get confused when using the global and substitute commands. You&#8217;ll often
+use both styles of search pattern in one command line. But the
+find-one-instance pattern or patterns will go before the command name or
+abbreviation, while the find-them-all pattern will come just behind it. For
+example, in the command:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  :?Chapter <span class="m">10</span>?<span class="p">,</span><span class="sr">/The End/</span>substitute<span class="sr">/cat/</span>dog/g
+</pre></div></div></div>
+<div class="paragraph"><p>the first two patterns refer to the preceding line closest to the
+current line that contains the string &#8220;Chapter 10&#8221; and the following
+line closest to the current line containing the string &#8220;The End&#8221;.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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
+YII=">
+</td>
+<td class="content">Each address finds only one line.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Combined with the intervening comma, they indicate that the substitute
+command is to operate on those two lines and all the lines in between
+them. But the patterns immediately after the substitute command itself
+tell the command to find every instance of the string &#8220;cat&#8221; within
+that range of lines and replace it with the string &#8220;dog&#8221;.</p></div>
+<div class="paragraph"><p>Aside from the difference in meaning, the two styles also have different
+standards for the delimiters that mark pattern beginnings and (sometimes)
+endings. With a find-them-all pattern, there&#8217;s no need to indicate whether to
+search forward or backward. Thus, you aren&#8217;t limited to slash and question mark
+as your pattern delimiters. Almost any punctuation mark will do, because the
+editor takes note of the first punctuation mark to appear after the command
+name, and regards it as the delimiter in that instance. So:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  :?Chapter <span class="m">10</span>?<span class="p">,</span><span class="sr">/The End/</span>substitute;<span class="k">cat</span>;dog;g
+
+  :?Chapter <span class="m">10</span>?<span class="p">,</span><span class="sr">/The End/</span>substitute<span class="p">+</span><span class="k">cat</span><span class="p">+</span>dog<span class="p">+</span>g
+
+  :?Chapter <span class="m">10</span>?<span class="p">,</span><span class="sr">/The End/</span>substitute{<span class="k">cat</span>{dog{g
+</pre></div></div></div>
+<div class="paragraph"><p>are all equivalent to the substitution command above. (It is a good idea to
+avoid using punctuation characters that might have a meaning in the command,
+such as an exclamation point, which often appears as a switch at the end of a
+command name.)</p></div>
+<div class="paragraph"><p>The benefit of this liberty comes when the slash mark will appear as itself in
+the search pattern. For example, suppose our substitution command above was to
+find each pair of consecutive slash marks in the text, and separate them with a
+hyphen&#8201;&#8212;&#8201;that is, change <span class="monospaced">//</span> to <span class="monospaced">/-/</span> . Obviously:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  :?Chapter <span class="m">10</span>?<span class="p">,</span><span class="sr">/The End/</span>substitute<span class="sr">/////-/</span>/g
+</pre></div></div></div>
+<div class="paragraph"><p>won&#8217;t work; the command will only regard the first three slashes as delimiters,
+and everything after that as extraneous characters at the end of the command.
+This can be solved by backslashing:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  :?Chapter <span class="m">10</span>?<span class="p">,</span><span class="sr">/The End/</span>substitute<span class="sr">/\/\//</span>\<span class="sr">/-\//</span>g
+</pre></div></div></div>
+<div class="paragraph"><p>but this is even harder to type correctly than the first attempt was. But with
+another punctuation mark as the separator:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  :?Chapter <span class="m">10</span>?<span class="p">,</span><span class="sr">/The End/</span>substitute;<span class="sr">//</span>;<span class="sr">/-/</span>;g
+</pre></div></div></div>
+<div class="paragraph"><p>the typing is easy and the final command is readable.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_simple_search_patterns">Simple Search Patterns</h3>
+<div class="paragraph"><p>The simplest search pattern is just a string of characters you want
+the editor to find, exactly as you&#8217;ve typed them in. For instance:
+&#8220;the cat&#8221;. But, already there are several caveats:</p></div>
+<div class="paragraph"><p>This search finds a string of characters, which may or may not be
+words by themselves. That is, it may find its target in the middle of
+the phrase &#8220;we fed the cat boiled chicken&#8221;, or in the middle of &#8220;we
+sailed a lithe catamaran down the coast&#8221;. It&#8217;s all a matter of which
+it encounters first.</p></div>
+<div class="paragraph"><p>Whether the search calls &#8220;The Cat&#8221; a match or not depends on how
+you&#8217;ve set an editor option named <span class="monospaced">ignorecase</span> . If you&#8217;ve left that
+option in its default setting, the capitalized version will not match.
+If you want a capital letter to match its lower-case equivalent, and
+vice versa, type in the line mode command:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  :<span class="k">set</span> <span class="nb">ignorecase</span>
+</pre></div></div></div>
+<div class="paragraph"><p>To resume letting caps match only caps and vice versa, type:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  :<span class="k">set</span> <span class="nb">noignorecase</span>
+</pre></div></div></div>
+<div class="paragraph"><p>Unlike vi, Vim can find a match where &#8220;the&#8221; occurs at the end of one
+line and &#8220;cat&#8221; is at the start of the next line:</p></div>
+<div class="paragraph"><p>&#8230;
+  and with Michael&#8217;s careful help, we prodded the
+  cat back into its cage.  Next afternoon several
+&#8230;</p></div>
+<div class="paragraph"><p>This is done using the <span class="monospaced">\n</span> metacharacter (Metacharacters are
+discussed next):</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  <span class="sr">/the\ncat/</span> delete
+</pre></div></div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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
+YII=">
+</td>
+<td class="content">The ex mode is line oriented, so the resulting (line) address of
+this search is the first line (containing &#8220;the&#8221;).</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Where the search starts depends on which editor mode you&#8217;re using. A search in
+visual mode starts with the character next to the cursor. In line mode, the
+search starts with the line adjacent to the current line.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_metacharacters">Metacharacters</h3>
+<div class="paragraph"><p>Then there are search metacharacters or &#8220;wild cards&#8221;: characters that represent
+something other than themselves in the search. As an example, the
+metacharacters <span class="monospaced">.</span> and <span class="monospaced">*</span> in:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  <span class="sr">/Then .ed paid me $50*!/</span>
+</pre></div></div></div>
+<div class="paragraph"><p>could cause the pattern to match any of:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>  Then Ted paid me $5!
+
+  Then Red paid me $5000!
+
+  Then Ned paid me $50!</pre>
+</div></div>
+<div class="paragraph"><p>or a myriad of other strings. Metacharacters are what give search patterns
+their real power, but they need to be well understood.</p></div>
+<div class="paragraph"><p>To understand these, you must know the varied uses of the backslash (
+<span class="monospaced">\</span> ) metacharacter in turning the &#8220;wild card&#8221; value of
+metacharacters on and off.</p></div>
+<div class="paragraph"><p>In many cases, the meta value of the metacharacter is on whenever the character
+appears in a search pattern unless it is preceded by a backslash; when the
+backslash is ahead of it the meta value is turned off and the character simply
+represents itself. As an example, the backslash is a metacharacter by itself,
+even if it precedes a character that never has a meta value. The only way to
+put an actual backslash in your search pattern is to precede it with another
+backslash to remove its meta value. That is, to search for the pattern &#8220;a\y&#8221;,
+type:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  <span class="sr">/a\\y/</span>
+</pre></div></div></div>
+<div class="paragraph"><p>as your search pattern. If you type:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  <span class="sr">/a\y/</span>
+</pre></div></div></div>
+<div class="paragraph"><p>the backslash will be interpreted as a metacharacter without any effect (since
+the letter y is never a metacharacter) and your search pattern will find the
+string &#8220;ay&#8221;.</p></div>
+<div class="paragraph"><p>Less-often-used metacharacters are used in exactly the opposite way. This sort
+of character represents only itself when it appears by itself. You must use a
+preceding backslash to turn the meta value on. For example, in:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  <span class="sr">/\&lt;cat/</span>
+</pre></div></div></div>
+<div class="paragraph"><p>the left angle bracket ( <span class="monospaced">&lt;</span> ) is a metacharacter; in:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  <span class="sr">/&lt;cat/</span>
+</pre></div></div></div>
+<div class="paragraph"><p>it only represents itself. These special metacharacters are pointed out in the
+list below.</p></div>
+<div class="paragraph"><p>Finally there is a third class, the most difficult to keep track of. Usually
+these metacharacters have their meta values on in search patterns, and must be
+backslashed to make them represent just themselves: like our first example, the
+backslash character itself. But if you&#8217;ve changed the default value of an
+editor option named <span class="monospaced">magic</span> to turn it off, they work oppositely&#8201;&#8212;&#8201;you then must backslash them to turn their meta value on: like our
+second example, the left angle bracket. (Not that you are are likely
+to have any reason to turn magic off.) These oddities are also noted
+in the list below.</p></div>
+<div class="paragraph"><p>And don&#8217;t forget the punctuation character that starts and ends your search
+pattern, whether it is slash or question mark or something else. Whatever it
+is, if it is also to appear as a character in the pattern you are searching
+for, you&#8217;ll have to backslash it there to prevent the editor thinking it is the
+end of the pattern.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_table_of_search_pattern_metacharacters">Table Of Search Pattern Metacharacters</h3>
+<div class="paragraph"><p><span class="monospaced">.</span></p></div>
+<div class="paragraph"><p>A period in a search pattern matches any single character, whether a letter of
+the alphabet (upper or lower case), a digit, a punctuation mark, in fact, any
+ASCII character except the newline. So to find &#8220;default value&#8221; when it might be
+spelled &#8220;default-value&#8221; or &#8220;default/value&#8221; or &#8220;default_value&#8221;, etcetera, use
+<span class="monospaced">/default.value/</span> as your search pattern. When the editor option
+<span class="monospaced">magic</span> is turned off, you must backslash the period to give it its meta
+value.</p></div>
+<div class="paragraph"><p><span class="monospaced">*</span></p></div>
+<div class="paragraph"><p>An asterisk, plus the character that precedes it, match any length
+string (even zero length) of the character that precedes the asterisk.
+So the search string <span class="monospaced">/ab*c/</span> would match &#8220;ac&#8221; or &#8220;abc&#8221; or
+&#8220;abbc&#8221; or &#8220;abbbc&#8221;, and so on. (To find a string with at least one
+&#8220;b&#8221; in it, use <span class="monospaced">/abb*c/</span> as your search string.) When the asterisk
+follows another metacharacter, the two match any length string of
+characters that the metacharacter matches. That means that <span class="monospaced">/a.*b/</span>
+will find &#8220;a&#8221; followed by &#8220;b&#8221; with anything (or nothing) between
+them. When the editor option <span class="monospaced">magic</span> is turned off, you must
+backslash the asterisk to give it its meta value.</p></div>
+<div class="paragraph"><p><span class="monospaced">^</span></p></div>
+<div class="paragraph"><p>A circumflex as the first character in a search pattern means that a
+match will be found only if the matching string occurs at the start of
+a line of text. It doesn&#8217;t represent any character at the start of the
+line, of course, and a circumflex anywhere in a search pattern except
+as the first character will have no meta value. So <span class="monospaced">/^cat/</span> will
+find &#8220;cat&#8221;, but only at the start of a line, while <span class="monospaced">/cat^/</span> will
+find &#8220;cat^&#8221; anywhere in a line.</p></div>
+<div class="paragraph"><p><span class="monospaced">$</span></p></div>
+<div class="paragraph"><p>A dollar sign as the last character in a search pattern means the
+match must occur at the end of a line of text. Otherwise it&#8217;s the same
+as circumflex, above.</p></div>
+<div class="paragraph"><p><span class="monospaced">\&lt;</span></p></div>
+<div class="paragraph"><p>A backslashed left-angle bracket means the match can only occur at the
+start of a simple word (In this editor, a &#8220;simple&#8221; word is either a
+string of one or more alphanumeric character(s) or a string of one or
+more non-alphanumeric, non-whitespace character(s), so &#8220;shouldn&#8217;t&#8221;
+contains three simple words.) Thus <span class="monospaced">/\&lt;cat/</span> will find the last
+three characters in &#8220;the cat&#8221; or in &#8220;tom-cat&#8221;, but not in
+&#8220;tomcat&#8221;. To remove the meta value from the left angle bracket,
+remove the preceding backslash: <span class="monospaced">/&lt;cat/</span> will find &#8220;&lt;cat&#8221;
+regardless of what precedes it.</p></div>
+<div class="paragraph"><p><span class="monospaced">\&gt;</span></p></div>
+<div class="paragraph"><p>A backslashed right angle bracket means the match can occur only at
+the end of a simple word. Otherwise the same as the left angle
+bracket, above.</p></div>
+<div class="paragraph"><p><span class="monospaced">~</span></p></div>
+<div class="paragraph"><p>The tilde represents the last string you put into a line by means of a
+line mode substitute command, regardless of whether you were in line
+mode then or ran it from visual mode by preceding it with a colon (
+<span class="monospaced">:</span> ). For instance, if your last line mode substitution command was
+<span class="monospaced">s/dog/cat/</span> then a <span class="monospaced">/the ~/</span> search pattern will find &#8220;the
+cat&#8221;. But the replacement string of a substitute command can use
+metacharacters of its own, and if your last use involved any of those
+metacharacters then a tilde in your search pattern will give you
+either an error message or a match that is not what you expected. When
+the editor option <span class="monospaced">magic</span> is turned off, you must backslash the
+tilde to give it its meta value.</p></div>
+<div class="paragraph"><p>Vim also has a <span class="monospaced">verymagic</span> mode which can be enabled within patterns
+using the <span class="monospaced">\v</span> metacharacter. This <span class="monospaced">verymagic</span> mode was used in
+Hal&#8217;s story earlier. See <span class="monospaced">:help magic</span> for a thorough explanation of
+Vim&#8217;s <span class="monospaced">magic</span>, <span class="monospaced">nomagic</span> and <span class="monospaced">verymagic</span> modes.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_character_classes">Character Classes</h3>
+<div class="paragraph"><p>There is one metastring form (a &#8220;multicharacter metacharacter&#8221;) used
+in search patterns. When several characters are enclosed within a set
+of brackets ( <span class="monospaced">[]</span> ), the group matches any one of the characters
+inside the brackets. That is, <span class="monospaced">/part [123]/</span> will match &#8220;part 1&#8221;,
+&#8220;part 2&#8221; or &#8220;part 3&#8221;, whichever the search comes to first. One
+frequent use for this feature is in finding a string that may or may
+not be capitalized, when the editor option <span class="monospaced">ignorecase</span> is turned
+off (as it is by default). Typing <span class="monospaced">/[Cc]at/</span> will find either
+&#8220;Cat&#8221; or &#8220;cat&#8221;, and <span class="monospaced">/[Cc][Aa][Tt]/</span> will find those or &#8220;CAT&#8221;.
+(In case there was a slip of the shift key when &#8220;CAT&#8221; was typed in,
+the last pattern will even find &#8220;CaT&#8221;, &#8220;CAt&#8221;, etcetera.)</p></div>
+<div class="paragraph"><p>There&#8217;s more power (and some complication) in another feature of this
+metastring: there can be metacharacters inside it. Inside the brackets, a
+circumflex as the first character reverses the meaning. Now the metastring
+matches any one character that is NOT within the brackets. A <span class="monospaced">/^[^ ]/</span> search
+pattern finds a line that does not begin with a space character. (You&#8217;re so
+right if you think that the different meta values of the circumflex inside and
+outside the character class brackets is not one of the editor&#8217;s best points.) A
+circumflex that is not the first character inside the brackets represents just
+an actual circumflex.</p></div>
+<div class="paragraph"><p>A hyphen can be a metacharacter within the brackets, too. When it&#8217;s between two
+characters, and the first of the two other characters has a lower ASCII value
+than the second, it&#8217;s as if you&#8217;d typed in all of the characters in the ASCII
+collating sequence from the first to the second one, inclusive. So <span class="monospaced">/[0-9]%/</span>
+will find any numeral followed by the percent sign ( % ), just as
+<span class="monospaced">/[0123456789]%/</span> would. A <span class="monospaced">/[a-z]/</span> search pattern will match any lower-case
+letter, and <span class="monospaced">/[a-zA-Z]/</span> matches any letter, capital or lower case. These two
+internal metacharacters can be combined: <span class="monospaced">/[^A-Z]/</span> will find any character
+except a capital letter. A hyphen that is either the first or the last
+character inside the brackets has no meta value. When a
+character-hyphen-character string has a first character with a higher ASCII
+value than the last character, Vim complains with the error message:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>  E16: Invalid range.</pre>
+</div></div>
+<div class="paragraph"><p>Backslashing character classes is complex. Within the brackets you must
+backslash a right bracket that&#8217;s part of the class; otherwise the editor will
+mistake it for the bracket that closes the class. Of course you must backslash
+a backslash that you want to be part of the class, and you can backslash a
+circumflex at the start or a hyphen between two characters if you want them in
+the class literally and don&#8217;t want to move them elsewhere in the construct.
+Elsewhere in a search pattern you will have to backslash a left bracket that
+you want to appear as itself, or else the editor will take it as your attempt
+to begin a character class. Finally, if <span class="monospaced">magic</span> is turned off, you&#8217;ll have to
+backslash a left bracket when you do want it to begin a character class.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_coming_up_next">Coming Up Next</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In the <a href="2_line_addresses.html">second part</a> of this tutorial, I&#8217;ll
+be following up on all this information about search patterns, by
+showing the right ways to combine them with other elements to generate
+command addresses.</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr></div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2014-02-01 18:10:12 CST
+</div>
+</div>
+</body>
+</html>
