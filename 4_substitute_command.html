@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="AsciiDoc 8.6.6">
+<title>The Subtle Substitute Command</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+pre {
+  padding: 0;
+  margin: 0;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #777777;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+tt {
+  font-family: monospace;
+  font-size: inherit;
+  color: navy;
+}
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+.monospaced {
+  font-family: monospace;
+  font-size: inherit;
+  color: navy;
+}
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+/*
+ * Theme specific overrides of the preceding (asciidoc.css) CSS.
+ *
+ */
+body {
+  font-family: Garamond, Georgia, serif;
+  font-size: 17px;
+  color: #3E4349;
+  line-height: 1.3em;
+}
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Garmond, Georgia, serif;
+  font-weight: normal;
+  border-bottom-width: 0;
+  color: #3E4349;
+}
+div.title, caption.title { color: #596673; font-weight: bold; }
+h1 { font-size: 240%; }
+h2 { font-size: 180%; }
+h3 { font-size: 150%; }
+h4 { font-size: 130%; }
+h5 { font-size: 115%; }
+h6 { font-size: 100%; }
+#header h1 { margin-top: 0; }
+#toc {
+  color: #444444;
+  line-height: 1.5;
+  padding-top: 1.5em;
+}
+#toctitle {
+  font-size: 20px;
+}
+#toc a {
+    border-bottom: 1px dotted #999999;
+    color: #444444 !important;
+    text-decoration: none !important;
+}
+#toc a:hover {
+    border-bottom: 1px solid #6D4100;
+    color: #6D4100 !important;
+    text-decoration: none !important;
+}
+div.toclevel1 { margin-top: 0.2em; font-size: 16px; }
+div.toclevel2 { margin-top: 0.15em; font-size: 14px; }
+em, dt, td.hdlist1 { color: black; }
+strong { color: #3E4349; }
+a { color: #004B6B; text-decoration: none; border-bottom: 1px dotted #004B6B; }
+a:visited { color: #615FA0; border-bottom: 1px dotted #615FA0; }
+a:hover { color: #6D4100; border-bottom: 1px solid #6D4100; }
+div.tableblock > table, table.tableblock { border: 3px solid #E8E8E8; }
+th.tableblock, td.tableblock { border: 1px solid #E8E8E8; }
+ul > li > * { color: #3E4349; }
+pre, tt, .monospaced { font-family: Consolas,Menlo,'Deja Vu Sans Mono','Bitstream Vera Sans Mono',monospace; }
+tt, .monospaced { font-size: 0.9em; color: black;
+}
+div.exampleblock > div.content, div.sidebarblock > div.content, div.listingblock > div.content { border-width: 0 0 0 3px; border-color: #E8E8E8; }
+div.verseblock { border-left-width: 0; margin-left: 3em; }
+div.quoteblock { border-left-width: 3px; margin-left: 0; margin-right: 0;}
+div.admonitionblock td.content { border-left: 3px solid #E8E8E8; }
+/*
+  pygmentize filter
+*/
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f4f4f4; }
+.highlight .c { color: #008800; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #AA22FF; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #008800; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #008800 } /* Comment.Preproc */
+.highlight .c1 { color: #008800; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #008800; font-weight: bold } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #AA22FF; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #AA22FF; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #AA22FF; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #AA22FF } /* Keyword.Pseudo */
+.highlight .kr { color: #AA22FF; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #00BB00; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BB4444 } /* Literal.String */
+.highlight .na { color: #BB4444 } /* Name.Attribute */
+.highlight .nb { color: #AA22FF } /* Name.Builtin */
+.highlight .nc { color: #0000FF } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #00A000 } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #B8860B } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BB4444 } /* Literal.String.Backtick */
+.highlight .sc { color: #BB4444 } /* Literal.String.Char */
+.highlight .sd { color: #BB4444; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BB4444 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BB4444 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BB4444 } /* Literal.String.Single */
+.highlight .ss { color: #B8860B } /* Literal.String.Symbol */
+.highlight .bp { color: #AA22FF } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #B8860B } /* Name.Variable.Class */
+.highlight .vg { color: #B8860B } /* Name.Variable.Global */
+.highlight .vi { color: #B8860B } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+
+@media screen {
+  body {
+    max-width: 50em; /* approximately 80 characters wide */
+    margin-left: 16em;
+  }
+
+  #toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 13em;
+    padding: 0.5em;
+    padding-bottom: 1.5em;
+    margin: 0;
+    overflow: auto;
+    border-right: 3px solid #f8f8f8;
+    background-color: white;
+  }
+
+  #toc .toclevel1 {
+    margin-top: 0.5em;
+  }
+
+  #toc .toclevel2 {
+    margin-top: 0.25em;
+    display: list-item;
+    color: #aaaaaa;
+  }
+
+  #toctitle {
+    margin-top: 0.5em;
+  }
+}
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([2-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>The Subtle Substitute Command</h1>
+<span id="author">Walter Alan Zintz</span><br>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph"><p>After the <span class="monospaced">:global</span> command, which we discussed in the previous installment
+of this tutorial series, the <span class="monospaced">:substitute</span> command is ex mode&#8217;s most subtle
+and complex tool. When I&#8217;ve gone over those complexities we&#8217;ll be ready to
+deal with techniques and tricks of building powerful ex-mode command strings.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_making_changes_within_lines">Making Changes Within Lines</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Most of you already know the <span class="monospaced">:substitute</span> command by its shortest
+abbreviation <span class="monospaced">:s</span> and use it in roughly this form:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  s<span class="sr">/previous/</span>former/
+
+  %s<span class="sr">/Smith/</span>Lee and Smith/
+</pre></div></div></div>
+<div class="paragraph"><p>to make some change within the line you are on, in the first case, or change
+every instance in the file in the second. If you use both forms you are
+already ahead of the game. Too many class instructors and textbook writers try
+to tell you that the way to change some phrase throughout the file is to type
+something like:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  global<span class="sr">/Smith/</span>s<span class="sr">//</span>Lee and Smith/
+</pre></div></div></div>
+<div class="paragraph"><p>This is wasteful nonsense. Both forms accomplish exactly the same thing, but
+the second version involves extra typing for you and an extra run through the
+file for your computer. It does not matter that not every line in your file
+will contain a &#8220;Smith&#8221; to be changed&#8201;&#8212;&#8201;the <span class="monospaced">:substitute</span> command will
+execute properly in either version, and quietly if even one line in the file
+has a &#8220;Smith&#8221; it can change.</p></div>
+<div class="paragraph"><p>But neither form as it stands is sure to change every &#8220;Smith&#8221; in the file.
+The <span class="monospaced">:substitute</span> command is set up to change only the first example of the
+string it finds on any particular line, so a line in the text that originally
+read:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>  inure to Smith's benefit only if Smith shall</pre>
+</div></div>
+<div class="paragraph"><p>will be changed by either version of the command to read:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>  inure to Lee and Smith's benefit only if Smith shall</pre>
+</div></div>
+<div class="paragraph"><p>ex mode has a built-in solution for this problem: place a lower-case letter
+&#8220;g&#8221; at the very end of the command, immediately after the last &#8220;/&#8221; mark,
+in order to make the change on every such string in each line. So typing this:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  % substitute <span class="sr">/Smith/</span>Lee and Smith/g
+</pre></div></div></div>
+<div class="paragraph"><p>will make that text line come out as:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>  inure to Lee and Smith's benefit only if Lee and Smith shall</pre>
+</div></div>
+<div class="paragraph"><p><a id="Q4.1"></a></p></div>
+<div class="paragraph"><p>Finer tuning of the instances can be done by a little trickery. Suppose you
+are working on tables, and want to change only the very last &#8220;k37&#8221; on each
+line to &#8220;q53&#8221;. This command will do it:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  % substitute <span class="sr">/\(.\+\)k37/</span>\<span class="m">1</span>q<span class="m">53</span>
+</pre></div></div></div>
+<div class="paragraph"><p>If this seems surprising, remember that in a search pattern with a wild card,
+the editor always extends the match to the greatest length it can. In this
+case that means the string starting at the beginning of the line and ending
+with the last &#8220;k37&#8221; in the line.</p></div>
+<div class="exampleblock">
+<div class="title">Spot Quiz</div>
+<div class="content">
+<div class="paragraph"><div class="title">4.1&#8201;&#8212;&#8201;Substituting the second-to-last element on a line</div><p>Now you should be able to extend this example. What command would change only
+the second-to-last &#8220;k37&#8221; on each line? This requires a shrewd guess from
+you, so I&#8217;ve written a <a href="4_substitute_command_solutions.html#S4.1">solution</a>
+you can compare to your own.</p></div>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_a_few_more_metacharacters">A Few More Metacharacters</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>You probably already know that you don&#8217;t always have to type the search
+pattern that indicates the text to be replaced by a substitution command. If
+you want to reuse your very last search pattern, whether that was in a
+substitution command or not, you can use an empty search pattern string to
+stand for the last search pattern, so the two commands below are actually
+identical.</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  <span class="sr">/Murphy/</span> substitute <span class="sr">/Murphy/</span>Thatcher/
+
+  <span class="sr">/Murphy/</span> substitute <span class="sr">//</span>Thatcher/
+</pre></div></div></div>
+<div class="paragraph"><p>Either command will go to the next line containing &#8220;Murphy&#8221; and there
+replace the first &#8220;Murphy&#8221; with &#8220;Thatcher&#8221;.</p></div>
+<div class="paragraph"><p>Within a substitution command&#8217;s search pattern to find the text to be removed,
+all the normal search-pattern metacharacters apply. So do two more that are
+reserved only for substitution commands: the &#8220;\(&#8221; and &#8220;\)&#8221; metacharacters.</p></div>
+<div class="paragraph"><p>These two metacharacters don&#8217;t match anything themselves, so:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  substitute <span class="sr">/^The cat and small dog show/</span>
+
+  substitute <span class="sr">/^The \(cat\) and \(small dog\) show/</span>
+</pre></div></div></div>
+<div class="paragraph"><p>are exactly the same command as far as they go. But the substitution command
+remembers what it finds to match the text between a pair of &#8220;\(&#8221; and &#8220;\)&#8221;
+metacharacters, for use in the replacement text. Whenever your replacement
+pattern contains &#8220;\1&#8221; the editor replaces that metacharacter with whatever
+matched the characters that were between the first pair of &#8220;\(&#8221; and &#8220;\)&#8221;
+metacharacters. A &#8220;\2&#8221; in the replacement pattern is removed and replaced by
+whatever was matched by the characters between the second pair. And so on&#8201;&#8212;&#8201;you
+can have up to nine pairs in one substitution command. These metacharacter
+pairs can even be nested in the to-be-replaced text; the one that starts first
+will be represented by &#8220;\1&#8221; and so on. So if you extend that second
+substitution command above to read:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  substitute <span class="sr">/^The \(cat\) and \(small dog\) show/</span>My \<span class="m">2</span><span class="p">-</span>\<span class="m">1</span> fair
+</pre></div></div></div>
+<div class="paragraph"><p>the substitution command will produce a line that begins:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>  My small dog-cat fair</pre>
+</div></div>
+<div class="paragraph"><p>Or if you type:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  substitute :<span class="k">up</span> \<span class="p">(</span>and \<span class="p">)</span>\<span class="p">(</span>over \<span class="p">)</span>\<span class="p">(</span><span class="k">the</span> sky\<span class="p">)</span>:\<span class="m">2</span>\<span class="m">1</span>\<span class="m">2</span>\<span class="m">1</span>\<span class="m">2</span>\<span class="m">3</span>
+</pre></div></div></div>
+<div class="paragraph"><p>then your command will change the first line below to read as the second line,
+just beneath it:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>  up and over the sky
+
+  over and over and over the sky</pre>
+</div></div>
+<div class="paragraph"><p>(I used the colon &#8220;:&#8221; character to separate the parts of the command,
+instead of the slash &#8220;/&#8221; character, solely to make it more readable for you.
+There is no danger of the editor confusing &#8220;/&#8221; with &#8220;\&#8221; or &#8220;l&#8221; (el) with
+&#8220;1&#8221; (one) etcetera.)</p></div>
+<div class="paragraph"><p>As the preceding examples show, the &#8220;\(&#8221; and &#8220;\)&#8221; are not too useful with
+plain-text search patterns; about their only real value there is when you are
+searching for something that&#8217;s difficult to spell correctly, and don&#8217;t want to
+type it into the replacement pattern with possible spelling errors. (Spelling
+errors aren&#8217;t so dangerous in the to-be-replaced text, because they only cause
+the pattern match to fail.)</p></div>
+<div class="paragraph"><p>These metacharacters save the day, though, when you are dealing with other
+search metacharacters in searching for text that you will want to put back in.
+(Often the only way to specify the exact spot you want the replacement done is
+to include some neighboring text in the search pattern, and tell the editor
+that after the neighboring text has been taken out it is to be put back in
+right where it was.) Here are three examples of this kind of substitution:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  % substitute :\<span class="p">(</span>[Ss]ection\<span class="p">)</span> \<span class="p">(</span>\<span class="k">d</span>\<span class="k">d</span>*\<span class="p">)</span>:\<span class="m">1</span> No. \<span class="m">2</span>:g
+
+  <span class="sr">/\([Ss]ection\) \(\d\d*\)/</span> substitute ::\<span class="m">1</span> No. \<span class="m">2</span>
+
+  % substitute <span class="p">,</span>\<span class="p">(</span>[Aa]nswer\<span class="p">)</span>: \<span class="p">(</span>[TtFf]\<span class="p">),</span>\U\<span class="m">1</span>: \<span class="m">2</span><span class="p">,</span>g
+</pre></div></div></div>
+<div class="paragraph"><p>The first of these simply inserts &#8220;No.&#8221; in the middle of phrases that are
+section numbers, throughout the document. But the &#8220;\(&#8221; and &#8220;\)&#8221; notation
+is essential to preserve the section number in each case, and also to leave
+unchanged the capitalization or noncapitalization of the first letter of
+&#8220;section&#8221;.</p></div>
+<div class="paragraph"><p>The second command does the same thing, but only on the very next line that
+has a section number to change. The surprise here is that I put the &#8220;\(&#8221; and
+&#8220;\)&#8221; in the address pattern to find the correct line. A line address doesn&#8217;t
+use these metacharacters, of course, but it does not object to them, either.
+It just ignores them in its own line search, but does pass them along when a
+following substitution command reuses the last search pattern, as happens in
+this example.</p></div>
+<div class="paragraph"><p>The third example is useful in editing a list of answers to exercises. It
+stops at each answer to a true-or-false question and capitalizes the entire
+word &#8220;answer&#8221;. The innovative aspect of this command is that it finds the
+letter &#8220;T&#8221; or &#8220;t&#8221; or &#8220;F&#8221; or &#8220;f&#8221; following the word &#8220;answer&#8221;, so it
+will not change the capitalization where an answer is numerical rather than
+true or false. And yet, the letter indicating whether &#8220;true&#8221; or &#8220;false&#8221; is
+the correct answer is not discarded as a side effect. This is primarily an
+example of a change that can be done more simply by using other metacharacters
+in the replacement pattern. Those other metacharacters are described below.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_replacement_pattern_metacharacters">Replacement-Pattern Metacharacters</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The string of characters you want to put in via a substitution command can use
+its own list of metacharacters. They&#8217;re entirely different from the
+metacharacters used in searching for a pattern you want to take out of a line.</p></div>
+<div class="paragraph"><div class="title">&amp;</div><p>In a replacement pattern, the &#8220;&amp;&#8221; stands for the entire text that was to be
+replaced. Use this when you want to add rather than replace text. For example,
+to change &#8220;kit&#8221; to &#8220;kit and kaboodle&#8221; regardless of whether &#8220;kit&#8221; is
+capitalized, use:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  % substitute <span class="sr">/[Kk]it/</span>&amp; and kaboodle/g
+</pre></div></div></div>
+<div class="paragraph"><p>If you have magic turned off (:help 'magic), you must backslash the &#8220;&amp;&#8221; to
+give it metavalue. With magic on, backslash an &#8220;&amp;&#8221; to insert it as a regular
+character. Turning magic off is an antiquated practise and is probably not
+something you&#8217;ll want to do often, if ever. Vim does offer an enhanced magic
+mode called <em>very magic</em> that attempts to offer a regular expression dialect
+closer to Perl&#8217;s. Use /\v/ to enable that at the start of your patterns. There
+is no option to permanently enable <em>very magic</em> by default, thankfully.</p></div>
+<div class="paragraph"><div class="title">&#126;</div><p>The &#8220;~&#8221; character represents the replacement pattern you used in your last
+substitution command. One good use for this is in correcting various
+misspellings of a single word:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  % substitute <span class="sr">/[Ff]anstock clip/</span>Fahnestock clip/g
+
+  % substitute <span class="sr">/[Ff]ahnstock clip/</span><span class="p">~</span>/g
+
+  % substitute <span class="sr">/[Ff]ahnstocke clip/</span><span class="p">~</span>/g
+
+  % substitute <span class="sr">/[Ff]annstock clip/</span><span class="p">~</span>/g
+
+  % substitute <span class="sr">/[Ff]anestock clip/</span><span class="p">~</span>/g
+
+  % substitute <span class="sr">/[Ff]aenstock clip/</span><span class="p">~</span>/g
+</pre></div></div></div>
+<div class="paragraph"><div class="title">\U</div><p>A &#8220;\U&#8221; metacharacter makes all letters following it into capitals; to the
+end of the replacement pattern or until another metacharacter turns it off.
+Here&#8217;s how you&#8217;d use it to change a section of your document to all capitals:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  <span class="m">1</span> <span class="p">,</span> substitute <span class="sr">/.*/</span>\U&amp;
+</pre></div></div></div>
+<div class="paragraph"><div class="title">\L</div><p>A &#8220;\L&#8221; gives the opposite effect of a &#8220;\U&#8221;; all following letters become
+lower case. You might use this to decapitalize acronyms:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  % substitute <span class="sr">/FORTRAN and COBOL/</span>\L&amp;/g
+</pre></div></div></div>
+<div class="paragraph"><div class="title">\E</div><p>Use &#8220;\E&#8221; to end the effect of a &#8220;\U&#8221; or &#8220;\L&#8221; metacharacter. Everything
+following the &#8220;\E&#8221; has the same mix of capitalization as originally. For
+example, to enclose a line of text in curly braces, and also change just the
+first word to all capitals:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  substitute :\<span class="p">(</span>\S*\<span class="p">)</span>\<span class="p">(</span>.*\<span class="p">)</span>:{\U\<span class="m">1</span>\E\<span class="m">2</span>}
+</pre></div></div></div>
+<div class="paragraph"><p>No &#8220;\E&#8221; is needed when you switch from &#8220;\U&#8221; to &#8220;\L&#8221; in the middle of a
+replacement pattern, or vice versa. When either of those metacharacters
+appears, it automatically ends the effect of the other. So if you have a list
+of book titles, one title per line, with only the first letters of the words
+capitalized, and you want to change those titles to all capitals before the
+colon in the middle of each title, and all lower case after it, just type:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  % substitute <span class="p">,</span>\<span class="p">(</span>.*\<span class="p">)</span>:\<span class="p">(</span>.*\<span class="p">),</span>\U\<span class="m">1</span>:\L\<span class="m">2</span>
+</pre></div></div></div>
+<div class="paragraph"><div class="title">\u</div><p>This metacharacter capitalizes just the single letter that immediately follows
+it. If the character that immediately follows it is not an alphabet letter,
+&#8220;\u&#8221; does nothing.</p></div>
+<div class="paragraph"><div class="title">\l</div><p>The same as &#8220;\u&#8221;, except that &#8220;\l&#8221; makes the immediately following letter
+come out as lower case.</p></div>
+<div class="paragraph"><p>One more thing is important to know about reusing patterns in substitution
+commands: when all or part of a text-to-be-replaced pattern is going to be
+used as a replacement pattern, or vice versa, the command reuses the result of
+the original pattern, after all the metacharacters have been evaluated in the
+original situation. Since the metacharacters in either of those two types of
+patterns have no meaning in the other type, it could hardly be otherwise.</p></div>
+<div class="paragraph"><p>But when the reuse involves a text-to-be-replaced pattern being used a second
+time as a text-to-be-replaced pattern, or a replacement pattern being reused
+as a replacement pattern, the command brings along all the original
+metacharacters and evaluates them afresh in the new situation. Thus, in either
+of the cases in this paragraph, the second use is unlikely to produce exactly
+the same results as the first use did.</p></div>
+<div class="paragraph"><p><a id="Q4.2"></a></p></div>
+<div class="exampleblock">
+<div class="title">Spot Quiz</div>
+<div class="content">
+<div class="paragraph"><div class="title">4.2&#8201;&#8212;&#8201;Setting a line to Title Case</div><p>Now another exercise for you. Suppose that lines 237 through 289 of a file
+have unknown capitalization&#8201;&#8212;&#8201;any line could be all caps, all lower case, or
+some mixture. These lines are to be changed so that the first letter of every
+word is a capital and all other letters are lower case (that is, Title Case).
+To simplify this, words are separated by space characters. What is the easy
+way to do this with one ex-mode substitution command? This exercise depends on
+something I did not state directly, so don&#8217;t feel bad if my
+<a href="4_substitute_command_solutions.html#S4.2">solution</a> is a little simpler
+than yours.</p></div>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_lookaround_for_advanced_substitutions">Lookaround for Advanced Substitutions</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Vim has a suite of powerful lookaround metacharacters that allow you to more
+specifically anchor your searches when doing substitutions.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+\(pattern\)\@=  &#8201;&#8212;&#8201;positive lookahead similar to Perl&#8217;s <span class="monospaced">(?=pattern)</span>
+</p>
+</li>
+<li>
+<p>
+\(pattern\)\@!  &#8201;&#8212;&#8201;negative lookahead similar to Perl&#8217;s <span class="monospaced">(?!pattern)</span>
+</p>
+</li>
+<li>
+<p>
+\(pattern\)\@&lt;= &#8201;&#8212;&#8201;positive lookbehind similar to Perl&#8217;s <span class="monospaced">(?&lt;=pattern)</span>
+</p>
+</li>
+<li>
+<p>
+\(pattern\)\@&lt;! &#8201;&#8212;&#8201;negative lookbehind similar to Perl&#8217;s <span class="monospaced">(?&lt;!pattern)</span>
+</p>
+</li>
+<li>
+<p>
+\(pattern\)\@&gt;  &#8201;&#8212;&#8201;negative lookahead similar to Perl&#8217;s <span class="monospaced">(?&gt;pattern)</span>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>See <span class="monospaced">:help /\@=</span> for the section of the manual that explains how these
+metacharacters are used in Vim, along with examples of what each one is suited
+for&#8201;&#8212;&#8201;and occasionally not suited for.</p></div>
+<div class="ulist"><div class="title">A few quick examples:</div><ul>
+<li>
+<p>
+Find a signature string of the form: <span class="monospaced"># Some Name, yyyy mm dd</span>
+</p>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  /\<span class="p">(</span>^\s*#\s*\<span class="p">)</span>\@<span class="p">&lt;=</span>\<span class="p">(</span>\<span class="k">w</span>.*\<span class="p">)</span>\<span class="p">(,</span>\s*\<span class="k">d</span>\{<span class="m">4</span>}.\<span class="k">d</span>\<span class="k">d</span>.\<span class="k">d</span>\<span class="k">d</span>\s*$\<span class="p">)</span>\@<span class="p">=</span>
+</pre></div></div></div>
+<div class="paragraph"><p>However it&#8217;s almost always easier, faster and better to use Vim&#8217;s
+<a href="#start_and_end_of_match"><span class="monospaced">\zs</span> and <span class="monospaced">\ze</span></a> in these situations:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  /^\s*#\s*\zs\<span class="k">w</span>.*\ze<span class="p">,</span>\s*\<span class="k">d</span>\{<span class="m">4</span>}.\<span class="k">d</span>\<span class="k">d</span>.\<span class="k">d</span>\<span class="k">d</span>\s*$
+</pre></div></div></div>
+</li>
+<li>
+<p>
+Find the next line containing &#8220;invoice&#8221; without &#8220;paid&#8221; appearing
+anywhere within the same line:
+</p>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  /^\<span class="p">(</span>.*paid\<span class="p">)</span>\@<span class="p">!</span>.*invoice
+</pre></div></div></div>
+</li>
+<li>
+<p>
+Find &#8220;include&#8221; statements that haven&#8217;t been commented out:
+</p>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  <span class="sr">/^\s*\(\/\/</span>\s*\<span class="p">)</span>\@<span class="p">&lt;!</span><span class="nb">include</span>
+</pre></div></div></div>
+</li>
+</ul></div>
+<div class="paragraph"><p><a id="Q4.3"></a></p></div>
+<div class="paragraph"><p><a id="start_and_end_of_match"></a></p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setting_the_start_and_end_of_a_match_within_a_search">Setting The Start And End Of A Match Within A Search</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>As useful as lookaround is for precision searching, it&#8217;s cumbersome to specify
+correctly and quite often overkill when all you&#8217;re really after is a way to
+specify the start and end of where Vim should match inside your larger search
+area. Grabbing just the developer&#8217;s name in the signature line above is one
+example. Use <span class="monospaced">\zs</span> to tell Vim to rely on what came before it to anchor the
+match, but not include it in the match. Use <span class="monospaced">\ze</span> to likewise anchor what
+follows but not include it in the match.</p></div>
+<div class="exampleblock">
+<div class="title">Spot Quiz</div>
+<div class="content">
+<div class="paragraph"><div class="title">4.3&#8201;&#8212;&#8201;Substituting the third element in a line of many</div><p>Given a dataset like:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>@items = [
+  [1,  2,  3,  4,  5],
+  [6,  7,  8,  9,  10],
+  [11, 12, 13, 14, 15]
+]</pre>
+</div></div>
+<div class="paragraph"><p><a id="Q4.3.2"></a></p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+What command would remove the 3rd column of numbers?
+   <a href="4_substitute_command_solutions.html#S4.3.1">Solution</a>
+</p>
+</li>
+<li>
+<p>
+<strong>Bonus Question:</strong> What command would double the numbers in the third
+   column instead of removing them? This requires a feature I haven&#8217;t
+   mentioned yet about Vim&#8217;s substitute command&#8201;&#8212;&#8201;<span class="monospaced">:help
+   sub-replace-expression</span>
+   <a href="4_substitute_command_solutions.html#S4.3.2">Solution</a>
+</p>
+</li>
+</ol></div>
+</div></div>
+<div class="paragraph"><p><a id="substitute_expression"></a></p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_substitute_with_an_expression">Substitute With An Expression</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Vim normally treats the replacement part of a <span class="monospaced">:substitute/find/replace/</span>
+command as a string possibly containing various special characters that are
+expanded to alter and augment the replacement. One such special character,
+<span class="monospaced">\=</span> (which must appear at the very start of the replacement), treats the
+rest of the string as an expression, giving your substitutions the full power
+of Vimscript. If you haven&#8217;t learnt Vimscript yet, Damian Conway&#8217;s excellent
+introduction article series,
+<a href="http://www.ibm.com/developerworks/linux/library/l-vim-script-1/index.html">Scripting
+the Vim editor</a>, is a great place to start.</p></div>
+<div class="paragraph"><p>Inside a <span class="monospaced">\=</span> expression, you must use <span class="monospaced">submatch(0)</span>, <span class="monospaced">submatch(1)</span>,
+<span class="monospaced">submatch(2)</span>, etc for the <span class="monospaced">&amp;</span>, <span class="monospaced">\1</span>, <span class="monospaced">\2</span>, etc that you would usually
+use in a replacement to refer to captured groups in the match.</p></div>
+<div class="paragraph"><div class="title">Example: Changing the timestamp in a signature</div><p>Given the following signature in a file:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># John Doe, Fri 03 Aug 2012 11:48:47 AM CST</pre>
+</div></div>
+<div class="paragraph"><p>We&#8217;d use the following substitution to update the timestamp:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  substitute <span class="sr">/,\s*\zs.*/</span>\<span class="p">=</span>strftime<span class="p">(</span><span class="s2">&quot;%c&quot;</span><span class="p">)</span>/
+</pre></div></div></div>
+<div class="paragraph"><p>Now you&#8217;re ready for the <a href="#Q4.3.2">Bonus Question in Spot Quiz 4.3</a></p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_other_uses_for_substitution">Other Uses for Substitution</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Despite the name, the <span class="monospaced">:substitute</span> command doesn&#8217;t always take something
+out of the line and put something else in its place. Here&#8217;s an example that
+adds text at the start of certain lines without removing anything:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  <span class="m">537</span> <span class="p">,</span> <span class="m">542</span> substitute <span class="sr">/^/</span>WARNING:  /
+</pre></div></div></div>
+<div class="paragraph"><p>so that text which originally looked like this:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>The primary output line carries very high voltage,
+
+which does not immediately dissipate when power to
+
+the system is turned off.  Therefore, after turning
+
+off the system and disconnecting the power cord,
+
+discharge the primary output line to ground before
+
+servicing the output section.</pre>
+</div></div>
+<div class="paragraph"><p>now looks like this:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>WARNING:  The primary output line carries very high voltage,
+
+WARNING:  which does not immediately dissipate when power to
+
+WARNING:  the system is turned off.  Therefore, after turning
+
+WARNING:  off the system and disconnecting the power cord,
+
+WARNING:  discharge the primary output line to ground before
+
+WARNING:  servicing the output section.</pre>
+</div></div>
+<div class="paragraph"><p>It&#8217;s just as practical to pull some text out of lines without putting anything
+back in its place. Here are two command lines that do just that:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>% substitute <span class="sr">/ uh,/</span>/g
+
+. <span class="p">,</span> $ substitute / *$
+</pre></div></div></div>
+<div class="paragraph"><p>The latter command removes superfluous spaces at the ends of lines. It doesn&#8217;t
+need the final two slashes because there is no suffix to be distinguished from
+a replacement pattern.</p></div>
+<div class="paragraph"><p><a id="Q4.4"></a></p></div>
+<div class="paragraph"><p>At times you might use both the previous principles, to create <span class="monospaced">:substitute</span>
+commands that neither subtract nor add any text. Sound pointless? Here&#8217;s one
+such that I sometimes use when I&#8217;m well along in writing one of these
+tutorials:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  % substitute /^$
+</pre></div></div></div>
+<div class="exampleblock">
+<div class="title">Spot Quiz</div>
+<div class="content">
+<div class="paragraph"><div class="title">4.4&#8201;&#8212;&#8201;A Seemingly Useless Substitution</div><p>Now here&#8217;s a different kind of exercise for you. I&#8217;ve already given you the
+command, above. It obviously makes no change whatsoever in the file. So why do
+I run this command? You need a goodly dose of inspiration to answer this, so
+don&#8217;t be embarrassed if you have to look at my
+<a href="4_substitute_command_solutions.html#S4.4">Solution</a> to this one.</p></div>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_complex_edits">Complex Edits</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Already you know enough about Vim to be able to plan some fairly complex
+edits. Here&#8217;s a short introduction to the art of crafting truly complex
+substitutions and knowing when to abandon them for multiple simpler solutions
+that when used together solve the problem more clearly.</p></div>
+<div class="paragraph"><div class="title">A Bottom-Up Approach</div><p>That&#8217;s usually the best way to build a complex editor command or command
+script. That&#8217;s a programmer&#8217;s term that means putting all the little details
+in separately and then pulling them all together into a unified whole, rather
+than starting with a grand overall plan and forcing the details to fit.</p></div>
+<div class="paragraph"><p>For example, consider how you would use Vim to automatically add HTML
+paragraph tags to each paragraph of a manuscript. This requires inserting the
+string &#8220;&lt;p&gt;&#8221; at the start of the first line of each paragraph, and the
+string &#8220;&lt;/p&gt;&#8221; at the end of the last line. This manuscript separates one
+paragraph from another with a completely empty line (not even a non-printing
+character on it).</p></div>
+<div class="paragraph"><p>This looks pretty easy. All that seems to be needed is to go to each empty
+line, then move up to the preceding line to insert the end-of-paragraph string
+and down to the following line to put in the start-of-paragraph string. But
+there are flaws in the obvious command to do this:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  global <span class="sr">/^$/</span> <span class="p">-</span> substitute :$:<span class="p">&lt;</span><span class="sr">/P&gt;: | ++ substitute /</span>^<span class="sr">/&lt;P&gt;/</span>
+</pre></div></div></div>
+<div class="paragraph"><p>The first problem is that when the editor goes to the empty first line that
+commonly begins a file, it will be unable to move up a line to do the first
+substitution. No substitution is needed there, of course, but since the editor
+doesn&#8217;t leave that empty first line, moving down two lines will put it on the
+second line of the following paragraph&#8201;&#8212;&#8201;definitely the wrong place for a
+start-of-paragraph tag. There are several ways to fix this problem:</p></div>
+<div class="paragraph"><p>Have the editor <span class="monospaced">:mark</span> the empty line before leaving it to execute (or
+attempt to execute) the first substitution. Then it can go to the marked line
+(which works even if the editor never left it) and drop down one line to
+perform the second substitution.</p></div>
+<div class="paragraph"><p>Change the address of that second substitution command from &#8220;++&#8221; to &#8220;/./&#8221;
+in order to move forward to the next nonempty line, which will be the first
+line of the following paragraph whether the search starts from the empty line
+or the line above it.</p></div>
+<div class="paragraph"><p>Run two separate <span class="monospaced">:global</span> searches, each of which executes one of the two
+substitution commands.</p></div>
+<div class="paragraph"><p>Problem number two is that there may be several empty lines between two
+paragraphs, since HTML interpretation is not affected by them. If the editor
+is on the first of two or more consecutive empty lines, the command I first
+proposed above will perform its second substitution on the second empty line
+just below it. When it moves to the second previously-empty line, it will run
+the first substitution command on the empty line it just left. (Yes, the
+second line is no longer empty, but it has already been marked by the
+<span class="monospaced">:global</span> command before any substitutions are done.) That is, a stretch of
+text that initially looked like this:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>at this meeting, so be sure to be there!
+
+
+At next month's meeting we'll hear from the new</pre>
+</div></div>
+<div class="paragraph"><p>and should have been edited to look like this:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>at this meeting, so be sure to be there!&lt;/p&gt;
+
+&lt;p&gt;At next month's meeting we'll hear from the new</pre>
+</div></div>
+<div class="paragraph"><p>actually turns out like this:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>at this meeting, so be sure to be there!&lt;/p&gt;
+
+&lt;/p&gt;
+
+&lt;p&gt;
+
+&lt;p&gt;At next month's meeting we'll hear from the new</pre>
+</div></div>
+<div class="paragraph"><p>It may look as though this hazard can be defeated by modifying the number two
+solution to the first problem above. That is, the address for both
+substitutions will be a search pattern that looks for a line that already has
+some text on it. This works properly when the editor is on the first of two
+consecutive empty lines. From the second line, though, it runs its
+substitution commands on lines that have already been given their tags, so the
+sample text now looks like this:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>at this meeting, so be sure to be there!&lt;/p&gt;&lt;/p&gt;
+
+
+&lt;p&gt;&lt;p&gt;At next month's meeting we'll hear from the new</pre>
+</div></div>
+<div class="paragraph"><div class="title">Complex Conditionals</div><p>What&#8217;s really needed here is double-conditional execution. That is,
+substitution commands must run on a given line only if both of these
+conditions are true:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+The line to be substituted is adjacent to the empty line.
+</p>
+</li>
+<li>
+<p>
+The line to be substituted is not itself empty.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>In this case, Vim can handle it. The <span class="monospaced">:global</span> portion of the command line
+takes care of the first condition if the substitution commands' addresses move
+exactly one line in each direction from the empty line. (Of the three proposed
+solutions to the first difficulty encountered, numbers one and three both do
+this much.) To satisfy the second condition, make the substitution commands
+remove one character from the existing line&#8201;&#8212;&#8201;and then replace it, of course.
+This ensures that if there is no character to remove because the line is
+empty, the substitution command will fail on that line and do nothing.</p></div>
+<div class="paragraph"><p>Either the first or third solution can be adapted to satisfy that second
+condition. I&#8217;ve used the third solution in the example commands below, because
+the technique is easier to follow than it would be with the first solution:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  global <span class="sr">/^$/</span> <span class="p">+</span> substitute <span class="sr">/^./</span><span class="p">&lt;</span><span class="k">p</span><span class="p">&gt;</span>&amp;/
+
+  global <span class="sr">/^$/</span> <span class="p">-</span> substitute :.$:&amp;<span class="p">&lt;</span>/<span class="k">p</span><span class="p">&gt;</span>:
+</pre></div></div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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
+YII=">
+</td>
+<td class="content">
+<div class="paragraph"><p>All of the &#8220;solutions&#8221; to this problem given here do not prepend <span class="monospaced">&lt;p&gt;</span> to
+the first paragraph in the document, nor append <span class="monospaced">&lt;/p&gt;</span> to the last. Special
+cases like that can either be handled by additional substitutions or performed
+manually. Sometimes it&#8217;s better not to lance a boil with a broadsword.</p></div>
+</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>What we&#8217;re calling bottom-up techniques here is the practice of explicitly
+breaking an otherwise complicated edit down into multiple simpler edits. This
+is generally a good technique to keep the thought-space of a problem and its
+solution simple even if a single, albeit complicated, solution exists&#8201;&#8212;&#8201;revisiting or remembering that solution later might be more taxing than the
+multiple simpler forms combined. Having said that, Vim does have the capacity
+to solve the given problem with a single expression and it doesn&#8217;t look too
+harrowing either:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  % substitute <span class="sr">/.\zs\n\n\+/</span><span class="p">&lt;</span>\<span class="sr">/p&gt;&amp;&lt;p&gt;/</span>
+</pre></div></div></div>
+<div class="paragraph"><p>This substitution uses the ever useful <span class="monospaced">\zs</span> to anchor our match at the end
+of a line containing text that is followed by empty lines. Given the relative
+simplicity of this single substitution command, you may wonder why attention
+was given to the need for separating the solution out into seemingly more
+complicated parts. The simple answer is that this multi-part solution was
+originally devised on <strong>vi</strong> and not <strong>Vim</strong>. Vim has brought a <em>lot</em> of new
+functionality, features, power and expressiveness to the world of vi. I left
+this example in here for the very good reason that this is still solid advice
+in the general case. To see this in practice even for this seemingly defeated
+example, consider the Bonus Question in the Spot Quiz below.</p></div>
+<div class="paragraph"><p><a id="Q4.5"></a></p></div>
+<div class="paragraph"><p>Bottom-up techniques can be continued if there are yet other special needs to
+be accommodated. The manuscript may have headlines and subheads mixed in with
+the paragraphs, and may already have appropriate HTML tags at the beginnings
+and ends of those heads and subheads.</p></div>
+<div class="exampleblock">
+<div class="title">Spot Quiz</div>
+<div class="content">
+<div class="olist arabic"><div class="title">4.5&#8201;&#8212;&#8201;Avoiding Duplicating HTML Paragraph Tags</div><ol class="arabic">
+<li>
+<p>
+As an exercise, how would you adapt the commands just above so they would
+   not add a paragraph tag where any text already begins or ends with an HTML
+   tag? Hint&#8201;&#8212;&#8201;an HTML tag always begins with a &#8220;&lt;&#8221; and ends with a &#8220;&gt;&#8221;
+   character. This is a very minor change, so you probably will not need to
+   look at my <a href="4_substitute_command_solutions.html#S4.5.1">solution</a> except
+   to confirm your own answer.
+</p>
+</li>
+<li>
+<p>
+<strong>Bonus Question:</strong> How would you achieve the same thing with a single
+   substitution in Vim?
+   <a href="4_substitute_command_solutions.html#S4.5.1">Solution</a>
+</p>
+</li>
+</ol></div>
+</div></div>
+<div class="paragraph"><div class="title">A Little Trickery</div><p>At times a command needs to be supercharged by way of a far out use of
+substitution&#8201;&#8212;&#8201;something perfectly legitimate, but never intended by the
+people who wrote this editor. Here are a few that you may find useful.</p></div>
+<div class="paragraph"><p>Let&#8217;s suppose that you have to alter a long document so that all references to
+&#8220;Acme Distributors&#8221; are changed to &#8220;Barrett and Sons&#8221;. A simple
+substitution command will make most of these changes, but it will miss those
+instances where &#8220;Acme&#8221; appears at the end of one line and the next line
+starts with &#8220;Distributors&#8221;. A follow-up pair of substitutions, to replace
+&#8220;Acme&#8221; wherever it appears at the end of a line and to replace
+&#8220;Distributors&#8221; when it starts a line, would wreak havoc&#8201;&#8212;&#8201;this document
+also refers to &#8220;Acme Supply Co.&#8221; and to three other companies whose names
+end with &#8220;Distributors&#8221;.</p></div>
+<div class="paragraph"><p>We can handle this problem nicely with the following two command strings:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  global <span class="sr">/Acme$/</span> <span class="p">+</span> substitute <span class="sr">/^Distributors/</span>and Sons
+
+  global <span class="sr">/^and Sons/</span> <span class="p">-</span> substitute <span class="sr">/Acme$/</span>Barrett
+</pre></div></div></div>
+<div class="paragraph"><p>The first command goes to every line that ends with &#8220;Acme&#8221; and then moves
+forward one line&#8212;if and only if that next line begins with &#8220;Distributors&#8221;,
+it is changed to begin with &#8220;and Sons&#8221;. The next command reverses the
+process to change &#8220;Acme&#8221; to &#8220;Barrett&#8221;, but only in the right instances.
+(Note well that the second command searches for &#8220;and Sons&#8221;, not
+&#8220;Distributors&#8221;, because the first command has changed those line-split
+&#8220;Acme Distributors&#8221; to &#8220;Acme and Sons&#8221;.)</p></div>
+<div class="paragraph"><p>We <em>could</em> even just use two simpler substitutions using <span class="monospaced">\n</span> in the second
+to catch the wrapped case:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  % substitute <span class="sr">/Acme Distributors/</span>Barret and Sons/g
+  % substitute <span class="sr">/Acme\nDistributors/</span><span class="p">~</span>/g
+</pre></div></div></div>
+<div class="paragraph"><p><em>Or</em> we can use Vim&#8217;s <span class="monospaced">\_s</span> which captures whitespace across newlines:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  % substitute <span class="sr">/Acme\_sDistributors/</span>Barret and Sons/g
+</pre></div></div></div>
+<div class="paragraph"><p>Often it is a good strategy to start with a change you definitely don&#8217;t want
+in order to wind up with what you do want. Suppose you are a technical writer
+who has just finished writing a number of lengthy photo captions full of
+phrases like &#8220;the light spot in the upper righthand corner&#8221; and &#8220;dark areas
+near the lower lefthand edge&#8221;. Along comes the news that the Art Director has
+decided to flop all the photos: print them in mirror-image form. Suddenly,
+everything that was on the right is now on the left, and vice versa.</p></div>
+<div class="paragraph"><p>Your captions will be accurate again if you change every &#8220;lefthand&#8221; to read
+&#8220;righthand&#8221; and vice versa. But how to do that without wading through the
+whole text and making each change individually? The obvious pair of
+substitutions will not work:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  % substitute <span class="sr">/lefthand/</span>righthand/g
+
+  % substitute <span class="sr">/righthand/</span>lefthand/g
+</pre></div></div></div>
+<div class="paragraph"><p>The second command doesn&#8217;t just change the original instances of &#8220;righthand&#8221;
+to &#8220;lefthand&#8221;; it also reverses every change your first command made&#8201;&#8212;&#8201;now
+everything is described as being on the lefthand side. But the following three
+substitution commands will do the job nicely.</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  % substitute <span class="sr">/lefthand/</span>QQQQ/g
+
+  % substitute <span class="sr">/righthand/</span>lefthand/g
+
+  % substitute <span class="sr">/QQQQ/</span>righthand/g
+</pre></div></div></div>
+<div class="paragraph"><p>By making the first command change &#8220;lefthand&#8221; temporarily to &#8220;QQQQ&#8221; (or
+any other string you know will not be found in your document), you keep those
+changes safe from the effect of your second command. Then, after that second
+command has finished, the third command changes those Q strings to what you
+had wanted in the first place.</p></div>
+<div class="paragraph"><p>Can you do it in one go with Vim? Sure&#8201;&#8212;&#8201;using a
+<a href="#substitute_expression">substitute expression</a>.</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  %s<span class="sr">/\(left\|right\)\zehand/</span>\<span class="p">=(</span>submatch<span class="p">(</span><span class="m">1</span><span class="p">)</span> <span class="p">=~</span> <span class="s1">&#39;l&#39;</span> ? <span class="s1">&#39;right&#39;</span> : <span class="s1">&#39;left&#39;</span><span class="p">)</span>/g
+</pre></div></div></div>
+<div class="paragraph"><p>It can even make sense to type in things incorrectly, then change them to what
+you want via substitution. When I&#8217;m writing documents in plain ASCII, to be
+printed without any formatting, I often use a line across the page to separate
+major sections of the document. But where others are satisfied with just a
+string of hyphens, or another single character, I pretty things up with
+multi-character dividers like:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+  -+--+--+--+--+--+--+--+--+--+-
+
+  *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~
+
+  [][][][][][][][][][][][][][][]</pre>
+</div></div>
+<div class="paragraph"><p>Not that I have the patience and concentration to type in page-wide lines of
+alternating characters, especially when I would have to constantly get on and
+off the shift key, too. No, I just use my repeat key to fill the line with
+whatever character will begin my eventual multi-character pattern. For those
+four patterns above, I would have repeat-keyed in these four lines,
+respectively:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>  ------------------------------
+
+  ------------------------------
+
+  ******************************
+
+  [[[[[[[[[[[[[[[[[[[[[[[[[[[[[[</pre>
+</div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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
+YII=">
+</td>
+<td class="content">
+<div class="paragraph"><p>Don&#8217;t mash the &#8220;-&#8221; key while it repeats out thirty or eighty times. Instead,
+use Vim&#8217;s <span class="monospaced">[count] insert</span> normal mode command to do the repeat for you:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  <span class="m">80</span>i<span class="p">-</span>     Terminating with <span class="p">&lt;</span>Escape<span class="p">&gt;</span>
+</pre></div></div></div>
+</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Then I only have to run a simple repeated substitution to get the line I
+actually want. Here are the commands I would run on the four lines above,
+respectively:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  substitute <span class="sr">/--/</span><span class="p">-=</span>/g
+
+  substitute <span class="sr">/---/</span><span class="p">-+-</span>/g
+
+  substitute <span class="sr">/\*\*/</span>*\<span class="p">~</span>/g
+
+  substitute <span class="sr">/\[\[/</span>[]/g
+</pre></div></div></div>
+<div class="paragraph"><div class="title">Semi-Automatic Substitutions</div><p>At times you&#8217;ll have to make changes that are so dependent on human judgement
+that no substitution tricks could possibly do exactly what&#8217;s wanted. In those
+cases there are two ways to have the editor partially automate those changes.</p></div>
+<div class="paragraph"><p>The first is to use a variant form of the substitute command that presents
+each potential substitution on your screen, and asks you to accept or reject
+it. All you need to do is put a lower-case &#8220;c&#8221; at the end of your
+substitution command, in the same place you would put a &#8220;g&#8221; to change every
+instance on each line, like either of these examples:</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  % substitute <span class="sr">/^something/</span>something <span class="k">else</span>/<span class="k">c</span>
+
+  % substitute <span class="sr">/something/</span>something <span class="k">else</span>/gc
+</pre></div></div></div>
+<div class="paragraph"><p>Vim will then highlight the matches where substitutions are to be made on your
+screen, one at a time. After highlighting the match on your screen, Vim will
+prompt you in the command-line for your action, like:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>replace with something else (y/n/a/q/l/^E/^Y)?</pre>
+</div></div>
+<div class="paragraph"><p>and wait for you to type your response before moving on to the next match.
+Read <span class="monospaced">:help :s_c</span> to learn about the meaning of the various responses there.</p></div>
+<div class="paragraph"><p>Even this substitution variant may not give you enough control. You may need
+to see more than one line to verify your judgement, or the text to be put in
+may vary from one place to another. In those cases, you can use one of the
+qualities of the <span class="monospaced">:global</span> command. This is a simplified version of the
+technique our programmer friend Hal (in the first installment of this
+tutorial) used to work over the problem points that Lint found in the code he
+was updating.</p></div>
+<div class="paragraph"><p>If you are editing in screen mode, as usual, you must start by typing a
+capital &#8220;Q&#8221; to go into ex mode. Vim also provides a slightly friendlier
+version of ex mode with the &#8220;gQ&#8221; command. From ex mode&#8217;s colon prompt, give
+a command like the following (if you want to make the same substitution as in
+our previous examples):</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre>  global <span class="sr">/something/</span> visual
+</pre></div></div></div>
+<div class="paragraph"><p>This command will bring you in turn to each line in the file that contains the
+string &#8220;something&#8221; and put you in screen-editing mode there. After you&#8217;ve
+looked around, and made a substitution if you think it justified, typing a
+capital &#8220;Q&#8221; takes you out of screen-editing mode and returns you to the
+global command, which takes you to the next marked line and resumes screen
+editing.</p></div>
+<div class="paragraph"><p>There&#8217;s one problem with this usage pattern of the ex mode global+visual
+command: suppose we found, after the 10th XXX of 100, that we do not want to
+view the remaining 90 occurrences. It works as long as we don&#8217;t need to type
+&#8220;Q&#8221; again&#8201;&#8212;&#8201;we can stay in full-screen mode until the editing session is
+finished. But if we want to use the ex mode global+visual command again, we&#8217;re
+taken to the 11th occurrence of XXX and prevented access to the ex mode <span class="monospaced">:</span>
+prompt. How do we cancel the currently running ex mode global+visual command?</p></div>
+<div class="paragraph"><p>The best way out of this predicament starts with writing your changes to the
+file. Then, instead of typing &#8220;Q&#8221; type an <span class="monospaced">:edit</span> command. This brings up
+a fresh copy of the file you are editing, but since you&#8217;ve just done a write,
+the fresh copy is identical to the one you&#8217;ve been working on. Because you
+haven&#8217;t left the editor, most of the state is saved&#8201;&#8212;&#8201;contents of the named
+buffers, any maps and/or abbreviations, values of the set command options. You
+do wipe out a few small items like the contents of the unnamed buffer&#8201;&#8212;&#8201;and,
+of course, that suspended global command.</p></div>
+<div class="paragraph"><p>Now you can use the &#8220;Q&#8221; command to go back into ex mode to run that second
+global command.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_next_installment">The Next Installment</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In this tutorial to date, you&#8217;ve undoubtedly seen some aspects of the editor
+that you wish had been designed differently. The good news is that many of
+these features are yours to change at will&#8212;without hacking up the source code
+and recompiling.</p></div>
+<div class="paragraph"><p>In Part 5 of this tutorial, I&#8217;ll elucidate the editor&#8217;s built-in facilities
+for setting up your own editing environment, and the many factors you can
+modify this way.</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr></div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2014-02-01 18:10:12 CST
+</div>
+</div>
+</body>
+</html>
