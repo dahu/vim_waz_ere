@@ -3,10 +3,16 @@ Vim WAZ Ere
 
 __Vimmified version of the venerable http://www.networkcomputing.com/unixworld/tutorial/009/009.html[Walter A. Zintz Vi/Ex Tutorial Series]__
 
+TIP: If you like Vim Waz Ere and want to share the W00t!, I'm grateful for
+https://www.gittip.com/bairuidahu/[tips] or
+http://of-vim-and-vigor.blogspot.com/[beverages].
+
+Now you can read it http://dahu.github.io/vim_waz_ere[online!]
+
 . (done) Editor Fundamentals
 . (done) Line Addresses
 . (done) Global Command
-. (pending review) Substitute Command
+. (done) Substitute Command
 . Take Control Of Your Editing Environment
 . Addresses And Columns
 . The Replacement Commands
