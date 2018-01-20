@@ -26,6 +26,17 @@ lower case:
    global /^CHAPTER/ mark a | copy $ | 'a substitute /HAPTER/hapter/
 ----
 
+Another solution doesn't use a register, but copies the found
+++^CHAPTER++ line to the next line (after the current line: `copy .`),
+lower cases the previous line (the replace pattern is `\L&`, meaning
+make lower-case all the rest, which is `&` — the whole match), and
+finally moves the original, duplicated line to the end:
+
+[source,vim]
+----
+   global /^CHAPTER/ copy . | - substitute /HAPTER/\L&/ | + move $
+----
+
 
 anchor:S3.2[]
 
