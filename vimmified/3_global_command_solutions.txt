@@ -66,6 +66,17 @@ Also, this solution suffers from the necessity that there *be* at
 least 16 lines in the file.
 ====
 
+The following solution is without the limitation of the minimal
+number of lines. It works only on the required line (`217`), searches
+for the pattern, and then runs these commands in the `normal` mode:
+`n` jumps to the start of the found pattern, `16i\` inserts 16
+backslashes.
+
+[source,vim]
+----
+  217 global /n(PDu/ normal n16i\
+----
+
 
 anchor:S3.3[]
 
