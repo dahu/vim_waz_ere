@@ -116,3 +116,33 @@ line, next run the substitution that adds a capital I to all remaining
 macro lines, then return to the line and run the substitutions that
 produce a true Roman numeral. Bonus points for actually trying this.
 
+
+It is possible to number the paragraphs with Arabic numerals using only
+one `:global` command:
+
+[source,vim]
+----
+  global /^\.pp$/ copy . | - delete _ | ?^\.pp? copy - | substitute /\d*$/\=(submatch(0) + 1)/ | + delete _
+----
+
+For each line containing the `^\.pp$` pattern it does:
+
+. `copy .` — duplicate the line; this and the corresponding last
+`+ delete _` command are necessary to make sure the script works even
+in a file with only one `.pp` line;
+
+. `- delete _ | ?^\.pp? copy -` — replaces the original `.pp` line
+with the previous `.pp` line which may already contain a paragraph
+number; for the first marked line the `.pp` will be pasted back (in
+case of a file with only one `.pp` line, our duplicate from the first
+step will come in handy because the backwards search will wrap around
+the file); for the second marked line the `.pp1` will be pasted; etc.
+
+. `substitute /\d*$/\=(submatch(0) + 1)/` — for the newly pasted
+line, it will increment the last number found on the line; the search
+pattern is `\d*` to match `0+` digits so it will even match the original
+`.pp` line without a number, and `$` just to make sure it's at the end
+of the line; the replacement pattern uses an expression after `\=`, the
+`submatch(0)` function will return the found number or `0`, which will
+be incremented.
+
